@@ -10,7 +10,7 @@ sqlc:
 # Make Postgresql container in Docker
 .PHONY: postgres
 postgres:
-	docker run --rm -d \
+	docker run \
 		--name $(DB_NAME) \
 		-e POSTGRES_USER=$(DB_USER) \
 		-e POSTGRES_PASSWORD=$(DB_PASSWORD) \
