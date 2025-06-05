@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "user.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message GetUserByIdRequest {
+  int32 id = 1;
+}
+
+message GetUserByIdResponse {
+  User user = 1;
+}

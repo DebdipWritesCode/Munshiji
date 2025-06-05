@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "rpc_create_user.proto";
+import "rpc_login_user.proto";
+import "rpc_get_user_by_id.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Munshiji Service API",
+    version: "1.0.0",
+    description: "API for managing MUN scoresheets called Munshiji.",
+    contact: {
+      name: "Debdip Mukherjee";
+      url: "https://github.com/DebdipWritesCode";
+      email: "debdipmukherjee52@gmail.com";
+    };
+  };
+};
+
+service Munshiji {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/v1/create_user"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "User Management";
+      summary: "Create a new user";
+      description: "This endpoint allows the creation of a new user in the system.";
+    };
+  };
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {
+    option (google.api.http) = {
+      post: "/v1/login_user"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "User Management";
+      summary: "Login a user";
+      description: "This endpoint allows a user to log in and receive a JWT token.";
+    };
+  };
+  rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse) {
+    option (google.api.http) = {
+      get: "/v1/get_user_by_id/{id}"
+      additional_bindings {
+        get: "/v1/users/{id}"
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "User Management";
+      summary: "Get user by ID";
+      description: "This endpoint retrieves a user by their unique ID.";
+    };
+  };
+}
