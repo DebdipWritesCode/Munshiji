@@ -10,8 +10,9 @@ type Config struct {
 	HTTPServerAddress    string `mapstructure:"HTTP_SERVER_ADDRESS"`
 	GRPCServerAddress    string `mapstructure:"GRPC_SERVER_ADDRESS"`
 	Environment          string `mapstructure:"ENVIRONMENT"`
-	AccessTokenDuration  int64  `mapstructure:"ACCESS_TOKEN_DURATION"`
-	RefreshTokenDuration int64  `mapstructure:"REFRESH_TOKEN_DURATION"`
+	AccessTokenDuration  string `mapstructure:"ACCESS_TOKEN_DURATION"`
+	RefreshTokenDuration string `mapstructure:"REFRESH_TOKEN_DURATION"`
+	TokenSymmetricKey    string `mapstructure:"TOKEN_SYMMETRIC_KEY"`
 }
 
 func LoadConfig(path string) (Config, error) {
