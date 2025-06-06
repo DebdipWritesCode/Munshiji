@@ -7,6 +7,7 @@
 package pb
 
 import (
+	empty "github.com/golang/protobuf/ptypes/empty"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -26,35 +27,40 @@ var File_service_munshiji_proto protoreflect.FileDescriptor
 
 const file_service_munshiji_proto_rawDesc = "" +
 	"\n" +
-	"\x16service_munshiji.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto\x1a\x18rpc_get_user_by_id.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xd1\x04\n" +
+	"\x16service_munshiji.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto\x1a\x18rpc_get_user_by_id.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\xa3\x06\n" +
 	"\bMunshiji\x12\xbf\x01\n" +
 	"\n" +
 	"CreateUser\x12\x15.pb.CreateUserRequest\x1a\x16.pb.CreateUserResponse\"\x81\x01\x92Ad\n" +
 	"\x0fUser Management\x12\x11Create a new user\x1a>This endpoint allows the creation of a new user in the system.\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/create_user\x12\xb5\x01\n" +
 	"\tLoginUser\x12\x14.pb.LoginUserRequest\x1a\x15.pb.LoginUserResponse\"{\x92A_\n" +
-	"\x0fUser Management\x12\fLogin a user\x1a>This endpoint allows a user to log in and receive a JWT token.\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/login_user\x12\xca\x01\n" +
+	"\x0fUser Management\x12\fLogin a user\x1a>This endpoint allows a user to log in and receive a JWT token.\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/login_user\x12\xcf\x01\n" +
+	"\x12RefreshAccessToken\x12\x16.google.protobuf.Empty\x1a\x15.pb.LoginUserResponse\"\x89\x01\x92Ac\n" +
+	"\x0fUser Management\x12\x14Refresh access token\x1a:This endpoint allows a user to refresh their access token.\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/v1/refresh_access_token\x12\xca\x01\n" +
 	"\vGetUserById\x12\x16.pb.GetUserByIdRequest\x1a\x17.pb.GetUserByIdResponse\"\x89\x01\x92AU\n" +
 	"\x0fUser Management\x12\x0eGet user by ID\x1a2This endpoint retrieves a user by their unique ID.\x82\xd3\xe4\x93\x02+Z\x10\x12\x0e/v1/users/{id}\x12\x17/v1/get_user_by_id/{id}B\xe4\x01\x92A\xa9\x01\x12\xa6\x01\n" +
 	"\x14Munshiji Service API\x121API for managing MUN scoresheets called Munshiji.\"T\n" +
-	"\x10Debdip Mukherjee\x12#https://github.com/DebdipWritesCode\x1a\x1bdebdipmukherjee52@gmail.com2\x051.0.0Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\x10Debdip Mukherjee\x12#https://github.com/DebdipWritesCode\x1a\x1bdebdipmukherjee52@gmail.com2\x051.1.0Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
 
 var file_service_munshiji_proto_goTypes = []any{
 	(*CreateUserRequest)(nil),   // 0: pb.CreateUserRequest
 	(*LoginUserRequest)(nil),    // 1: pb.LoginUserRequest
-	(*GetUserByIdRequest)(nil),  // 2: pb.GetUserByIdRequest
-	(*CreateUserResponse)(nil),  // 3: pb.CreateUserResponse
-	(*LoginUserResponse)(nil),   // 4: pb.LoginUserResponse
-	(*GetUserByIdResponse)(nil), // 5: pb.GetUserByIdResponse
+	(*empty.Empty)(nil),         // 2: google.protobuf.Empty
+	(*GetUserByIdRequest)(nil),  // 3: pb.GetUserByIdRequest
+	(*CreateUserResponse)(nil),  // 4: pb.CreateUserResponse
+	(*LoginUserResponse)(nil),   // 5: pb.LoginUserResponse
+	(*GetUserByIdResponse)(nil), // 6: pb.GetUserByIdResponse
 }
 var file_service_munshiji_proto_depIdxs = []int32{
 	0, // 0: pb.Munshiji.CreateUser:input_type -> pb.CreateUserRequest
 	1, // 1: pb.Munshiji.LoginUser:input_type -> pb.LoginUserRequest
-	2, // 2: pb.Munshiji.GetUserById:input_type -> pb.GetUserByIdRequest
-	3, // 3: pb.Munshiji.CreateUser:output_type -> pb.CreateUserResponse
-	4, // 4: pb.Munshiji.LoginUser:output_type -> pb.LoginUserResponse
-	5, // 5: pb.Munshiji.GetUserById:output_type -> pb.GetUserByIdResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	2, // 2: pb.Munshiji.RefreshAccessToken:input_type -> google.protobuf.Empty
+	3, // 3: pb.Munshiji.GetUserById:input_type -> pb.GetUserByIdRequest
+	4, // 4: pb.Munshiji.CreateUser:output_type -> pb.CreateUserResponse
+	5, // 5: pb.Munshiji.LoginUser:output_type -> pb.LoginUserResponse
+	5, // 6: pb.Munshiji.RefreshAccessToken:output_type -> pb.LoginUserResponse
+	6, // 7: pb.Munshiji.GetUserById:output_type -> pb.GetUserByIdResponse
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

@@ -132,7 +132,8 @@ func (q *Queries) GetSessionsByUserID(ctx context.Context, userID int32) (Sessio
 
 const updateSessionExpiration = `-- name: UpdateSessionExpiration :one
 UPDATE sessions
-SET expires_at = $2
+SET expires_at = $2,
+  jwt_token = $3
 WHERE id = $1
 RETURNING id, user_id, jwt_token, refresh_token, created_at, expires_at, refresh_expires_at
 `
@@ -140,10 +141,11 @@ RETURNING id, user_id, jwt_token, refresh_token, created_at, expires_at, refresh
 type UpdateSessionExpirationParams struct {
 	ID        int32        `json:"id"`
 	ExpiresAt sql.NullTime `json:"expires_at"`
+	JwtToken  string       `json:"jwt_token"`
 }
 
 func (q *Queries) UpdateSessionExpiration(ctx context.Context, arg UpdateSessionExpirationParams) (Session, error) {
-	row := q.queryRow(ctx, q.updateSessionExpirationStmt, updateSessionExpiration, arg.ID, arg.ExpiresAt)
+	row := q.queryRow(ctx, q.updateSessionExpirationStmt, updateSessionExpiration, arg.ID, arg.ExpiresAt, arg.JwtToken)
 	var i Session
 	err := row.Scan(
 		&i.ID,

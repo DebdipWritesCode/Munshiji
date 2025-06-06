@@ -8,6 +8,7 @@ package pb
 
 import (
 	context "context"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -19,9 +20,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Munshiji_CreateUser_FullMethodName  = "/pb.Munshiji/CreateUser"
-	Munshiji_LoginUser_FullMethodName   = "/pb.Munshiji/LoginUser"
-	Munshiji_GetUserById_FullMethodName = "/pb.Munshiji/GetUserById"
+	Munshiji_CreateUser_FullMethodName         = "/pb.Munshiji/CreateUser"
+	Munshiji_LoginUser_FullMethodName          = "/pb.Munshiji/LoginUser"
+	Munshiji_RefreshAccessToken_FullMethodName = "/pb.Munshiji/RefreshAccessToken"
+	Munshiji_GetUserById_FullMethodName        = "/pb.Munshiji/GetUserById"
 )
 
 // MunshijiClient is the client API for Munshiji service.
@@ -30,6 +32,7 @@ const (
 type MunshijiClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
+	RefreshAccessToken(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*GetUserByIdResponse, error)
 }
 
@@ -61,6 +64,16 @@ func (c *munshijiClient) LoginUser(ctx context.Context, in *LoginUserRequest, op
 	return out, nil
 }
 
+func (c *munshijiClient) RefreshAccessToken(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*LoginUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoginUserResponse)
+	err := c.cc.Invoke(ctx, Munshiji_RefreshAccessToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *munshijiClient) GetUserById(ctx context.Context, in *GetUserByIdRequest, opts ...grpc.CallOption) (*GetUserByIdResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUserByIdResponse)
@@ -77,6 +90,7 @@ func (c *munshijiClient) GetUserById(ctx context.Context, in *GetUserByIdRequest
 type MunshijiServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
+	RefreshAccessToken(context.Context, *empty.Empty) (*LoginUserResponse, error)
 	GetUserById(context.Context, *GetUserByIdRequest) (*GetUserByIdResponse, error)
 	mustEmbedUnimplementedMunshijiServer()
 }
@@ -93,6 +107,9 @@ func (UnimplementedMunshijiServer) CreateUser(context.Context, *CreateUserReques
 }
 func (UnimplementedMunshijiServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
+}
+func (UnimplementedMunshijiServer) RefreshAccessToken(context.Context, *empty.Empty) (*LoginUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RefreshAccessToken not implemented")
 }
 func (UnimplementedMunshijiServer) GetUserById(context.Context, *GetUserByIdRequest) (*GetUserByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserById not implemented")
@@ -154,6 +171,24 @@ func _Munshiji_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Munshiji_RefreshAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(empty.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MunshijiServer).RefreshAccessToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Munshiji_RefreshAccessToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MunshijiServer).RefreshAccessToken(ctx, req.(*empty.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Munshiji_GetUserById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserByIdRequest)
 	if err := dec(in); err != nil {
@@ -186,6 +221,10 @@ var Munshiji_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginUser",
 			Handler:    _Munshiji_LoginUser_Handler,
+		},
+		{
+			MethodName: "RefreshAccessToken",
+			Handler:    _Munshiji_RefreshAccessToken_Handler,
 		},
 		{
 			MethodName: "GetUserById",

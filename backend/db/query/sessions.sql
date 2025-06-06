@@ -29,6 +29,7 @@ WHERE user_id = $1;
 
 -- name: UpdateSessionExpiration :one
 UPDATE sessions
-SET expires_at = $2
+SET expires_at = $2,
+  jwt_token = $3
 WHERE id = $1
 RETURNING *;

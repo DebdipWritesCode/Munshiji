@@ -2,6 +2,7 @@ package gapi
 
 import (
 	"context"
+	"strings"
 
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
@@ -16,6 +17,10 @@ const (
 type Metadata struct {
 	UserAgent string
 	ClientIP  string
+}
+
+type RefreshMetadata struct {
+	token string
 }
 
 func (server *Server) extractMetadata(ctx context.Context) *Metadata {
@@ -37,6 +42,26 @@ func (server *Server) extractMetadata(ctx context.Context) *Metadata {
 
 	if p, ok := peer.FromContext(ctx); ok {
 		mtdt.ClientIP = p.Addr.String()
+	}
+
+	return mtdt
+}
+
+func (server *Server) extractRefreshMetadata(ctx context.Context) *RefreshMetadata {
+	mtdt := &RefreshMetadata{}
+
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		cookies := md.Get("cookie")
+		for _, cookie := range cookies {
+			parts := strings.Split(cookie, ";")
+			for _, part := range parts {
+				kv := strings.SplitN(strings.TrimSpace(part), "=", 2)
+				if len(kv) == 2 && kv[0] == "refresh_token" {
+					mtdt.token = kv[1]
+					return mtdt
+				}
+			}
+		}
 	}
 
 	return mtdt

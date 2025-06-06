@@ -3,7 +3,7 @@
   "info": {
     "title": "Munshiji Service API",
     "description": "API for managing MUN scoresheets called Munshiji.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "contact": {
       "name": "Debdip Mukherjee",
       "url": "https://github.com/DebdipWritesCode",
@@ -115,6 +115,41 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/pbLoginUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Management"
+        ]
+      }
+    },
+    "/v1/refresh_access_token": {
+      "post": {
+        "summary": "Refresh access token",
+        "description": "This endpoint allows a user to refresh their access token.",
+        "operationId": "Munshiji_RefreshAccessToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
             }
           }
         ],
