@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message DeleteScoreSheetRequest {
+  int32 score_sheet_id = 1;
+}
+
+message DeleteScoreSheetResponse {
+  bool success = 1;
+  string message = 2; // Optional message for success or error
+}

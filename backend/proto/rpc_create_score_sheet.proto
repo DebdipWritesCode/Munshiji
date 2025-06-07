@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+
+import "score_sheet.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message CreateScoreSheetRequest {
+  string name = 1;
+  string committee_name = 2;
+  string chair = 3;
+  optional string vice_chair = 4;
+  optional string rapporteur = 5;
+  int32 created_by = 6;
+}
+
+message CreateScoreSheetResponse {
+  ScoreSheet score_sheet = 1;
+}

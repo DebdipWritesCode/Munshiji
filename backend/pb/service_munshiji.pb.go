@@ -27,7 +27,7 @@ var File_service_munshiji_proto protoreflect.FileDescriptor
 
 const file_service_munshiji_proto_rawDesc = "" +
 	"\n" +
-	"\x16service_munshiji.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto\x1a\x18rpc_get_user_by_id.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\xa3\x06\n" +
+	"\x16service_munshiji.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto\x1a\x18rpc_get_user_by_id.proto\x1a\x1crpc_create_score_sheet.proto\x1a\x1crpc_update_score_sheet.proto\x1a$rpc_get_score_sheet_by_user_id.proto\x1a\x1crpc_delete_score_sheet.proto\x1a!rpc_get_score_sheet_details.proto\x1a\x19rpc_create_delegate.proto\x1a$rpc_update_delegate_name_by_id.proto\x1a\x19rpc_delete_delegate.proto\x1a\x16rpc_create_score.proto\x1a\x16rpc_update_score.proto\x1a\x16rpc_delete_score.proto\x1a\x1arpc_create_parameter.proto\x1a\x1arpc_update_parameter.proto\x1a\x1arpc_delete_parameter.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\x8f\"\n" +
 	"\bMunshiji\x12\xbf\x01\n" +
 	"\n" +
 	"CreateUser\x12\x15.pb.CreateUserRequest\x1a\x16.pb.CreateUserResponse\"\x81\x01\x92Ad\n" +
@@ -37,33 +37,113 @@ const file_service_munshiji_proto_rawDesc = "" +
 	"\x12RefreshAccessToken\x12\x16.google.protobuf.Empty\x1a\x15.pb.LoginUserResponse\"\x89\x01\x92Ac\n" +
 	"\x0fUser Management\x12\x14Refresh access token\x1a:This endpoint allows a user to refresh their access token.\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/v1/refresh_access_token\x12\xca\x01\n" +
 	"\vGetUserById\x12\x16.pb.GetUserByIdRequest\x1a\x17.pb.GetUserByIdResponse\"\x89\x01\x92AU\n" +
-	"\x0fUser Management\x12\x0eGet user by ID\x1a2This endpoint retrieves a user by their unique ID.\x82\xd3\xe4\x93\x02+Z\x10\x12\x0e/v1/users/{id}\x12\x17/v1/get_user_by_id/{id}B\xe4\x01\x92A\xa9\x01\x12\xa6\x01\n" +
+	"\x0fUser Management\x12\x0eGet user by ID\x1a2This endpoint retrieves a user by their unique ID.\x82\xd3\xe4\x93\x02+Z\x10\x12\x0e/v1/users/{id}\x12\x17/v1/get_user_by_id/{id}\x12\xdf\x01\n" +
+	"\x10CreateScoreSheet\x12\x1b.pb.CreateScoreSheetRequest\x1a\x1c.pb.CreateScoreSheetResponse\"\x8f\x01\x92Ak\n" +
+	"\x16Score Sheet Management\x12\x18Create a new score sheet\x1a7This endpoint allows the creation of a new score sheet.\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/v1/create_score_sheet\x12\xf3\x01\n" +
+	"\x10UpdateScoreSheet\x12\x1b.pb.UpdateScoreSheetRequest\x1a\x1c.pb.UpdateScoreSheetResponse\"\xa3\x01\x92A\x7f\n" +
+	"\x16Score Sheet Management\x12\x1eUpdate an existing score sheet\x1aEThis endpoint allows the update of an existing score sheet by its ID.\x82\xd3\xe4\x93\x02\x1b:\x01*2\x16/v1/update_score_sheet\x12\xb4\x02\n" +
+	"\x15GetScoreSheetByUserId\x12 .pb.GetScoreSheetByUserIdRequest\x1a!.pb.GetScoreSheetByUserIdResponse\"\xd5\x01\x92A\x83\x01\n" +
+	"\x16Score Sheet Management\x12\x1bGet score sheets by user ID\x1aLThis endpoint retrieves all score sheets associated with a specific user ID.\x82\xd3\xe4\x93\x02HZ\x1c\x12\x1a/v1/score_sheets/{user_id}\x12(/v1/get_score_sheet_by_user_id/{user_id}\x12\x8d\x02\n" +
+	"\x10DeleteScoreSheet\x12\x1b.pb.DeleteScoreSheetRequest\x1a\x16.google.protobuf.Empty\"\xc3\x01\x92Am\n" +
+	"\x16Score Sheet Management\x12\x14Delete a score sheet\x1a=This endpoint allows the deletion of a score sheet by its ID.\x82\xd3\xe4\x93\x02MZ\"* /v1/score_sheet/{score_sheet_id}*'/v1/delete_score_sheet/{score_sheet_id}\x12\xea\x02\n" +
+	"\x14GetScoreSheetDetails\x12\x1f.pb.GetScoreSheetDetailsRequest\x1a .pb.GetScoreSheetDetailsResponse\"\x8e\x02\x92A\xaa\x01\n" +
+	"\x16Score Sheet Management\x12\x17Get score sheet details\x1awThis endpoint retrieves detailed information about a specific score sheet, including delegates, parameters, and scores.\x82\xd3\xe4\x93\x02ZZ*\x12(/v1/score_sheet_details/{score_sheet_id}\x12,/v1/get_score_sheet_details/{score_sheet_id}\x12\xec\x01\n" +
+	"\x0eCreateDelegate\x12\x19.pb.CreateDelegateRequest\x1a\x1a.pb.CreateDelegateResponse\"\xa2\x01\x92A\x80\x01\n" +
+	"\x13Delegate Management\x12\x15Create a new delegate\x1aRThis endpoint allows the creation of a new delegate associated with a score sheet.\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/v1/create_delegate\x12\x89\x02\n" +
+	"\x16UpdateDelegateNameByID\x12!.pb.UpdateDelegateNameByIDRequest\x1a\".pb.UpdateDelegateNameByIDResponse\"\xa7\x01\x92A{\n" +
+	"\x13Delegate Management\x12\x1aUpdate delegate name by ID\x1aHThis endpoint allows the update of a delegate's name by their unique ID.\x82\xd3\xe4\x93\x02#:\x01*2\x1e/v1/update_delegate_name_by_id\x12\xfd\x01\n" +
+	"\x0eDeleteDelegate\x12\x19.pb.DeleteDelegateRequest\x1a\x16.google.protobuf.Empty\"\xb7\x01\x92Am\n" +
+	"\x13Delegate Management\x12\x11Delete a delegate\x1aCThis endpoint allows the deletion of a delegate by their unique ID.\x82\xd3\xe4\x93\x02AZ\x1c*\x1a/v1/delegate/{delegate_id}*!/v1/delete_delegate/{delegate_id}\x12\xd5\x01\n" +
+	"\vCreateScore\x12\x16.pb.CreateScoreRequest\x1a\x17.pb.CreateScoreResponse\"\x94\x01\x92Av\n" +
+	"\x10Score Management\x12\x12Create a new score\x1aNThis endpoint allows the creation of a new score for a delegate and parameter.\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/create_score\x12\xcc\x01\n" +
+	"\vUpdateScore\x12\x16.pb.UpdateScoreRequest\x1a\x17.pb.UpdateScoreResponse\"\x8b\x01\x92Am\n" +
+	"\x10Score Management\x12\x18Update an existing score\x1a?This endpoint allows the update of an existing score by its ID.\x82\xd3\xe4\x93\x02\x15:\x01*2\x10/v1/update_score\x12\xe0\x01\n" +
+	"\vDeleteScore\x12\x16.pb.DeleteScoreRequest\x1a\x16.google.protobuf.Empty\"\xa0\x01\x92Ab\n" +
+	"\x10Score Management\x12\x0eDelete a score\x1a>This endpoint allows the deletion of a score by its unique ID.\x82\xd3\xe4\x93\x025Z\x16*\x14/v1/score/{score_id}*\x1b/v1/delete_score/{score_id}\x12\xe6\x01\n" +
+	"\x0fCreateParameter\x12\x1a.pb.CreateParameterRequest\x1a\x1b.pb.CreateParameterResponse\"\x99\x01\x92Aw\n" +
+	"\x14Parameter Management\x12\x16Create a new parameter\x1aGThis endpoint allows the creation of a new parameter for a score sheet.\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/create_parameter\x12\xe8\x01\n" +
+	"\x0fUpdateParameter\x12\x1a.pb.UpdateParameterRequest\x1a\x1b.pb.UpdateParameterResponse\"\x9b\x01\x92Ay\n" +
+	"\x14Parameter Management\x12\x1cUpdate an existing parameter\x1aCThis endpoint allows the update of an existing parameter by its ID.\x82\xd3\xe4\x93\x02\x19:\x01*2\x14/v1/update_parameter\x12\x84\x02\n" +
+	"\x0fDeleteParameter\x12\x1a.pb.DeleteParameterRequest\x1a\x16.google.protobuf.Empty\"\xbc\x01\x92An\n" +
+	"\x14Parameter Management\x12\x12Delete a parameter\x1aBThis endpoint allows the deletion of a parameter by its unique ID.\x82\xd3\xe4\x93\x02EZ\x1e*\x1c/v1/parameter/{parameter_id}*#/v1/delete_parameter/{parameter_id}B\xe4\x01\x92A\xa9\x01\x12\xa6\x01\n" +
 	"\x14Munshiji Service API\x121API for managing MUN scoresheets called Munshiji.\"T\n" +
-	"\x10Debdip Mukherjee\x12#https://github.com/DebdipWritesCode\x1a\x1bdebdipmukherjee52@gmail.com2\x051.1.0Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\x10Debdip Mukherjee\x12#https://github.com/DebdipWritesCode\x1a\x1bdebdipmukherjee52@gmail.com2\x051.3.0Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
 
 var file_service_munshiji_proto_goTypes = []any{
-	(*CreateUserRequest)(nil),   // 0: pb.CreateUserRequest
-	(*LoginUserRequest)(nil),    // 1: pb.LoginUserRequest
-	(*empty.Empty)(nil),         // 2: google.protobuf.Empty
-	(*GetUserByIdRequest)(nil),  // 3: pb.GetUserByIdRequest
-	(*CreateUserResponse)(nil),  // 4: pb.CreateUserResponse
-	(*LoginUserResponse)(nil),   // 5: pb.LoginUserResponse
-	(*GetUserByIdResponse)(nil), // 6: pb.GetUserByIdResponse
+	(*CreateUserRequest)(nil),              // 0: pb.CreateUserRequest
+	(*LoginUserRequest)(nil),               // 1: pb.LoginUserRequest
+	(*empty.Empty)(nil),                    // 2: google.protobuf.Empty
+	(*GetUserByIdRequest)(nil),             // 3: pb.GetUserByIdRequest
+	(*CreateScoreSheetRequest)(nil),        // 4: pb.CreateScoreSheetRequest
+	(*UpdateScoreSheetRequest)(nil),        // 5: pb.UpdateScoreSheetRequest
+	(*GetScoreSheetByUserIdRequest)(nil),   // 6: pb.GetScoreSheetByUserIdRequest
+	(*DeleteScoreSheetRequest)(nil),        // 7: pb.DeleteScoreSheetRequest
+	(*GetScoreSheetDetailsRequest)(nil),    // 8: pb.GetScoreSheetDetailsRequest
+	(*CreateDelegateRequest)(nil),          // 9: pb.CreateDelegateRequest
+	(*UpdateDelegateNameByIDRequest)(nil),  // 10: pb.UpdateDelegateNameByIDRequest
+	(*DeleteDelegateRequest)(nil),          // 11: pb.DeleteDelegateRequest
+	(*CreateScoreRequest)(nil),             // 12: pb.CreateScoreRequest
+	(*UpdateScoreRequest)(nil),             // 13: pb.UpdateScoreRequest
+	(*DeleteScoreRequest)(nil),             // 14: pb.DeleteScoreRequest
+	(*CreateParameterRequest)(nil),         // 15: pb.CreateParameterRequest
+	(*UpdateParameterRequest)(nil),         // 16: pb.UpdateParameterRequest
+	(*DeleteParameterRequest)(nil),         // 17: pb.DeleteParameterRequest
+	(*CreateUserResponse)(nil),             // 18: pb.CreateUserResponse
+	(*LoginUserResponse)(nil),              // 19: pb.LoginUserResponse
+	(*GetUserByIdResponse)(nil),            // 20: pb.GetUserByIdResponse
+	(*CreateScoreSheetResponse)(nil),       // 21: pb.CreateScoreSheetResponse
+	(*UpdateScoreSheetResponse)(nil),       // 22: pb.UpdateScoreSheetResponse
+	(*GetScoreSheetByUserIdResponse)(nil),  // 23: pb.GetScoreSheetByUserIdResponse
+	(*GetScoreSheetDetailsResponse)(nil),   // 24: pb.GetScoreSheetDetailsResponse
+	(*CreateDelegateResponse)(nil),         // 25: pb.CreateDelegateResponse
+	(*UpdateDelegateNameByIDResponse)(nil), // 26: pb.UpdateDelegateNameByIDResponse
+	(*CreateScoreResponse)(nil),            // 27: pb.CreateScoreResponse
+	(*UpdateScoreResponse)(nil),            // 28: pb.UpdateScoreResponse
+	(*CreateParameterResponse)(nil),        // 29: pb.CreateParameterResponse
+	(*UpdateParameterResponse)(nil),        // 30: pb.UpdateParameterResponse
 }
 var file_service_munshiji_proto_depIdxs = []int32{
-	0, // 0: pb.Munshiji.CreateUser:input_type -> pb.CreateUserRequest
-	1, // 1: pb.Munshiji.LoginUser:input_type -> pb.LoginUserRequest
-	2, // 2: pb.Munshiji.RefreshAccessToken:input_type -> google.protobuf.Empty
-	3, // 3: pb.Munshiji.GetUserById:input_type -> pb.GetUserByIdRequest
-	4, // 4: pb.Munshiji.CreateUser:output_type -> pb.CreateUserResponse
-	5, // 5: pb.Munshiji.LoginUser:output_type -> pb.LoginUserResponse
-	5, // 6: pb.Munshiji.RefreshAccessToken:output_type -> pb.LoginUserResponse
-	6, // 7: pb.Munshiji.GetUserById:output_type -> pb.GetUserByIdResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: pb.Munshiji.CreateUser:input_type -> pb.CreateUserRequest
+	1,  // 1: pb.Munshiji.LoginUser:input_type -> pb.LoginUserRequest
+	2,  // 2: pb.Munshiji.RefreshAccessToken:input_type -> google.protobuf.Empty
+	3,  // 3: pb.Munshiji.GetUserById:input_type -> pb.GetUserByIdRequest
+	4,  // 4: pb.Munshiji.CreateScoreSheet:input_type -> pb.CreateScoreSheetRequest
+	5,  // 5: pb.Munshiji.UpdateScoreSheet:input_type -> pb.UpdateScoreSheetRequest
+	6,  // 6: pb.Munshiji.GetScoreSheetByUserId:input_type -> pb.GetScoreSheetByUserIdRequest
+	7,  // 7: pb.Munshiji.DeleteScoreSheet:input_type -> pb.DeleteScoreSheetRequest
+	8,  // 8: pb.Munshiji.GetScoreSheetDetails:input_type -> pb.GetScoreSheetDetailsRequest
+	9,  // 9: pb.Munshiji.CreateDelegate:input_type -> pb.CreateDelegateRequest
+	10, // 10: pb.Munshiji.UpdateDelegateNameByID:input_type -> pb.UpdateDelegateNameByIDRequest
+	11, // 11: pb.Munshiji.DeleteDelegate:input_type -> pb.DeleteDelegateRequest
+	12, // 12: pb.Munshiji.CreateScore:input_type -> pb.CreateScoreRequest
+	13, // 13: pb.Munshiji.UpdateScore:input_type -> pb.UpdateScoreRequest
+	14, // 14: pb.Munshiji.DeleteScore:input_type -> pb.DeleteScoreRequest
+	15, // 15: pb.Munshiji.CreateParameter:input_type -> pb.CreateParameterRequest
+	16, // 16: pb.Munshiji.UpdateParameter:input_type -> pb.UpdateParameterRequest
+	17, // 17: pb.Munshiji.DeleteParameter:input_type -> pb.DeleteParameterRequest
+	18, // 18: pb.Munshiji.CreateUser:output_type -> pb.CreateUserResponse
+	19, // 19: pb.Munshiji.LoginUser:output_type -> pb.LoginUserResponse
+	19, // 20: pb.Munshiji.RefreshAccessToken:output_type -> pb.LoginUserResponse
+	20, // 21: pb.Munshiji.GetUserById:output_type -> pb.GetUserByIdResponse
+	21, // 22: pb.Munshiji.CreateScoreSheet:output_type -> pb.CreateScoreSheetResponse
+	22, // 23: pb.Munshiji.UpdateScoreSheet:output_type -> pb.UpdateScoreSheetResponse
+	23, // 24: pb.Munshiji.GetScoreSheetByUserId:output_type -> pb.GetScoreSheetByUserIdResponse
+	2,  // 25: pb.Munshiji.DeleteScoreSheet:output_type -> google.protobuf.Empty
+	24, // 26: pb.Munshiji.GetScoreSheetDetails:output_type -> pb.GetScoreSheetDetailsResponse
+	25, // 27: pb.Munshiji.CreateDelegate:output_type -> pb.CreateDelegateResponse
+	26, // 28: pb.Munshiji.UpdateDelegateNameByID:output_type -> pb.UpdateDelegateNameByIDResponse
+	2,  // 29: pb.Munshiji.DeleteDelegate:output_type -> google.protobuf.Empty
+	27, // 30: pb.Munshiji.CreateScore:output_type -> pb.CreateScoreResponse
+	28, // 31: pb.Munshiji.UpdateScore:output_type -> pb.UpdateScoreResponse
+	2,  // 32: pb.Munshiji.DeleteScore:output_type -> google.protobuf.Empty
+	29, // 33: pb.Munshiji.CreateParameter:output_type -> pb.CreateParameterResponse
+	30, // 34: pb.Munshiji.UpdateParameter:output_type -> pb.UpdateParameterResponse
+	2,  // 35: pb.Munshiji.DeleteParameter:output_type -> google.protobuf.Empty
+	18, // [18:36] is the sub-list for method output_type
+	0,  // [0:18] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_service_munshiji_proto_init() }
@@ -74,6 +154,20 @@ func file_service_munshiji_proto_init() {
 	file_rpc_create_user_proto_init()
 	file_rpc_login_user_proto_init()
 	file_rpc_get_user_by_id_proto_init()
+	file_rpc_create_score_sheet_proto_init()
+	file_rpc_update_score_sheet_proto_init()
+	file_rpc_get_score_sheet_by_user_id_proto_init()
+	file_rpc_delete_score_sheet_proto_init()
+	file_rpc_get_score_sheet_details_proto_init()
+	file_rpc_create_delegate_proto_init()
+	file_rpc_update_delegate_name_by_id_proto_init()
+	file_rpc_delete_delegate_proto_init()
+	file_rpc_create_score_proto_init()
+	file_rpc_update_score_proto_init()
+	file_rpc_delete_score_proto_init()
+	file_rpc_create_parameter_proto_init()
+	file_rpc_update_parameter_proto_init()
+	file_rpc_delete_parameter_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

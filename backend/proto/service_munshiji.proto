@@ -6,6 +6,20 @@ import "google/api/annotations.proto";
 import "rpc_create_user.proto";
 import "rpc_login_user.proto";
 import "rpc_get_user_by_id.proto";
+import "rpc_create_score_sheet.proto";
+import "rpc_update_score_sheet.proto";
+import "rpc_get_score_sheet_by_user_id.proto";
+import "rpc_delete_score_sheet.proto";
+import "rpc_get_score_sheet_details.proto";
+import "rpc_create_delegate.proto";
+import "rpc_update_delegate_name_by_id.proto";
+import "rpc_delete_delegate.proto";
+import "rpc_create_score.proto";
+import "rpc_update_score.proto";
+import "rpc_delete_score.proto";
+import "rpc_create_parameter.proto";
+import "rpc_update_parameter.proto";
+import "rpc_delete_parameter.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/empty.proto"; 
 
@@ -14,7 +28,7 @@ option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "Munshiji Service API",
-    version: "1.1.0",
+    version: "1.3.0",
     description: "API for managing MUN scoresheets called Munshiji.",
     contact: {
       name: "Debdip Mukherjee";
@@ -73,6 +87,186 @@ service Munshiji {
       tags: "User Management";
       summary: "Get user by ID";
       description: "This endpoint retrieves a user by their unique ID.";
+    };
+  };
+  rpc CreateScoreSheet(CreateScoreSheetRequest) returns (CreateScoreSheetResponse) {
+    option (google.api.http) = {
+      post: "/v1/create_score_sheet"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Sheet Management";
+      summary: "Create a new score sheet";
+      description: "This endpoint allows the creation of a new score sheet.";
+    };
+  };
+  rpc UpdateScoreSheet(UpdateScoreSheetRequest) returns (UpdateScoreSheetResponse) {
+    option (google.api.http) = {
+      patch: "/v1/update_score_sheet" // ID is passed in the body
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Sheet Management";
+      summary: "Update an existing score sheet";
+      description: "This endpoint allows the update of an existing score sheet by its ID.";
+    };
+  };
+  rpc GetScoreSheetByUserId(GetScoreSheetByUserIdRequest) returns (GetScoreSheetByUserIdResponse) {
+    option (google.api.http) = {
+      get: "/v1/get_score_sheet_by_user_id/{user_id}"
+      additional_bindings {
+        get: "/v1/score_sheets/{user_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Sheet Management";
+      summary: "Get score sheets by user ID";
+      description: "This endpoint retrieves all score sheets associated with a specific user ID.";
+    };
+  };
+  rpc DeleteScoreSheet(DeleteScoreSheetRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/delete_score_sheet/{score_sheet_id}"
+      additional_bindings {
+        delete: "/v1/score_sheet/{score_sheet_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Sheet Management";
+      summary: "Delete a score sheet";
+      description: "This endpoint allows the deletion of a score sheet by its ID.";
+    };
+  };
+  rpc GetScoreSheetDetails(GetScoreSheetDetailsRequest) returns (GetScoreSheetDetailsResponse) {
+    option (google.api.http) = {
+      get: "/v1/get_score_sheet_details/{score_sheet_id}"
+      additional_bindings {
+        get: "/v1/score_sheet_details/{score_sheet_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Sheet Management";
+      summary: "Get score sheet details";
+      description: "This endpoint retrieves detailed information about a specific score sheet, including delegates, parameters, and scores.";
+    };
+  };
+  rpc CreateDelegate(CreateDelegateRequest) returns (CreateDelegateResponse) {
+    option (google.api.http) = {
+      post: "/v1/create_delegate"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Delegate Management";
+      summary: "Create a new delegate";
+      description: "This endpoint allows the creation of a new delegate associated with a score sheet.";
+    };
+  };
+  rpc UpdateDelegateNameByID(UpdateDelegateNameByIDRequest) returns (UpdateDelegateNameByIDResponse) {
+    option (google.api.http) = {
+      patch: "/v1/update_delegate_name_by_id" // ID is passed in the body
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Delegate Management";
+      summary: "Update delegate name by ID";
+      description: "This endpoint allows the update of a delegate's name by their unique ID.";
+    };
+  };
+  rpc DeleteDelegate(DeleteDelegateRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/delete_delegate/{delegate_id}"
+      additional_bindings {
+        delete: "/v1/delegate/{delegate_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Delegate Management";
+      summary: "Delete a delegate";
+      description: "This endpoint allows the deletion of a delegate by their unique ID.";
+    };
+  };
+  rpc CreateScore(CreateScoreRequest) returns (CreateScoreResponse) {
+    option (google.api.http) = {
+      post: "/v1/create_score"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Management";
+      summary: "Create a new score";
+      description: "This endpoint allows the creation of a new score for a delegate and parameter.";
+    };
+  };
+  rpc UpdateScore(UpdateScoreRequest) returns (UpdateScoreResponse) {
+    option (google.api.http) = {
+      patch: "/v1/update_score" // ID is passed in the body
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Management";
+      summary: "Update an existing score";
+      description: "This endpoint allows the update of an existing score by its ID.";
+    };
+  };
+  rpc DeleteScore(DeleteScoreRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/delete_score/{score_id}"
+      additional_bindings {
+        delete: "/v1/score/{score_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Score Management";
+      summary: "Delete a score";
+      description: "This endpoint allows the deletion of a score by its unique ID.";
+    };
+  };
+  rpc CreateParameter(CreateParameterRequest) returns (CreateParameterResponse) {
+    option (google.api.http) = {
+      post: "/v1/create_parameter"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Parameter Management";
+      summary: "Create a new parameter";
+      description: "This endpoint allows the creation of a new parameter for a score sheet.";
+    };
+  };
+  rpc UpdateParameter(UpdateParameterRequest) returns (UpdateParameterResponse) {
+    option (google.api.http) = {
+      patch: "/v1/update_parameter" // ID is passed in the body
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Parameter Management";
+      summary: "Update an existing parameter";
+      description: "This endpoint allows the update of an existing parameter by its ID.";
+    };
+  };
+  rpc DeleteParameter(DeleteParameterRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/delete_parameter/{parameter_id}"
+      additional_bindings {
+        delete: "/v1/parameter/{parameter_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Parameter Management";
+      summary: "Delete a parameter";
+      description: "This endpoint allows the deletion of a parameter by its unique ID.";
     };
   };
 }

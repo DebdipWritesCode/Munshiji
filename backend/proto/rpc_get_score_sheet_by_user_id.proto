@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "score_sheet.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message GetScoreSheetByUserIdRequest {
+  int32 user_id = 1;
+}
+
+message GetScoreSheetByUserIdResponse {
+  repeated ScoreSheet score_sheets = 1;
+}

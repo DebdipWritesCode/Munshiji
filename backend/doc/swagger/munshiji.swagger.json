@@ -3,7 +3,7 @@
   "info": {
     "title": "Munshiji Service API",
     "description": "API for managing MUN scoresheets called Munshiji.",
-    "version": "1.1.0",
+    "version": "1.3.0",
     "contact": {
       "name": "Debdip Mukherjee",
       "url": "https://github.com/DebdipWritesCode",
@@ -22,6 +22,142 @@
     "application/json"
   ],
   "paths": {
+    "/v1/create_delegate": {
+      "post": {
+        "summary": "Create a new delegate",
+        "description": "This endpoint allows the creation of a new delegate associated with a score sheet.",
+        "operationId": "Munshiji_CreateDelegate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateDelegateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateDelegateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Delegate Management"
+        ]
+      }
+    },
+    "/v1/create_parameter": {
+      "post": {
+        "summary": "Create a new parameter",
+        "description": "This endpoint allows the creation of a new parameter for a score sheet.",
+        "operationId": "Munshiji_CreateParameter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateParameterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateParameterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Parameter Management"
+        ]
+      }
+    },
+    "/v1/create_score": {
+      "post": {
+        "summary": "Create a new score",
+        "description": "This endpoint allows the creation of a new score for a delegate and parameter.",
+        "operationId": "Munshiji_CreateScore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateScoreResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateScoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Score Management"
+        ]
+      }
+    },
+    "/v1/create_score_sheet": {
+      "post": {
+        "summary": "Create a new score sheet",
+        "description": "This endpoint allows the creation of a new score sheet.",
+        "operationId": "Munshiji_CreateScoreSheet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCreateScoreSheetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateScoreSheetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
+        ]
+      }
+    },
     "/v1/create_user": {
       "post": {
         "summary": "Create a new user",
@@ -53,6 +189,242 @@
         ],
         "tags": [
           "User Management"
+        ]
+      }
+    },
+    "/v1/delegate/{delegateId}": {
+      "delete": {
+        "summary": "Delete a delegate",
+        "description": "This endpoint allows the deletion of a delegate by their unique ID.",
+        "operationId": "Munshiji_DeleteDelegate2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "delegateId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Delegate Management"
+        ]
+      }
+    },
+    "/v1/delete_delegate/{delegateId}": {
+      "delete": {
+        "summary": "Delete a delegate",
+        "description": "This endpoint allows the deletion of a delegate by their unique ID.",
+        "operationId": "Munshiji_DeleteDelegate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "delegateId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Delegate Management"
+        ]
+      }
+    },
+    "/v1/delete_parameter/{parameterId}": {
+      "delete": {
+        "summary": "Delete a parameter",
+        "description": "This endpoint allows the deletion of a parameter by its unique ID.",
+        "operationId": "Munshiji_DeleteParameter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "parameterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Parameter Management"
+        ]
+      }
+    },
+    "/v1/delete_score/{scoreId}": {
+      "delete": {
+        "summary": "Delete a score",
+        "description": "This endpoint allows the deletion of a score by its unique ID.",
+        "operationId": "Munshiji_DeleteScore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "scoreId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Management"
+        ]
+      }
+    },
+    "/v1/delete_score_sheet/{scoreSheetId}": {
+      "delete": {
+        "summary": "Delete a score sheet",
+        "description": "This endpoint allows the deletion of a score sheet by its ID.",
+        "operationId": "Munshiji_DeleteScoreSheet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "scoreSheetId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
+        ]
+      }
+    },
+    "/v1/get_score_sheet_by_user_id/{userId}": {
+      "get": {
+        "summary": "Get score sheets by user ID",
+        "description": "This endpoint retrieves all score sheets associated with a specific user ID.",
+        "operationId": "Munshiji_GetScoreSheetByUserId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetScoreSheetByUserIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
+        ]
+      }
+    },
+    "/v1/get_score_sheet_details/{scoreSheetId}": {
+      "get": {
+        "summary": "Get score sheet details",
+        "description": "This endpoint retrieves detailed information about a specific score sheet, including delegates, parameters, and scores.",
+        "operationId": "Munshiji_GetScoreSheetDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetScoreSheetDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "scoreSheetId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
         ]
       }
     },
@@ -123,6 +495,40 @@
         ]
       }
     },
+    "/v1/parameter/{parameterId}": {
+      "delete": {
+        "summary": "Delete a parameter",
+        "description": "This endpoint allows the deletion of a parameter by its unique ID.",
+        "operationId": "Munshiji_DeleteParameter2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "parameterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Parameter Management"
+        ]
+      }
+    },
     "/v1/refresh_access_token": {
       "post": {
         "summary": "Refresh access token",
@@ -155,6 +561,276 @@
         ],
         "tags": [
           "User Management"
+        ]
+      }
+    },
+    "/v1/score/{scoreId}": {
+      "delete": {
+        "summary": "Delete a score",
+        "description": "This endpoint allows the deletion of a score by its unique ID.",
+        "operationId": "Munshiji_DeleteScore2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "scoreId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Management"
+        ]
+      }
+    },
+    "/v1/score_sheet/{scoreSheetId}": {
+      "delete": {
+        "summary": "Delete a score sheet",
+        "description": "This endpoint allows the deletion of a score sheet by its ID.",
+        "operationId": "Munshiji_DeleteScoreSheet2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "scoreSheetId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
+        ]
+      }
+    },
+    "/v1/score_sheet_details/{scoreSheetId}": {
+      "get": {
+        "summary": "Get score sheet details",
+        "description": "This endpoint retrieves detailed information about a specific score sheet, including delegates, parameters, and scores.",
+        "operationId": "Munshiji_GetScoreSheetDetails2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetScoreSheetDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "scoreSheetId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
+        ]
+      }
+    },
+    "/v1/score_sheets/{userId}": {
+      "get": {
+        "summary": "Get score sheets by user ID",
+        "description": "This endpoint retrieves all score sheets associated with a specific user ID.",
+        "operationId": "Munshiji_GetScoreSheetByUserId2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetScoreSheetByUserIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
+        ]
+      }
+    },
+    "/v1/update_delegate_name_by_id": {
+      "patch": {
+        "summary": "Update delegate name by ID",
+        "description": "This endpoint allows the update of a delegate's name by their unique ID.",
+        "operationId": "Munshiji_UpdateDelegateNameByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateDelegateNameByIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateDelegateNameByIDRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Delegate Management"
+        ]
+      }
+    },
+    "/v1/update_parameter": {
+      "patch": {
+        "summary": "Update an existing parameter",
+        "description": "This endpoint allows the update of an existing parameter by its ID.",
+        "operationId": "Munshiji_UpdateParameter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateParameterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateParameterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Parameter Management"
+        ]
+      }
+    },
+    "/v1/update_score": {
+      "patch": {
+        "summary": "Update an existing score",
+        "description": "This endpoint allows the update of an existing score by its ID.",
+        "operationId": "Munshiji_UpdateScore",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateScoreResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateScoreRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Score Management"
+        ]
+      }
+    },
+    "/v1/update_score_sheet": {
+      "patch": {
+        "summary": "Update an existing score sheet",
+        "description": "This endpoint allows the update of an existing score sheet by its ID.",
+        "operationId": "Munshiji_UpdateScoreSheet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbUpdateScoreSheetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbUpdateScoreSheetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Score Sheet Management"
         ]
       }
     },
@@ -193,6 +869,126 @@
     }
   },
   "definitions": {
+    "pbCreateDelegateRequest": {
+      "type": "object",
+      "properties": {
+        "scoreSheetId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "pbCreateDelegateResponse": {
+      "type": "object",
+      "properties": {
+        "delegate": {
+          "$ref": "#/definitions/pbDelegate"
+        }
+      }
+    },
+    "pbCreateParameterRequest": {
+      "type": "object",
+      "properties": {
+        "scoreSheetId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ruleType": {
+          "type": "string"
+        },
+        "isSpecialParameter": {
+          "type": "boolean"
+        },
+        "specialScoresRule": {
+          "type": "string"
+        },
+        "specialLengthRule": {
+          "type": "string"
+        },
+        "scoreWeight": {
+          "type": "number",
+          "format": "double"
+        },
+        "lengthWeight": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "pbCreateParameterResponse": {
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "$ref": "#/definitions/pbParameter"
+        }
+      }
+    },
+    "pbCreateScoreRequest": {
+      "type": "object",
+      "properties": {
+        "delegateId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "parameterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "value": {
+          "type": "number",
+          "format": "double"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "pbCreateScoreResponse": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "$ref": "#/definitions/pbScore"
+        }
+      }
+    },
+    "pbCreateScoreSheetRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "committeeName": {
+          "type": "string"
+        },
+        "chair": {
+          "type": "string"
+        },
+        "viceChair": {
+          "type": "string"
+        },
+        "rapporteur": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbCreateScoreSheetResponse": {
+      "type": "object",
+      "properties": {
+        "scoreSheet": {
+          "$ref": "#/definitions/pbScoreSheet"
+        }
+      }
+    },
     "pbCreateUserRequest": {
       "type": "object",
       "properties": {
@@ -212,6 +1008,63 @@
       "properties": {
         "user": {
           "$ref": "#/definitions/pbUser"
+        }
+      }
+    },
+    "pbDelegate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "scoreSheetId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "pbGetScoreSheetByUserIdResponse": {
+      "type": "object",
+      "properties": {
+        "scoreSheets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbScoreSheet"
+          }
+        }
+      }
+    },
+    "pbGetScoreSheetDetailsResponse": {
+      "type": "object",
+      "properties": {
+        "scoreSheet": {
+          "$ref": "#/definitions/pbScoreSheet"
+        },
+        "delegates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbDelegate"
+          }
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbParameter"
+          }
+        },
+        "scores": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbScore"
+          }
         }
       }
     },
@@ -256,6 +1109,218 @@
         },
         "clientIp": {
           "type": "string"
+        }
+      }
+    },
+    "pbParameter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "scoreSheetId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ruleType": {
+          "type": "string"
+        },
+        "isSpecialParameter": {
+          "type": "boolean"
+        },
+        "specialScoresRule": {
+          "type": "string"
+        },
+        "specialLengthRule": {
+          "type": "string"
+        },
+        "scoreWeight": {
+          "type": "number",
+          "format": "double"
+        },
+        "lengthWeight": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "pbScore": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "delegateId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "parameterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "value": {
+          "type": "number",
+          "format": "double"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "pbScoreSheet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "committeeName": {
+          "type": "string"
+        },
+        "chair": {
+          "type": "string"
+        },
+        "viceChair": {
+          "type": "string"
+        },
+        "rapporteur": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbUpdateDelegateNameByIDRequest": {
+      "type": "object",
+      "properties": {
+        "delegateId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "pbUpdateDelegateNameByIDResponse": {
+      "type": "object",
+      "properties": {
+        "delegate": {
+          "$ref": "#/definitions/pbDelegate"
+        }
+      }
+    },
+    "pbUpdateParameterRequest": {
+      "type": "object",
+      "properties": {
+        "parameterId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ruleType": {
+          "type": "string"
+        },
+        "isSpecialParameter": {
+          "type": "boolean"
+        },
+        "specialScoresRule": {
+          "type": "string"
+        },
+        "specialLengthRule": {
+          "type": "string"
+        },
+        "scoreWeight": {
+          "type": "number",
+          "format": "double"
+        },
+        "lengthWeight": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "pbUpdateParameterResponse": {
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "$ref": "#/definitions/pbParameter"
+        }
+      }
+    },
+    "pbUpdateScoreRequest": {
+      "type": "object",
+      "properties": {
+        "scoreId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "note": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "pbUpdateScoreResponse": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "$ref": "#/definitions/pbScore"
+        }
+      }
+    },
+    "pbUpdateScoreSheetRequest": {
+      "type": "object",
+      "properties": {
+        "scoreSheetId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "committeeName": {
+          "type": "string"
+        },
+        "chair": {
+          "type": "string"
+        },
+        "viceChair": {
+          "type": "string"
+        },
+        "rapporteur": {
+          "type": "string"
+        }
+      }
+    },
+    "pbUpdateScoreSheetResponse": {
+      "type": "object",
+      "properties": {
+        "scoreSheet": {
+          "$ref": "#/definitions/pbScoreSheet"
         }
       }
     },

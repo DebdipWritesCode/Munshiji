@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package pb;
+
+import "score_sheet.proto";
+import "delegate.proto";
+import "parameter.proto";
+import "score.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message GetScoreSheetDetailsRequest {
+  int32 score_sheet_id = 1;
+}
+
+message GetScoreSheetDetailsResponse {
+  ScoreSheet score_sheet = 1;
+  repeated Delegate delegates = 2;
+  repeated Parameter parameters = 3;
+  repeated Score scores = 4;
+}

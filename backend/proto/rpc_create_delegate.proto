@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "delegate.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message CreateDelegateRequest {
+  int32 score_sheet_id = 1;
+  string name = 2;
+}
+
+message CreateDelegateResponse {
+  Delegate delegate = 1;
+}

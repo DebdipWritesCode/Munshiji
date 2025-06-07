@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package pb;
+
+import "parameter.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message CreateParameterRequest {
+  int32 score_sheet_id = 1;
+  string name = 2;
+  string rule_type = 3;
+  optional bool is_special_parameter = 4;
+  optional string special_scores_rule = 5;
+  optional string special_length_rule = 6;
+  optional double score_weight = 7;
+  optional double length_weight = 8;
+}
+
+message CreateParameterResponse {
+  Parameter parameter = 1;
+}

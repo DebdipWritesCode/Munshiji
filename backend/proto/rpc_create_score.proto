@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package pb;
+
+import "score.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message CreateScoreRequest {
+  int32 delegate_id = 1;
+  int32 parameter_id = 2;
+  double value = 3;
+  optional string note = 4;
+}
+
+message CreateScoreResponse {
+  Score score = 1;
+}

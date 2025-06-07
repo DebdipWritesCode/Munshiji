@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message DeleteDelegateRequest {
+  int32 delegate_id = 1;
+}
+
+message DeleteDelegateResponse {
+  bool success = 1;
+}
