@@ -20,6 +20,7 @@ import (
 
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -98,13 +99,24 @@ func runGatewayServer(store db.Store, config util.Config) {
 	})
 
 	headerMatcher := runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
-		if key == "Authorization" {
+		if key == "Authorization" || key == "Cookie" {
 			return key, true
 		}
 		return runtime.DefaultHeaderMatcher(key)
 	})
 
-	grpcMux := runtime.NewServeMux(jsonOption, headerMatcher)
+	cookieForwarder := runtime.WithForwardResponseOption(func(ctx context.Context, w http.ResponseWriter, resp proto.Message) error {
+		if md, ok := runtime.ServerMetadataFromContext(ctx); ok {
+			if cookies := md.HeaderMD.Get("Set-Cookie"); len(cookies) > 0 {
+				for _, c := range cookies {
+					w.Header().Add("Set-Cookie", c)
+				}
+			}
+		}
+		return nil
+	})
+
+	grpcMux := runtime.NewServeMux(jsonOption, headerMatcher, cookieForwarder)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
