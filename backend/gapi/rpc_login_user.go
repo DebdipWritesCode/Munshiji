@@ -31,7 +31,7 @@ func (server *Server) LoginUser(ctx context.Context, req *pb.LoginUserRequest) (
 	}
 
 	passwordToCheck := user.PasswordHash
-	if err := util.CheckPassword(req.GetPassword(), passwordToCheck); err != nil {
+	if err := util.CheckPassword(passwordToCheck, req.GetPassword()); err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "invalid password for user with email %s: %s", req.GetEmail(), err.Error())
 	}
 
