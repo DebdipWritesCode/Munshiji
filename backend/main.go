@@ -13,6 +13,7 @@ import (
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/token"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/util"
+	"github.com/go-chi/cors"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/rakyll/statik/fs"
@@ -137,13 +138,21 @@ func runGatewayServer(store db.Store, config util.Config) {
 	swaggerHandler := http.StripPrefix("/swagger/", http.FileServer(statikFs))
 	mux.Handle("/swagger/", swaggerHandler)
 
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"},
+		AllowCredentials: true,
+		AllowedHeaders:   []string{"Authorization", "Content-Type", "Cookie"},
+		ExposedHeaders:   []string{"Set-Cookie"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+	}).Handler(mux)
+
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("failed to listen on %s", config.HTTPServerAddress)
 	}
 
 	log.Info().Msgf("HTTP Gateway server listening on %s", config.HTTPServerAddress)
-	handler := gapi.HttpLogger(mux)
+	handler := gapi.HttpLogger(corsHandler)
 
 	err = http.Serve(listener, handler)
 	if err != nil {
