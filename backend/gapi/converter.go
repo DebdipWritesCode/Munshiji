@@ -29,3 +29,21 @@ func convertMetadataToProto(m *Metadata) *pb.MetaData {
 		ClientIp:  m.ClientIP,
 	}
 }
+
+func convertScoreSheetToProto(sheet db.ScoreSheet) *pb.ScoreSheet {
+	return &pb.ScoreSheet{
+		Id:            sheet.ID,
+		Name:          sheet.Name,
+		CommitteeName: sheet.CommitteeName,
+		Chair:         sheet.Chair,
+		ViceChair:     sheet.ViceChair.String,
+		Rapporteur:    sheet.Rapporteur.String,
+		CreatedBy:     sheet.CreatedBy,
+		CreatedAt: func() *timestamppb.Timestamp {
+			if sheet.CreatedAt.Valid {
+				return timestamppb.New(sheet.CreatedAt.Time)
+			}
+			return nil
+		}(),
+	}
+}
