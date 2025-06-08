@@ -9,9 +9,10 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (server *Server) DeleteScoreSheet(ctx context.Context, req *pb.DeleteScoreSheetRequest) (*pb.DeleteScoreSheetResponse, error) {
+func (server *Server) DeleteScoreSheet(ctx context.Context, req *pb.DeleteScoreSheetRequest) (*emptypb.Empty, error) {
 	violations := validateDeleteScoreSheetRequest(req)
 	if len(violations) > 0 {
 		return nil, invalidArgumentError(violations)
@@ -25,11 +26,7 @@ func (server *Server) DeleteScoreSheet(ctx context.Context, req *pb.DeleteScoreS
 		return nil, status.Errorf(codes.Internal, "failed to delete score sheet: %v", err)
 	}
 
-	rsp := &pb.DeleteScoreSheetResponse{
-		Success: true,
-	}
-
-	return rsp, nil
+	return &emptypb.Empty{}, nil
 }
 
 func validateDeleteScoreSheetRequest(req *pb.DeleteScoreSheetRequest) (violations []*errdetails.BadRequest_FieldViolation) {

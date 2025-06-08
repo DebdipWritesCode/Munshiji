@@ -45,5 +45,43 @@ func convertScoreSheetToProto(sheet db.ScoreSheet) *pb.ScoreSheet {
 			}
 			return nil
 		}(),
+		UpdatedAt: func() *timestamppb.Timestamp {
+			if sheet.UpdatedAt.Valid {
+				return timestamppb.New(sheet.UpdatedAt.Time)
+			}
+			return nil
+		}(),
+	}
+}
+
+func ConvertDelegateToProto(delegate db.Delegate) *pb.Delegate {
+	return &pb.Delegate{
+		Id:           delegate.ID,
+		ScoreSheetId: delegate.ScoreSheetID,
+		Name:         delegate.Name,
+	}
+}
+
+func ConvertScoreToProto(score db.Score) *pb.Score {
+	return &pb.Score{
+		Id:          score.ID,
+		DelegateId:  score.DelegateID,
+		ParameterId: score.ParameterID,
+		Value:       score.Value,
+		Note:        score.Note.String,
+	}
+}
+
+func ConvertParameterToProto(parameter db.Parameter) *pb.Parameter {
+	return &pb.Parameter{
+		Id:                 parameter.ID,
+		ScoreSheetId:       parameter.ScoreSheetID,
+		Name:               parameter.Name,
+		RuleType:           parameter.RuleType,
+		IsSpecialParameter: parameter.IsSpecialParameter.Bool,
+		SpecialScoresRule:  parameter.SpecialScoresRule.String,
+		SpecialLengthRule:  parameter.SpecialLengthRule.String,
+		ScoreWeight:        parameter.ScoreWeight.Float64,
+		LengthWeight:       parameter.LengthWeight.Float64,
 	}
 }
