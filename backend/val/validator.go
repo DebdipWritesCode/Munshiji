@@ -70,3 +70,36 @@ func ValidateNote(note string) error {
 	}
 	return nil
 }
+
+func ValidateRule(rule string, rules []string) error {
+	for _, r := range rules {
+		if r == rule {
+			return nil
+		}
+	}
+
+	return fmt.Errorf("rule '%s' is not valid, must be one of %v", rule, rules)
+}
+
+func ValidateWeight(fieldName string, value *float64) error {
+	if value == nil {
+		return nil
+	}
+	if *value < 0 || *value > 1 {
+		return fmt.Errorf("%s must be between 0 and 1", fieldName)
+	}
+	return nil
+}
+
+func ValidateSpecialConditionRule(ruleType string, isSpecialParameter *bool) error {
+	if ruleType == "special" {
+		if isSpecialParameter == nil || !*isSpecialParameter {
+			return fmt.Errorf("is_special_parameter must be true when rule_type is 'special'")
+		}
+	} else {
+		if isSpecialParameter != nil && *isSpecialParameter {
+			return fmt.Errorf("is_special_parameter must be false or unset unless rule_type is 'special'")
+		}
+	}
+	return nil
+}
