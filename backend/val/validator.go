@@ -63,3 +63,10 @@ func ValidateID(id int32) error {
 	}
 	return nil
 }
+
+func ValidateNote(note string) error {
+	if err := ValidateString(note, 0, 5); err != nil {
+		return err
+	}
+	return nil
+}
