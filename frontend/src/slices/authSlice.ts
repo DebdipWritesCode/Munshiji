@@ -3,10 +3,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   accessToken: string | null;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
   accessToken: null,
+  loading: true,
 };
 
 const authSlice = createSlice({
@@ -15,9 +17,13 @@ const authSlice = createSlice({
   reducers: {
     setAccessToken: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;
+      state.loading = false;
     },
     clearAccessToken: (state) => {
-      state.accessToken = null;
+      if (state.accessToken !== null) {
+        state.accessToken = null;
+      }
+      state.loading = false;
     },
   },
 });

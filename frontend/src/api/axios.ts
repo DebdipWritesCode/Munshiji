@@ -21,7 +21,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/refresh_access_token")
+    ) {
       originalRequest._retry = true;
       try {
         const res = await axios.post(
@@ -34,7 +38,7 @@ api.interceptors.response.use(
         const newAccessToken = res.data.jwt_token;
         store.dispatch(setAccessToken(newAccessToken));
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return api(originalRequest);
+        return api(originalRequest); 
       } catch (err) {
         store.dispatch(clearAccessToken());
         window.location.href = "/login";
@@ -43,6 +47,6 @@ api.interceptors.response.use(
 
     return Promise.reject(error);
   }
-)
+);
 
 export default api;

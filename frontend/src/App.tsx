@@ -1,16 +1,18 @@
-import { Button } from "./components/ui/button"
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "./api/axios";
 import { setAccessToken, clearAccessToken } from "./slices/authSlice";
+import type { RootState } from "./store/store";
+import Router from "./router/Router";
 
 const App = () => {
   const dispatch = useDispatch();
+  const loading = useSelector((state: RootState) => state.auth.loading);
 
   useEffect(() => {
     const refreshToken = async () => {
       try {
-        const res = await axios.post("/refresh_access_token", {});
+        const res = await axios.post("/refresh_access_token", {}, { withCredentials: true }); // ✅ Ensure this
         dispatch(setAccessToken(res.data.access_token));
       } catch {
         dispatch(clearAccessToken());
@@ -19,11 +21,9 @@ const App = () => {
     refreshToken();
   }, [dispatch]);
 
-  return (
-    <div className=" ">
-      <Button variant="default">Click Me</Button>
-    </div>
-  )
-}
+  if (loading) return <div>Loading...</div>; // 👈 Don't render anything until we know
 
-export default App
+  return <Router />;
+};
+
+export default App;
