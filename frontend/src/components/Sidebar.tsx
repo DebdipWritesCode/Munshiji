@@ -27,9 +27,9 @@ const Sidebar = () => {
     <>
       <Sheet>
         <SheetTrigger asChild className="fixed top-4 left-4 z-50 ">
-          <Button variant="outline" className=' w-36 h-14 text-lg flex items-center justify-center gap-2'>
+          <Button variant="outline" className=' p-2 h-10 sm:h-14 text-lg flex items-center justify-center gap-2 shadow-md'>
             <Menu size={80} />
-            <p>See Menu</p>
+            <p className='hidden sm:block'>See Menu</p>
           </Button>
         </SheetTrigger>
         
@@ -82,7 +82,40 @@ const SidebarContent = ({
               className="w-full justify-start"
               onClick={onNavigate}
             >
+              <Link to="/see-sheets">Dashboard</Link>
+            </Button>
+          </li>
+
+          <li>
+            <Button
+              asChild
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={onNavigate}
+            >
               <Link to="/see-sheets">See All Sheets</Link>
+            </Button>
+          </li>
+
+          <li>
+            <Button
+              asChild
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={onNavigate}
+            >
+              <Link to="/about">About</Link>
+            </Button>
+          </li>
+
+          <li>
+            <Button
+              asChild
+              variant="ghost"
+              className="w-full justify-start"
+              onClick={onNavigate}
+            >
+              <Link to="/buy-coffee">Buy me a coffee</Link>
             </Button>
           </li>
         </ul>

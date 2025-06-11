@@ -12,8 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import api from "@/api/axios";
+import ToastComponent from "./ToastComponent";
 
 const signupFormSchema = z
   .object({
@@ -137,18 +138,7 @@ const SignupForm = () => {
         </Button>
       </form>
 
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <ToastComponent />
     </Form>
   );
 };

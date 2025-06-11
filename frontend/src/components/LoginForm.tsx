@@ -12,11 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import api from "@/api/axios";
 import { store } from "@/store/store";
 import { setAccessToken } from "@/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import ToastComponent from "./ToastComponent";
 
 const loginFormSchema = z
   .object({
@@ -112,18 +113,7 @@ const LoginForm = () => {
         </Button>
       </form>
 
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <ToastComponent />
     </Form>
   );
 };
