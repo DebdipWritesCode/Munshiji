@@ -111,6 +111,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.getUserByIDStmt, err = db.PrepareContext(ctx, getUserByID); err != nil {
 		return nil, fmt.Errorf("error preparing query GetUserByID: %w", err)
 	}
+	if q.touchScoreSheetStmt, err = db.PrepareContext(ctx, touchScoreSheet); err != nil {
+		return nil, fmt.Errorf("error preparing query TouchScoreSheet: %w", err)
+	}
 	if q.updateDelegateNameStmt, err = db.PrepareContext(ctx, updateDelegateName); err != nil {
 		return nil, fmt.Errorf("error preparing query UpdateDelegateName: %w", err)
 	}
@@ -279,6 +282,11 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing getUserByIDStmt: %w", cerr)
 		}
 	}
+	if q.touchScoreSheetStmt != nil {
+		if cerr := q.touchScoreSheetStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing touchScoreSheetStmt: %w", cerr)
+		}
+	}
 	if q.updateDelegateNameStmt != nil {
 		if cerr := q.updateDelegateNameStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing updateDelegateNameStmt: %w", cerr)
@@ -377,6 +385,7 @@ type Queries struct {
 	getSheetsByUserIDStmt           *sql.Stmt
 	getUserByEmailStmt              *sql.Stmt
 	getUserByIDStmt                 *sql.Stmt
+	touchScoreSheetStmt             *sql.Stmt
 	updateDelegateNameStmt          *sql.Stmt
 	updateParameterStmt             *sql.Stmt
 	updateScoreStmt                 *sql.Stmt
@@ -418,6 +427,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		getSheetsByUserIDStmt:           q.getSheetsByUserIDStmt,
 		getUserByEmailStmt:              q.getUserByEmailStmt,
 		getUserByIDStmt:                 q.getUserByIDStmt,
+		touchScoreSheetStmt:             q.touchScoreSheetStmt,
 		updateDelegateNameStmt:          q.updateDelegateNameStmt,
 		updateParameterStmt:             q.updateParameterStmt,
 		updateScoreStmt:                 q.updateScoreStmt,

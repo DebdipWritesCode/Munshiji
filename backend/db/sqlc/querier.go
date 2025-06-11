@@ -38,6 +38,7 @@ type Querier interface {
 	GetSheetsByUserID(ctx context.Context, createdBy int32) ([]ScoreSheet, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserByID(ctx context.Context, id int32) (User, error)
+	TouchScoreSheet(ctx context.Context, id int32) error
 	UpdateDelegateName(ctx context.Context, arg UpdateDelegateNameParams) (Delegate, error)
 	UpdateParameter(ctx context.Context, arg UpdateParameterParams) (Parameter, error)
 	UpdateScore(ctx context.Context, arg UpdateScoreParams) (Score, error)

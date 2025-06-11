@@ -9,7 +9,6 @@ import ToastComponent from "./ToastComponent";
 import { Button } from "./ui/button";
 import { DialogHeader } from "./ui/dialog";
 import CreateSheetForm from "./CreateSheetForm";
-import { Card } from "./ui/card";
 
 interface CreateSheetDialogProps {
   isCreate?: boolean;

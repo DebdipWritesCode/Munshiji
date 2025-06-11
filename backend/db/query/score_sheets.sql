@@ -62,3 +62,8 @@ WHERE id = $1;
 -- name: DeleteSheetsByUserID :exec
 DELETE FROM score_sheets
 WHERE created_by = $1;
+
+-- name: TouchScoreSheet :exec
+UPDATE score_sheets
+SET updated_at = now()
+WHERE id = $1;

@@ -199,6 +199,17 @@ func (q *Queries) GetSheetsByUserID(ctx context.Context, createdBy int32) ([]Sco
 	return items, nil
 }
 
+const touchScoreSheet = `-- name: TouchScoreSheet :exec
+UPDATE score_sheets
+SET updated_at = now()
+WHERE id = $1
+`
+
+func (q *Queries) TouchScoreSheet(ctx context.Context, id int32) error {
+	_, err := q.exec(ctx, q.touchScoreSheetStmt, touchScoreSheet, id)
+	return err
+}
+
 const updateSheet = `-- name: UpdateSheet :one
 UPDATE score_sheets
 SET name = COALESCE($1, name),

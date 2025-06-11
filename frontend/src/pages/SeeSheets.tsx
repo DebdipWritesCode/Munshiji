@@ -93,21 +93,23 @@ const SeeSheets = () => {
         </div>
       )}
       {!loading && !error && allSheets.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {allSheets.map((sheet: ScoreSheetState) => (
-            <SheetCard
-              key={sheet.id}
-              id={sheet.id}
-              name={sheet.name}
-              committee_name={sheet.committee_name}
-              chair={sheet.chair}
-              vice_chair={sheet.vice_chair}
-              rapporteur={sheet.rapporteur}
-              created_by={sheet.created_by}
-              created_at={sheet.created_at}
-              updated_at={sheet.updated_at}
-            />
-          ))}
+        <div className="container mx-auto px-4 py-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {allSheets.map((sheet: ScoreSheetState) => (
+              <SheetCard
+                key={sheet.id}
+                id={sheet.id}
+                name={sheet.name}
+                committee_name={sheet.committee_name}
+                chair={sheet.chair}
+                vice_chair={sheet.vice_chair}
+                rapporteur={sheet.rapporteur}
+                created_by={sheet.created_by}
+                created_at={sheet.created_at}
+                updated_at={sheet.updated_at}
+              />
+            ))}
+          </div>
         </div>
       )}
 
