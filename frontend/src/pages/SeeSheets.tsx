@@ -1,4 +1,5 @@
 import api from "@/api/axios";
+import CreateSheetDialog from "@/components/CreateSheetDialog";
 import SheetCard from "@/components/SheetCard";
 import ToastComponent from "@/components/ToastComponent";
 import { setAllSheets, setLoading } from "@/slices/allSheetsSlice";
@@ -82,6 +83,10 @@ const SeeSheets = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#fbfcff] via-[#EDEFFF] to-[#D4E0FF] p-6">
       {loading && <LoadingState />}
       {error && <ErrorState message={error} />}
+      <div className="flex mt-30 justify-end mr-6 mb-4">
+        <CreateSheetDialog isCreate={true} />
+      </div>
+
       {!loading && !error && allSheets.length === 0 && (
         <div className="flex items-center justify-center min-h-[50vh]">
           <p className="text-gray-500 text-lg">No score sheets found.</p>
