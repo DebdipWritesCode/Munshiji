@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { Link } from "react-router";
 import { User, Calendar, Crown, Users, FileText } from "lucide-react";
+import CreateSheetDialog from "./CreateSheetDialog";
+import DeleteSheetDialog from "./DeleteSheetDialog";
 
 interface SheetCardProps {
   id: number | null;
@@ -22,8 +24,6 @@ interface SheetCardProps {
   created_by: number | null;
   created_at: string | null;
   updated_at: string | null;
-  onDelete?: (id: number | null) => void;
-  onEdit?: (id: number | null) => void;
 }
 
 const SheetCard: React.FC<SheetCardProps> = ({
@@ -35,8 +35,6 @@ const SheetCard: React.FC<SheetCardProps> = ({
   rapporteur,
   created_at,
   updated_at,
-  onDelete,
-  onEdit,
 }) => {
   const formattedCreatedAt = created_at
     ? format(new Date(created_at), "MMM d, yyyy")
@@ -122,22 +120,18 @@ const SheetCard: React.FC<SheetCardProps> = ({
         <Button asChild variant="outline" size="sm" className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-950 dark:hover:text-blue-300">
           <Link to={`/score-sheets/${id}`}>See Details</Link>
         </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => onEdit?.(id)}
-          className="bg-slate-200 text-slate-700 hover:bg-slate-300 hover:text-slate-800 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-slate-200"
-        >
-          Edit
-        </Button>
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={() => onDelete?.(id)}
-          className="bg-red-500 text-white hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
-        >
-          Delete
-        </Button>
+        <CreateSheetDialog
+          isCreate={false}
+          btn_ClassName="bg-slate-200 text-slate-700 hover:bg-slate-300 hover:text-slate-800 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 dark:hover:text-slate-200 h-8"
+          btn_Variant="secondary"
+          id={id || undefined}
+          name={name || ""}
+          committee_name={committee_name || ""}
+          chair={chair || ""}
+          vice_chair={vice_chair || ""}
+          rapporteur={rapporteur || ""}
+        />
+        <DeleteSheetDialog id={id} />
       </CardFooter>
     </Card>
   );

@@ -73,6 +73,14 @@ const SeeSheets = () => {
     }
   };
 
+  const sortSheetsByDate = (sheets: ScoreSheetState[]): ScoreSheetState[] => {
+    return [...sheets].sort((a, b) => {
+      const dateA = new Date(a.updated_at || a.created_at || "").getTime();
+      const dateB = new Date(b.updated_at || b.created_at || "").getTime();
+      return dateB - dateA;
+    });
+  };
+
   useEffect(() => {
     if (userId) {
       fetchSheets();
@@ -95,7 +103,7 @@ const SeeSheets = () => {
       {!loading && !error && allSheets.length > 0 && (
         <div className="container mx-auto px-4 py-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {allSheets.map((sheet: ScoreSheetState) => (
+            {sortSheetsByDate(allSheets).map((sheet: ScoreSheetState) => (
               <SheetCard
                 key={sheet.id}
                 id={sheet.id}

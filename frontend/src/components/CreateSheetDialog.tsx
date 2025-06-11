@@ -12,26 +12,34 @@ import CreateSheetForm from "./CreateSheetForm";
 
 interface CreateSheetDialogProps {
   isCreate?: boolean;
+  id?: number;
   name?: string;
   committee_name?: string;
   chair?: string;
   vice_chair?: string;
   rapporteur?: string;
+  btn_ClassName?: string;
+  btn_Variant?: "default" | "outline" | "ghost" | "secondary" | "destructive";
 }
 
 const CreateSheetDialog: React.FC<CreateSheetDialogProps> = ({
   isCreate = true,
+  id = undefined,
   name = "",
   committee_name = "",
   chair = "",
   vice_chair = "",
   rapporteur = "",
+  btn_ClassName = "",
+  btn_Variant = "default",
 }) => {
   return (
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="default">Create Score Sheet</Button>
+          <Button variant={btn_Variant} className={btn_ClassName}>
+            {isCreate ? "Create Score Sheet" : "Edit"}
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -46,6 +54,8 @@ const CreateSheetDialog: React.FC<CreateSheetDialogProps> = ({
             </DialogHeader>
 
             <CreateSheetForm
+              isCreate={isCreate}
+              id={id}
               name={name}
               committee_name={committee_name}
               chair={chair}

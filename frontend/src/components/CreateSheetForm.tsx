@@ -21,7 +21,9 @@ import type { RootState } from "@/store/store";
 const onlyAlphaAndSpaces = /^[A-Za-z\s]*$/;
 
 interface createSheetFormProps {
+  isCreate?: boolean;
   name?: string;
+  id?: number;
   committee_name?: string;
   chair?: string;
   vice_chair?: string;
@@ -67,11 +69,13 @@ const createSheetFormSchema = z.object({
 });
 
 const CreateSheetForm: React.FC<createSheetFormProps> = ({
+  id,
   name,
   committee_name,
   chair,
   vice_chair,
   rapporteur,
+  isCreate = true,
 }) => {
   const [loading, setLoading] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.user_id);
@@ -88,7 +92,9 @@ const CreateSheetForm: React.FC<createSheetFormProps> = ({
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof createSheetFormSchema>) => {
+  const onSubmitCreate = async (
+    values: z.infer<typeof createSheetFormSchema>
+  ) => {
     setLoading(true);
     try {
       const { ...createSheetData } = values;
@@ -100,7 +106,7 @@ const CreateSheetForm: React.FC<createSheetFormProps> = ({
         // Refresh the page
         setTimeout(() => {
           window.location.reload();
-        }, 2000);
+        }, 1000);
       } else {
         throw new Error("Unexpected response from server");
       }
@@ -121,9 +127,49 @@ const CreateSheetForm: React.FC<createSheetFormProps> = ({
     }
   };
 
+  const onSubmitEdit = async (
+    values: z.infer<typeof createSheetFormSchema>
+  ) => {
+    setLoading(true);
+    try {
+      const score_sheet_id = id;
+      const updateSheetData = { ...values, score_sheet_id };
+
+      const response = await api.patch("/update_score_sheet", updateSheetData);
+
+      if (response.status === 200) {
+        toast.success("Score sheet updated successfully!");
+        // Refresh the page
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (err: any) {
+      if (err.response) {
+        if (err.response.data?.message) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error("Score sheet updation failed. Please try again.");
+        }
+      } else if (err.request) {
+        toast.error("No response from server. Please check your connection.");
+      } else {
+        toast.error("An error occurred: " + err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = isCreate ? onSubmitCreate : onSubmitEdit;
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-lg px-3">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="max-w-lg px-3">
         <FormField
           control={form.control}
           name="name"
@@ -195,7 +241,13 @@ const CreateSheetForm: React.FC<createSheetFormProps> = ({
         />
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Creating..." : "Create Score Sheet"}
+          {loading
+            ? isCreate
+              ? "Creating..."
+              : "Updating..."
+            : isCreate
+            ? "Create Score Sheet"
+            : "Update Score Sheet"}
         </Button>
       </form>
 
