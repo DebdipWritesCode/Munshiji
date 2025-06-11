@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import api from "@/api/axios";
 
 const signupFormSchema = z
   .object({
@@ -42,12 +43,29 @@ const SignupForm = () => {
   const onSubmit = async (values: z.infer<typeof signupFormSchema>) => {
     setLoading(true);
     try {
-      
-      console.log("Signup data", values);
-      toast.success("Form submitted successfully!");
-    } catch (err) {
-      // handle error
-      toast.error("Form submission failed.");
+      const { confirmPassword, ...signupData } = values;
+
+      const response = await api.post("/create_user", signupData);
+
+      if (response.status === 200) {
+        toast.success("Account created successfully! Please log in.");
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (err: any) {
+      if (err.response) {
+        if (err.response.status === 409) {
+          toast.error("Email already exists. Please use a different email.");
+        } else if (err.response.data?.message) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error("Registration failed. Please try again.");
+        }
+      } else if (err.request) {
+        toast.error("No response from server. Please check your connection.");
+      } else {
+        toast.error("An error occurred: " + err.message);
+      }
     } finally {
       setLoading(false);
     }

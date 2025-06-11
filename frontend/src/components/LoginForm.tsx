@@ -13,6 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import api from "@/api/axios";
+import { store } from "@/store/store";
+import { setAccessToken } from "@/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const loginFormSchema = z
   .object({
@@ -22,6 +26,8 @@ const loginFormSchema = z
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -34,12 +40,35 @@ const LoginForm = () => {
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     setLoading(true);
     try {
-      
-      console.log("Login data", values);
-      toast.success("Form submitted successfully!");
-    } catch (err) {
-      // handle error
-      toast.error("Form submission failed.");
+      const { ...loginData } = values;
+
+      const response = await api.post("/login_user", loginData);
+
+      if (response.status === 200) {
+        const { jwt_token } = response.data;
+        store.dispatch(setAccessToken(jwt_token));
+
+        toast.success("Login successful! Redirecting...");
+        console.log("Response data:", response.data);
+
+        setTimeout(() => {
+          navigate("/see-sheets");
+        }, 1500);
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (err: any) {
+      if (err.response) {
+        if (err.response.status === 401) {
+          toast.error("Invalid email or password. Please try again.");
+        } else if (err.response.data?.message) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error("An unexpected error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("Network error. Please check your connection.");
+      }
     } finally {
       setLoading(false);
     }

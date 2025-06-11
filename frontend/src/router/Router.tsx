@@ -5,6 +5,7 @@ import SeeSheets from '../pages/SeeSheets';
 import SheetDetails from '../pages/SheetDetails';
 import NotFound from '../pages/NotFound';
 import ProtectedRoute from './ProtectedRoute';
+import DashboardLayout from '../layouts/DashboardLayout';
 
 const Router = () => {
   return (
@@ -12,22 +13,18 @@ const Router = () => {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+
       <Route
-        path="/see-sheets"
         element={
           <ProtectedRoute>
-            <SeeSheets />
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
-      <Route
-        path="/sheet/:id"
-        element={
-          <ProtectedRoute>
-            <SheetDetails />
-          </ProtectedRoute>
-        }
-      />
+      >
+        <Route path="/see-sheets" element={<SeeSheets />} />
+        <Route path="/sheet/:id" element={<SheetDetails />} />
+      </Route>
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

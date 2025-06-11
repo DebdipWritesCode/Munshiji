@@ -14,7 +14,7 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
-})
+});
 
 api.interceptors.response.use(
   (response) => response,
@@ -22,26 +22,39 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url.includes("/refresh_access_token")
+      originalRequest.url.includes("/login_user") ||
+      originalRequest.url.includes("/refresh_access_token")
     ) {
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         const res = await axios.post(
           `${getBackendUrl()}/refresh_access_token`,
           {},
-          {
-            withCredentials: true,
-          }
+          { withCredentials: true }
         );
+        
+        console.log("Refresh token response:", res.data);
+        
+        if (!res.data?.jwt_token) {
+          throw new Error("No token in refresh response");
+        }
+        
+        store.dispatch(setAccessToken(res.data));
         const newAccessToken = res.data.jwt_token;
-        store.dispatch(setAccessToken(newAccessToken));
+        
+        originalRequest.headers = originalRequest.headers || {};
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return api(originalRequest); 
+        
+        return api(originalRequest);
       } catch (err) {
+        console.error("Refresh token failed:", err);
         store.dispatch(clearAccessToken());
         window.location.href = "/login";
+        return Promise.reject(error); // Important to prevent further processing
       }
     }
 

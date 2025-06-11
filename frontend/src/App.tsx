@@ -13,7 +13,7 @@ const App = () => {
     const refreshToken = async () => {
       try {
         const res = await axios.post("/refresh_access_token", {}, { withCredentials: true }); // ✅ Ensure this
-        dispatch(setAccessToken(res.data.access_token));
+        dispatch(setAccessToken(res.data));
       } catch {
         dispatch(clearAccessToken());
       }

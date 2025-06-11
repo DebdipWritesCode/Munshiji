@@ -43,7 +43,9 @@ func ValidateName(name string) error {
 	for _, char := range name {
 		if char < 'A' || char > 'Z' {
 			if char < 'a' || char > 'z' {
-				return fmt.Errorf("name must contain only alphabetic characters, found '%c'", char)
+				if char != ' ' {
+					return fmt.Errorf("name must contain only alphabetic characters, found '%c'", char)
+				}
 			}
 		}
 	}
