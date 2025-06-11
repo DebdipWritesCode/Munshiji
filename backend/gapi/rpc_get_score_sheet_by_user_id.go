@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *Server) GetScoreSheetsByUserID(ctx context.Context, req *pb.GetScoreSheetByUserIdRequest) (*pb.GetScoreSheetByUserIdResponse, error) {
+func (server *Server) GetScoreSheetByUserId(ctx context.Context, req *pb.GetScoreSheetByUserIdRequest) (*pb.GetScoreSheetByUserIdResponse, error) {
 	violations := validateGetScoreSheetsByUserID(req)
 	if len(violations) > 0 {
 		return nil, invalidArgumentError(violations)

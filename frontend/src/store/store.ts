@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from '../slices/authSlice';
+import allSheetsSlice from '../slices/allSheetsSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
+    allSheets: allSheetsSlice,
   },
 });
 

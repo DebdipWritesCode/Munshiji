@@ -12,20 +12,27 @@ interface ScoreSheetState {
   updated_at: string | null;
 }
 
-const initialState: ScoreSheetState[] = [];
+const initialState = {
+  sheets: [] as ScoreSheetState[],
+  loading: false,
+};
 
 const allSheetsSlice = createSlice({
   name: "allSheets",
   initialState,
   reducers: {
-    setAllSheets: (_, action: PayloadAction<ScoreSheetState[]>) => {
-      return action.payload;
+    setAllSheets: (state, action: PayloadAction<ScoreSheetState[]>) => {
+      state.sheets = action.payload;
+      state.loading = false;
     },
     clearAllSheets: () => {
       return initialState;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-export const { setAllSheets, clearAllSheets } = allSheetsSlice.actions;
+export const { setAllSheets, clearAllSheets, setLoading } = allSheetsSlice.actions;
 export default allSheetsSlice.reducer;
