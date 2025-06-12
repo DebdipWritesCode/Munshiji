@@ -118,7 +118,7 @@ const SheetCard: React.FC<SheetCardProps> = ({
 
       <CardFooter className="flex flex-wrap justify-end gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 rounded-b-lg">
         <Button asChild variant="outline" size="sm" className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-950 dark:hover:text-blue-300">
-          <Link to={`/score-sheets/${id}`}>See Details</Link>
+          <Link to={`/sheet/${id}`}>See Details</Link>
         </Button>
         <CreateSheetDialog
           isCreate={false}
