@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (server *Server) GetScoresheetDetails(ctx context.Context, req *pb.GetScoreSheetDetailsRequest) (*pb.GetScoreSheetDetailsResponse, error) {
+func (server *Server) GetScoreSheetDetails(ctx context.Context, req *pb.GetScoreSheetDetailsRequest) (*pb.GetScoreSheetDetailsResponse, error) {
 	violations := validateGetScoreSheetDetailsRequest(req)
 	if len(violations) > 0 {
 		return nil, invalidArgumentError(violations)
@@ -41,16 +41,22 @@ func (server *Server) GetScoresheetDetails(ctx context.Context, req *pb.GetScore
 		scores     []db.Score
 	)
 
-	if err := json.Unmarshal(details.Delegates, &delegates); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to unmarshal delegates: %v", err)
+	if details.Delegates != nil {
+		if err := json.Unmarshal(details.Delegates, &delegates); err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to unmarshal delegates: %v", err)
+		}
 	}
 
-	if err := json.Unmarshal(details.Parameters, &parameters); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to unmarshal parameters: %v", err)
+	if details.Parameters != nil {
+		if err := json.Unmarshal(details.Parameters, &parameters); err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to unmarshal parameters: %v", err)
+		}
 	}
 
-	if err := json.Unmarshal(details.Scores, &scores); err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to unmarshal scores: %v", err)
+	if details.Scores != nil {
+		if err := json.Unmarshal(details.Scores, &scores); err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to unmarshal scores: %v", err)
+		}
 	}
 
 	pbDelegates := make([]*pb.Delegate, 0, len(delegates))

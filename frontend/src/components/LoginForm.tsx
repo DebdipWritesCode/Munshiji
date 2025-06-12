@@ -19,6 +19,20 @@ import { setAccessToken } from "@/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import ToastComponent from "./ToastComponent";
 
+interface Payload {
+  jwt_token: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    created_at: string;
+  };
+  metadata: {
+    user_agent: string;
+    client_ip: string;
+  }
+}
+
 const loginFormSchema = z
   .object({
     email: z.string().email("Invalid email"),
@@ -47,7 +61,21 @@ const LoginForm = () => {
 
       if (response.status === 200) {
         const { jwt_token } = response.data;
-        store.dispatch(setAccessToken(jwt_token));
+        const payload: Payload = {
+          jwt_token,
+          user: {
+            id: response.data.user.id,
+            name: response.data.user.name,
+            email: response.data.user.email,
+            created_at: response.data.user.created_at,
+          },
+          metadata: {
+            user_agent: response.data.metadata.user_agent,
+            client_ip: response.data.metadata.client_ip,
+          },
+        };
+
+        store.dispatch(setAccessToken(payload));
 
         toast.success("Login successful! Redirecting...");
         console.log("Response data:", response.data);

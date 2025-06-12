@@ -17,9 +17,9 @@ WHERE created_by = $1;
 -- name: GetSheetWithDetailsByID :one
 SELECT
   ss.*,
-  d.delegates,
-  p.parameters,
-  s.scores
+  COALESCE(d.delegates, '[]') AS delegates,
+  COALESCE(p.parameters, '[]') AS parameters,
+  COALESCE(s.scores, '[]') AS scores
 FROM score_sheets ss
 
 LEFT JOIN LATERAL (

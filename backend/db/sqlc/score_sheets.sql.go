@@ -98,9 +98,9 @@ func (q *Queries) GetSheetByID(ctx context.Context, id int32) (ScoreSheet, error
 const getSheetWithDetailsByID = `-- name: GetSheetWithDetailsByID :one
 SELECT
   ss.id, ss.name, ss.committee_name, ss.chair, ss.vice_chair, ss.rapporteur, ss.created_by, ss.created_at, ss.updated_at,
-  d.delegates,
-  p.parameters,
-  s.scores
+  COALESCE(d.delegates, '[]') AS delegates,
+  COALESCE(p.parameters, '[]') AS parameters,
+  COALESCE(s.scores, '[]') AS scores
 FROM score_sheets ss
 
 LEFT JOIN LATERAL (
