@@ -1,5 +1,6 @@
 import api from "@/api/axios";
 import LogoutDialog from "@/components/auth/LogoutDialog";
+import ScoreTable from "@/components/table/ScoreTable";
 import ToastComponent from "@/components/ToastComponent";
 import { setLoading } from "@/slices/allSheetsSlice";
 import {
@@ -130,6 +131,10 @@ const SheetDetails = () => {
           </div>
           <LogoutDialog />
         </div>
+      )}
+
+      {!loading && !error && (
+        <ScoreTable />
       )}
 
       <ToastComponent />

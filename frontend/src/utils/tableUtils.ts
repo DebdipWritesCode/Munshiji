@@ -114,3 +114,10 @@ export function calculateRuleWiseTotal(parameterData: TableParameter) {
       return 0;
   }
 }
+
+export function calculateTotalScore(parameterData: TableParameter[]): number {
+  return parameterData.reduce((total, param) => {
+    const ruleWiseTotal = calculateRuleWiseTotal(param);
+    return total + ruleWiseTotal;
+  }, 0);
+}
