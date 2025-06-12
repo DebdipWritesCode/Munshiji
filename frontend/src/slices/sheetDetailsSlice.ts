@@ -40,6 +40,27 @@ const sheetDetails = createSlice({
     setScores: (state, action) => {
       state.scores = action.payload;
     },
+    addNewScore: (state, action) => {
+      state.scores.push(action.payload);
+    },
+    updateScore: (state, action) => {
+      const { id, value } = action.payload;
+      const score = state.scores.find((score) => score.id === id);
+      if (score) {
+        score.value = value;
+      }
+    },
+    updateScoreNote: (state, action) => {
+      const { id, note } = action.payload;
+      const score = state.scores.find((score) => score.id === id);
+      if (score) {
+        score.note = note;
+      }
+    },
+    deleteScore: (state, action) => {
+      const id = action.payload;
+      state.scores = state.scores.filter((score) => score.id !== id);
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -53,7 +74,11 @@ export const {
   setScoreSheet,
   setDelegates,
   setParameters,
+  addNewScore,
   setScores,
+  updateScore,
+  deleteScore,
+  updateScoreNote,
   setLoading,
   setError,
 } = sheetDetails.actions;
