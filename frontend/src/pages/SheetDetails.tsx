@@ -1,5 +1,5 @@
 import api from "@/api/axios";
-import LogoutDialog from "@/components/LogoutDialog";
+import LogoutDialog from "@/components/auth/LogoutDialog";
 import ToastComponent from "@/components/ToastComponent";
 import { setLoading } from "@/slices/allSheetsSlice";
 import {

@@ -1,6 +1,6 @@
 import api from "@/api/axios";
-import CreateSheetDialog from "@/components/CreateSheetDialog";
-import SheetCard from "@/components/SheetCard";
+import CreateSheetDialog from "@/components/sheet/CreateSheetDialog";
+import SheetCard from "@/components/sheet/SheetCard";
 import ToastComponent from "@/components/ToastComponent";
 import { setAllSheets, setLoading } from "@/slices/allSheetsSlice";
 import type { RootState } from "@/store/store";

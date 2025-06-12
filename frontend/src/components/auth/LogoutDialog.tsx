@@ -7,9 +7,9 @@ import {
   DialogFooter,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import ToastComponent from "./ToastComponent";
-import { Button } from "./ui/button";
+} from "../ui/dialog";
+import ToastComponent from "../ToastComponent";
+import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { clearAccessToken } from "@/slices/authSlice";
 

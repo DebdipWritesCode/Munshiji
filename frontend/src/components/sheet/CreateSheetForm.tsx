@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import api from "@/api/axios";
-import ToastComponent from "./ToastComponent";
+import ToastComponent from "../ToastComponent";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
 

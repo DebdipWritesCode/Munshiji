@@ -4,10 +4,10 @@ import {
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import ToastComponent from "./ToastComponent";
-import { Button } from "./ui/button";
-import { DialogHeader } from "./ui/dialog";
+} from "../ui/dialog";
+import ToastComponent from "../ToastComponent";
+import { Button } from "../ui/button";
+import { DialogHeader } from "../ui/dialog";
 import CreateSheetForm from "./CreateSheetForm";
 
 interface CreateSheetDialogProps {

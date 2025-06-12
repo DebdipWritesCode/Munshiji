@@ -7,9 +7,9 @@ import {
   DialogFooter,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import ToastComponent from "./ToastComponent";
-import { Button } from "./ui/button";
+} from "../ui/dialog";
+import ToastComponent from "../ToastComponent";
+import { Button } from "../ui/button";
 import { useState } from "react";
 import api from "@/api/axios";
 import { toast } from "react-toastify";

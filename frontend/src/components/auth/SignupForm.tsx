@@ -14,89 +14,58 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import api from "@/api/axios";
-import { store } from "@/store/store";
-import { setAccessToken } from "@/slices/authSlice";
-import { useNavigate } from "react-router-dom";
-import ToastComponent from "./ToastComponent";
+import ToastComponent from "../ToastComponent";
 
-interface Payload {
-  jwt_token: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    created_at: string;
-  };
-  metadata: {
-    user_agent: string;
-    client_ip: string;
-  }
-}
-
-const loginFormSchema = z
+const signupFormSchema = z
   .object({
+    name: z.string().min(1, "Name is required").max(30),
     email: z.string().email("Invalid email"),
     password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
 
-const LoginForm = () => {
+const SignupForm = () => {
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
+  const form = useForm<z.infer<typeof signupFormSchema>>({
+    resolver: zodResolver(signupFormSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof signupFormSchema>) => {
     setLoading(true);
     try {
-      const { ...loginData } = values;
+      const { confirmPassword, ...signupData } = values;
 
-      const response = await api.post("/login_user", loginData);
+      const response = await api.post("/create_user", signupData);
 
       if (response.status === 200) {
-        const { jwt_token } = response.data;
-        const payload: Payload = {
-          jwt_token,
-          user: {
-            id: response.data.user.id,
-            name: response.data.user.name,
-            email: response.data.user.email,
-            created_at: response.data.user.created_at,
-          },
-          metadata: {
-            user_agent: response.data.metadata.user_agent,
-            client_ip: response.data.metadata.client_ip,
-          },
-        };
-
-        store.dispatch(setAccessToken(payload));
-
-        toast.success("Login successful! Redirecting...");
-        console.log("Response data:", response.data);
-
-        setTimeout(() => {
-          navigate("/see-sheets");
-        }, 1500);
+        toast.success("Account created successfully! Please log in.");
       } else {
         throw new Error("Unexpected response from server");
       }
     } catch (err: any) {
       if (err.response) {
-        if (err.response.status === 401) {
-          toast.error("Invalid email or password. Please try again.");
+        if (err.response.status === 409) {
+          toast.error("Email already exists. Please use a different email.");
         } else if (err.response.data?.message) {
           toast.error(err.response.data.message);
         } else {
-          toast.error("An unexpected error occurred. Please try again later.");
+          toast.error("Registration failed. Please try again.");
         }
+      } else if (err.request) {
+        toast.error("No response from server. Please check your connection.");
       } else {
-        toast.error("Network error. Please check your connection.");
+        toast.error("An error occurred: " + err.message);
       }
     } finally {
       setLoading(false);
@@ -108,6 +77,20 @@ const LoginForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="max-w-md mx-auto">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"
@@ -136,8 +119,22 @@ const LoginForm = () => {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="••••••••" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Logging in..." : "Log In"}
+          {loading ? "Signing up..." : "Sign Up"}
         </Button>
       </form>
 
@@ -146,4 +143,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;
