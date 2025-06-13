@@ -1,16 +1,50 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { calculateRuleWiseTotal, calculateTotalScore, prepareTableData } from "@/utils/tableUtils";
-import type { DelegateWithScores, TableParameter } from "@/utils/getTableInterfaceTypes";
+import {
+  calculateRuleWiseTotal,
+  calculateTotalScore,
+  prepareTableData,
+} from "@/utils/tableUtils";
+import type {
+  DelegateWithScores,
+  TableParameter,
+} from "@/utils/getTableInterfaceTypes";
 import { DataTable, type CustomColumn } from "./DataTable";
 import Cell from "./Cell";
+import { useEffect, useMemo } from "react";
+import { setScores, type ScoreState } from "@/slices/scoresSlice";
 
 const ScoreTable = () => {
-  const parameters = useSelector((state: RootState) => state.sheetDetails.parameters);
-  const delegates = useSelector((state: RootState) => state.sheetDetails.delegates);
+  const parameters = useSelector(
+    (state: RootState) => state.sheetDetails.parameters
+  );
+  const delegates = useSelector(
+    (state: RootState) => state.sheetDetails.delegates
+  );
   const scores = useSelector((state: RootState) => state.sheetDetails.scores);
 
-  const delegateData: DelegateWithScores[] = prepareTableData(scores, parameters, delegates);
+  const dispatch = useDispatch();
+
+  const delegateData: DelegateWithScores[] = useMemo(() => {
+    return prepareTableData(scores, parameters, delegates);
+  }, [scores, parameters, delegates]);
+
+  useEffect(() => {
+    const updatedScores: ScoreState[] = [];
+
+    delegateData.forEach((delegate) => {
+      delegate.parameters.forEach((param) => {
+        const value = calculateRuleWiseTotal(param);
+        updatedScores.push({
+          delegate_id: delegate.delegate_id,
+          parameter_id: param.parameter_id,
+          valueToDisplay: value,
+        });
+      });
+    });
+
+    dispatch(setScores(updatedScores));
+  }, [delegateData, dispatch]);
 
   const columns: CustomColumn<DelegateWithScores>[] = [
     {
@@ -21,7 +55,7 @@ const ScoreTable = () => {
     ...parameters.map((param) => ({
       id: `param_${param.id}`,
       header: param.name,
-      cell: (row: any) => {
+      cell: (row: DelegateWithScores) => {
         const currentParam = row.parameters.find(
           (p: TableParameter) => p.parameter_id === param.id
         );
@@ -51,7 +85,7 @@ const ScoreTable = () => {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-full">
       <DataTable columns={columns} data={delegateData} />
     </div>
   );

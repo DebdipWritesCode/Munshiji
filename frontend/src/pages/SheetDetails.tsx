@@ -1,5 +1,6 @@
 import api from "@/api/axios";
 import LogoutDialog from "@/components/auth/LogoutDialog";
+import CreateParameterDialog from "@/components/parameter/CreateParameterDialog";
 import ScoreTable from "@/components/table/ScoreTable";
 import ToastComponent from "@/components/ToastComponent";
 import { setLoading } from "@/slices/allSheetsSlice";
@@ -129,7 +130,10 @@ const SheetDetails = () => {
               </div>
             </div>
           </div>
-          <LogoutDialog />
+          <CreateParameterDialog
+            isCreate={true}
+            score_sheet_id={score_sheet_id}
+          />
         </div>
       )}
 
