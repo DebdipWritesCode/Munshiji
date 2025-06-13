@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { Link } from "react-router";
 import { User, Calendar, Crown, Users, FileText } from "lucide-react";
 import CreateSheetDialog from "./CreateSheetDialog";
-import DeleteSheetDialog from "./DeleteSheetDialog";
+import DeleteDialog from "../DeleteDialog";
 
 interface SheetCardProps {
   id: number | null;
@@ -131,7 +131,7 @@ const SheetCard: React.FC<SheetCardProps> = ({
           vice_chair={vice_chair || ""}
           rapporteur={rapporteur || ""}
         />
-        <DeleteSheetDialog id={id} />
+        <DeleteDialog id={id} uri="delete_score_sheet" deleteItem="score sheet" />
       </CardFooter>
     </Card>
   );

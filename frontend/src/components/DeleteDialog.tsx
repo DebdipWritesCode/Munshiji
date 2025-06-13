@@ -7,31 +7,37 @@ import {
   DialogFooter,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import ToastComponent from "../ToastComponent";
-import { Button } from "../ui/button";
+} from "./ui/dialog";
+import ToastComponent from "./ToastComponent";
+import { Button } from "./ui/button";
 import { useState } from "react";
 import api from "@/api/axios";
 import { toast } from "react-toastify";
 
-interface DeleteSheetDialogProps {
+interface DeleteDialogProps {
   id: number | null;
+  uri: string;
+  deleteItem: string;
 }
 
-const DeleteSheetDialog: React.FC<DeleteSheetDialogProps> = ({ id }) => {
+const DeleteDialog: React.FC<DeleteDialogProps> = ({
+  id,
+  uri,
+  deleteItem,
+}) => {
   const [_, setLoading] = useState(false);
 
   const handleDelete = async (id: number | null) => {
     setLoading(true);
     try {
       if (!id) {
-        toast.error("Invalid score sheet ID");
+        toast.error(`Invalid ${deleteItem} ID`);
         return;
       }
 
-      const response = await api.delete(`/delete_score_sheet/${id}`);
+      const response = await api.delete(`/${uri}/${id}`);
       if (response.status === 200) {
-        toast.success("Score sheet deleted successfully!");
+        toast.success(`${deleteItem} deleted successfully!`);
         // Refresh the page
         setTimeout(() => {
           window.location.reload();
@@ -44,25 +50,27 @@ const DeleteSheetDialog: React.FC<DeleteSheetDialogProps> = ({ id }) => {
         if (err.response.data?.message) {
           toast.error(err.response.data.message);
         } else {
-          toast.error("Failed to delete score sheet. Please try again.");
+          toast.error(`Failed to delete ${deleteItem}. Please try again.`);
         }
       }
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="destructive" className=" h-8">Delete</Button>
+          <Button variant="destructive" className=" h-8">
+            Delete
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Delete Score Sheet</DialogTitle>
+            <DialogTitle>Delete {deleteItem}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this score sheet?
+              Are you sure you want to delete this {deleteItem}?
             </DialogDescription>
           </DialogHeader>
 
@@ -82,4 +90,4 @@ const DeleteSheetDialog: React.FC<DeleteSheetDialogProps> = ({ id }) => {
   );
 };
 
-export default DeleteSheetDialog;
+export default DeleteDialog;

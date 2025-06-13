@@ -117,7 +117,6 @@ const ScoreDropdown: React.FC<ScoreDropdownProps> = ({
       const response = await api.delete(uri);
       if (response.status === 200) {
         dispatch(deleteScore(id));
-        toast.success("Score deleted successfully!");
       } else {
         toast.error("Unexpected response from server");
       }
