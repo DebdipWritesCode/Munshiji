@@ -9,6 +9,9 @@ import {
 import React from "react";
 import CreateParameterDialog from "../parameter/CreateParameterDialog";
 import DelegateNameCell from "./DelegateNameCell";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
+import { getTopDelegates } from "@/utils/scoresUtils";
 
 export interface CustomColumn<T> {
   id?: string;
@@ -31,7 +34,16 @@ interface DataTableProps<T> {
   data: T[];
 }
 
+const topColors = {
+  0: "border-purple-500 border-3 border-dashed",
+  1: "border-green-500 border-3 border-dashed",
+  2: "border-pink-500 border-3 border-dashed",
+};
+
 export function DataTable<T>({ columns, data }: DataTableProps<T>) {
+  const scores = useSelector((state: RootState) => state.scores.scores);
+  const top3DelegatesIds = getTopDelegates(scores, 3);
+
   return (
     <div className="rounded-md border overflow-x-auto">
       <Table>
@@ -68,28 +80,36 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
         </TableHeader>
         <TableBody>
           {data.length > 0 ? (
-            data.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
-                {columns.map((column, colIndex) => (
-                  <TableCell key={column.id ?? colIndex}>
-                    {
-                      column.header === "Delegate" ? (
-                        <DelegateNameCell 
+            data.map((row, rowIndex) => {
+              const delegateId = (row as any).delegate_id as number;
+              const topIndex = top3DelegatesIds.indexOf(delegateId);
+              const rowClassName =
+                topIndex !== -1 ? topColors[topIndex as 0 | 1 | 2] : "";
+
+              return (
+                <TableRow key={rowIndex}>
+                  {columns.map((column, colIndex) => (
+                    <TableCell key={column.id ?? colIndex} className={rowClassName}>
+                      {column.header === "Delegate" ? (
+                        <DelegateNameCell
                           delegateName={
-                            column.cell(row) && (column.cell(row) as any).props && (column.cell(row) as any).props.children
-                              ? ((column.cell(row) as any).props.children as string)
+                            column.cell(row) &&
+                            (column.cell(row) as any).props &&
+                            (column.cell(row) as any).props.children
+                              ? ((column.cell(row) as any).props
+                                  .children as string)
                               : ""
                           }
                           delegate_id={(row as any).delegate_id as number}
-                          />
+                        />
                       ) : (
                         column.cell(row)
-                      )
-                    }
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="text-center h-24">

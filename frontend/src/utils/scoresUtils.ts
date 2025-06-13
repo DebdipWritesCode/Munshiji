@@ -32,15 +32,15 @@ export function getSortedTotalScores(
     .sort((a, b) => b.totalScore - a.totalScore);
 }
 
-export function getTopDelegates(
-  scores: ScoreState[],
-  topN: number
-): { delegate_id: number; totalScore: number }[] {
+export function getTopDelegates(scores: ScoreState[], topN: number): number[] {
   const sortedScores = getSortedTotalScores(scores);
-  return sortedScores.slice(0, topN);
+  return sortedScores.slice(0, topN).map(({ delegate_id }) => delegate_id);
 }
 
-export function sortDelegatesByScore(scores: ScoreState[], delegates: Delegate[]): Delegate[] {
+export function sortDelegatesByScore(
+  scores: ScoreState[],
+  delegates: Delegate[]
+): Delegate[] {
   const totalScores = getSortedTotalScores(scores); // Returns: { delegate_id, totalScore }[]
 
   const delegateMap = new Map(delegates.map((d) => [d.id, d]));
