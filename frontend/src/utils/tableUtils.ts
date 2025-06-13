@@ -26,7 +26,9 @@ function calculateTotalForAverageRuleType(scores: TableScore[]) {
 }
 
 function calculateTotalForAbsoluteRuleType(scores: TableScore[]) {
-  return roundTwoDecimals(scores.reduce((acc, score) => acc + (score.value || 0), 0));
+  return roundTwoDecimals(
+    scores.reduce((acc, score) => acc + (score.value || 0), 0)
+  );
 }
 
 function calculateTotalForSpecialRuleType(
@@ -35,11 +37,6 @@ function calculateTotalForSpecialRuleType(
   score_weight: number,
   length_weight: number
 ) {
-  // console.log("Scores:", scores);
-  // console.log("Special Scores Rule:", special_scores_rule);
-  // console.log("Score Weight:", score_weight);
-  // console.log("Length Weight:", length_weight);
-
   let totalValueScore = 0;
   let totalLengthScore = scores.length;
 
@@ -49,7 +46,13 @@ function calculateTotalForSpecialRuleType(
     totalValueScore = calculateTotalForAbsoluteRuleType(scores);
   }
 
-  return roundTwoDecimals(totalValueScore * score_weight + totalLengthScore * length_weight);
+  return roundTwoDecimals(
+    totalValueScore * score_weight + totalLengthScore * length_weight
+  );
+}
+
+export function sortById<T extends { id: number }>(arr: T[]): T[] {
+  return [...arr].sort((a, b) => a.id - b.id);
 }
 
 export function setTableColumns(parameters: Parameter[]): ColumnDef<any>[] {
@@ -72,10 +75,13 @@ export function prepareTableData(
   parameters: Parameter[],
   delegates: Delegate[]
 ): DelegateWithScores[] {
-  return delegates.map((delegate) => {
+  const sortedDelegates = sortById(delegates);
+  const sortedParameters = sortById(parameters);
+
+  return sortedDelegates.map((delegate) => {
     const delegateScores = scores.filter((s) => s.delegate_id === delegate.id);
 
-    const parameterData: TableParameter[] = parameters.map((param) => {
+    const parameterData: TableParameter[] = sortedParameters.map((param) => {
       const matchingScores = delegateScores
         .filter((s) => s.parameter_id === param.id)
         .map((score) => ({
@@ -106,7 +112,6 @@ export function prepareTableData(
 }
 
 export function calculateRuleWiseTotal(parameterData: TableParameter) {
-  // console.log("Parameter Data:", parameterData);
   switch (parameterData.rule_type) {
     case "average":
       return calculateTotalForAverageRuleType(parameterData.scores);
@@ -126,8 +131,10 @@ export function calculateRuleWiseTotal(parameterData: TableParameter) {
 }
 
 export function calculateTotalScore(parameterData: TableParameter[]): number {
-  return roundTwoDecimals(parameterData.reduce((total, param) => {
-    const ruleWiseTotal = calculateRuleWiseTotal(param);
-    return total + ruleWiseTotal;
-  }, 0));
+  return roundTwoDecimals(
+    parameterData.reduce((total, param) => {
+      const ruleWiseTotal = calculateRuleWiseTotal(param);
+      return total + ruleWiseTotal;
+    }, 0)
+  );
 }

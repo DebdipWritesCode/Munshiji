@@ -4,6 +4,7 @@ import {
   calculateRuleWiseTotal,
   calculateTotalScore,
   prepareTableData,
+  sortById,
 } from "@/utils/tableUtils";
 import type {
   DelegateWithScores,
@@ -15,9 +16,10 @@ import { useEffect, useMemo } from "react";
 import { setScores, type ScoreState } from "@/slices/scoresSlice";
 
 const ScoreTable = () => {
-  const parameters = useSelector(
+  const parameters = sortById(useSelector(
     (state: RootState) => state.sheetDetails.parameters
-  );
+  ));
+
   const delegates = useSelector(
     (state: RootState) => state.sheetDetails.delegates
   );
