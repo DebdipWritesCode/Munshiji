@@ -39,7 +39,7 @@ const CreateDelegateButton: React.FC<CreateDelegateButtonProps> = ({
   return (
     <Button
       variant="default"
-      className="ml-5 mt-2 bg-blue-700"
+      className="ml-5 mt-2 bg-green-600"
       type="button"
       onClick={handleCreateDelegate}>
       Create Delegate

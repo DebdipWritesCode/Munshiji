@@ -75,13 +75,11 @@ export function prepareTableData(
   parameters: Parameter[],
   delegates: Delegate[]
 ): DelegateWithScores[] {
-  const sortedDelegates = sortById(delegates);
-  const sortedParameters = sortById(parameters);
 
-  return sortedDelegates.map((delegate) => {
+  return delegates.map((delegate) => {
     const delegateScores = scores.filter((s) => s.delegate_id === delegate.id);
 
-    const parameterData: TableParameter[] = sortedParameters.map((param) => {
+    const parameterData: TableParameter[] = parameters.map((param) => {
       const matchingScores = delegateScores
         .filter((s) => s.parameter_id === param.id)
         .map((score) => ({

@@ -2,6 +2,7 @@ import api from "@/api/axios";
 import LogoutDialog from "@/components/auth/LogoutDialog";
 import CreateDelegateButton from "@/components/delegate/CreateDelegateButton";
 import CreateParameterDialog from "@/components/parameter/CreateParameterDialog";
+import SortScoresButton from "@/components/SortScoresButton";
 import ScoreTable from "@/components/table/ScoreTable";
 import ToastComponent from "@/components/ToastComponent";
 import { setLoading } from "@/slices/allSheetsSlice";
@@ -13,6 +14,7 @@ import {
   setScores,
 } from "@/slices/sheetDetailsSlice";
 import type { RootState } from "@/store/store";
+import { sortById } from "@/utils/tableUtils";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -49,10 +51,12 @@ const SheetDetails = () => {
           dispatch(setScoreSheet(response.data.score_sheet));
         }
         if (response.data.parameters) {
-          dispatch(setParameters(response.data.parameters));
+          const parameters = sortById(response.data.parameters);
+          dispatch(setParameters(parameters));
         }
         if (response.data.delegates) {
-          dispatch(setDelegates(response.data.delegates));
+          const delegates = sortById(response.data.delegates);
+          dispatch(setDelegates(delegates));
         }
         if (response.data.scores) {
           dispatch(setScores(response.data.scores));
@@ -134,7 +138,7 @@ const SheetDetails = () => {
           <CreateParameterDialog
             isCreate={true}
             score_sheet_id={score_sheet_id}
-            btn_ClassName="bg-blue-700 text-white"
+            btn_ClassName="bg-green-600 text-white"
           />
         </div>
       )}
@@ -142,8 +146,9 @@ const SheetDetails = () => {
       {!loading && !error && <ScoreTable />}
 
       {!loading && !error && scoreSheet && scoreSheet.id > 0 && (
-        <div className="w-full">
+        <div className="w-full flex justify-between items-center pr-10">
           <CreateDelegateButton score_sheet_id={score_sheet_id} />
+          <SortScoresButton />
         </div>
       )}
 
