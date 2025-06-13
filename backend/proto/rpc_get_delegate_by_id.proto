@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "delegate.proto";
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message GetDelegateByIdRequest {
+  int32 delegate_id = 1;
+}
+
+message GetDelegateByIdResponse {
+  Delegate delegate = 1;
+}

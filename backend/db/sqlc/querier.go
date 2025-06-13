@@ -24,8 +24,10 @@ type Querier interface {
 	DeleteSheetsByUserID(ctx context.Context, createdBy int32) error
 	DeleteUser(ctx context.Context, id int32) error
 	GetDelegateByID(ctx context.Context, id int32) (Delegate, error)
+	GetDelegateByScoreSheetIDAndName(ctx context.Context, arg GetDelegateByScoreSheetIDAndNameParams) (Delegate, error)
 	GetDelegatesByScoreSheetID(ctx context.Context, scoreSheetID int32) ([]Delegate, error)
 	GetParameterByID(ctx context.Context, id int32) (Parameter, error)
+	GetParameterByScoreSheetIDAndName(ctx context.Context, arg GetParameterByScoreSheetIDAndNameParams) (Parameter, error)
 	GetParametersByScoreSheetID(ctx context.Context, scoreSheetID int32) ([]Parameter, error)
 	GetScoreByID(ctx context.Context, id int32) (Score, error)
 	GetScoresByDelegateID(ctx context.Context, delegateID int32) ([]Score, error)

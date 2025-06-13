@@ -30,12 +30,14 @@ const (
 	Munshiji_DeleteScoreSheet_FullMethodName       = "/pb.Munshiji/DeleteScoreSheet"
 	Munshiji_GetScoreSheetDetails_FullMethodName   = "/pb.Munshiji/GetScoreSheetDetails"
 	Munshiji_CreateDelegate_FullMethodName         = "/pb.Munshiji/CreateDelegate"
+	Munshiji_GetDelegateById_FullMethodName        = "/pb.Munshiji/GetDelegateById"
 	Munshiji_UpdateDelegateNameByID_FullMethodName = "/pb.Munshiji/UpdateDelegateNameByID"
 	Munshiji_DeleteDelegate_FullMethodName         = "/pb.Munshiji/DeleteDelegate"
 	Munshiji_CreateScore_FullMethodName            = "/pb.Munshiji/CreateScore"
 	Munshiji_UpdateScore_FullMethodName            = "/pb.Munshiji/UpdateScore"
 	Munshiji_DeleteScore_FullMethodName            = "/pb.Munshiji/DeleteScore"
 	Munshiji_CreateParameter_FullMethodName        = "/pb.Munshiji/CreateParameter"
+	Munshiji_GetParameterById_FullMethodName       = "/pb.Munshiji/GetParameterById"
 	Munshiji_UpdateParameter_FullMethodName        = "/pb.Munshiji/UpdateParameter"
 	Munshiji_DeleteParameter_FullMethodName        = "/pb.Munshiji/DeleteParameter"
 )
@@ -54,12 +56,14 @@ type MunshijiClient interface {
 	DeleteScoreSheet(ctx context.Context, in *DeleteScoreSheetRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	GetScoreSheetDetails(ctx context.Context, in *GetScoreSheetDetailsRequest, opts ...grpc.CallOption) (*GetScoreSheetDetailsResponse, error)
 	CreateDelegate(ctx context.Context, in *CreateDelegateRequest, opts ...grpc.CallOption) (*CreateDelegateResponse, error)
+	GetDelegateById(ctx context.Context, in *GetDelegateByIdRequest, opts ...grpc.CallOption) (*GetDelegateByIdResponse, error)
 	UpdateDelegateNameByID(ctx context.Context, in *UpdateDelegateNameByIDRequest, opts ...grpc.CallOption) (*UpdateDelegateNameByIDResponse, error)
 	DeleteDelegate(ctx context.Context, in *DeleteDelegateRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	CreateScore(ctx context.Context, in *CreateScoreRequest, opts ...grpc.CallOption) (*CreateScoreResponse, error)
 	UpdateScore(ctx context.Context, in *UpdateScoreRequest, opts ...grpc.CallOption) (*UpdateScoreResponse, error)
 	DeleteScore(ctx context.Context, in *DeleteScoreRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	CreateParameter(ctx context.Context, in *CreateParameterRequest, opts ...grpc.CallOption) (*CreateParameterResponse, error)
+	GetParameterById(ctx context.Context, in *GetParameterByIdRequest, opts ...grpc.CallOption) (*GetParameterByIdResponse, error)
 	UpdateParameter(ctx context.Context, in *UpdateParameterRequest, opts ...grpc.CallOption) (*UpdateParameterResponse, error)
 	DeleteParameter(ctx context.Context, in *DeleteParameterRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
@@ -172,6 +176,16 @@ func (c *munshijiClient) CreateDelegate(ctx context.Context, in *CreateDelegateR
 	return out, nil
 }
 
+func (c *munshijiClient) GetDelegateById(ctx context.Context, in *GetDelegateByIdRequest, opts ...grpc.CallOption) (*GetDelegateByIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDelegateByIdResponse)
+	err := c.cc.Invoke(ctx, Munshiji_GetDelegateById_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *munshijiClient) UpdateDelegateNameByID(ctx context.Context, in *UpdateDelegateNameByIDRequest, opts ...grpc.CallOption) (*UpdateDelegateNameByIDResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdateDelegateNameByIDResponse)
@@ -232,6 +246,16 @@ func (c *munshijiClient) CreateParameter(ctx context.Context, in *CreateParamete
 	return out, nil
 }
 
+func (c *munshijiClient) GetParameterById(ctx context.Context, in *GetParameterByIdRequest, opts ...grpc.CallOption) (*GetParameterByIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetParameterByIdResponse)
+	err := c.cc.Invoke(ctx, Munshiji_GetParameterById_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *munshijiClient) UpdateParameter(ctx context.Context, in *UpdateParameterRequest, opts ...grpc.CallOption) (*UpdateParameterResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdateParameterResponse)
@@ -266,12 +290,14 @@ type MunshijiServer interface {
 	DeleteScoreSheet(context.Context, *DeleteScoreSheetRequest) (*empty.Empty, error)
 	GetScoreSheetDetails(context.Context, *GetScoreSheetDetailsRequest) (*GetScoreSheetDetailsResponse, error)
 	CreateDelegate(context.Context, *CreateDelegateRequest) (*CreateDelegateResponse, error)
+	GetDelegateById(context.Context, *GetDelegateByIdRequest) (*GetDelegateByIdResponse, error)
 	UpdateDelegateNameByID(context.Context, *UpdateDelegateNameByIDRequest) (*UpdateDelegateNameByIDResponse, error)
 	DeleteDelegate(context.Context, *DeleteDelegateRequest) (*empty.Empty, error)
 	CreateScore(context.Context, *CreateScoreRequest) (*CreateScoreResponse, error)
 	UpdateScore(context.Context, *UpdateScoreRequest) (*UpdateScoreResponse, error)
 	DeleteScore(context.Context, *DeleteScoreRequest) (*empty.Empty, error)
 	CreateParameter(context.Context, *CreateParameterRequest) (*CreateParameterResponse, error)
+	GetParameterById(context.Context, *GetParameterByIdRequest) (*GetParameterByIdResponse, error)
 	UpdateParameter(context.Context, *UpdateParameterRequest) (*UpdateParameterResponse, error)
 	DeleteParameter(context.Context, *DeleteParameterRequest) (*empty.Empty, error)
 	mustEmbedUnimplementedMunshijiServer()
@@ -314,6 +340,9 @@ func (UnimplementedMunshijiServer) GetScoreSheetDetails(context.Context, *GetSco
 func (UnimplementedMunshijiServer) CreateDelegate(context.Context, *CreateDelegateRequest) (*CreateDelegateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDelegate not implemented")
 }
+func (UnimplementedMunshijiServer) GetDelegateById(context.Context, *GetDelegateByIdRequest) (*GetDelegateByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDelegateById not implemented")
+}
 func (UnimplementedMunshijiServer) UpdateDelegateNameByID(context.Context, *UpdateDelegateNameByIDRequest) (*UpdateDelegateNameByIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDelegateNameByID not implemented")
 }
@@ -331,6 +360,9 @@ func (UnimplementedMunshijiServer) DeleteScore(context.Context, *DeleteScoreRequ
 }
 func (UnimplementedMunshijiServer) CreateParameter(context.Context, *CreateParameterRequest) (*CreateParameterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateParameter not implemented")
+}
+func (UnimplementedMunshijiServer) GetParameterById(context.Context, *GetParameterByIdRequest) (*GetParameterByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetParameterById not implemented")
 }
 func (UnimplementedMunshijiServer) UpdateParameter(context.Context, *UpdateParameterRequest) (*UpdateParameterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParameter not implemented")
@@ -539,6 +571,24 @@ func _Munshiji_CreateDelegate_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Munshiji_GetDelegateById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDelegateByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MunshijiServer).GetDelegateById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Munshiji_GetDelegateById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MunshijiServer).GetDelegateById(ctx, req.(*GetDelegateByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Munshiji_UpdateDelegateNameByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateDelegateNameByIDRequest)
 	if err := dec(in); err != nil {
@@ -647,6 +697,24 @@ func _Munshiji_CreateParameter_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Munshiji_GetParameterById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetParameterByIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MunshijiServer).GetParameterById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Munshiji_GetParameterById_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MunshijiServer).GetParameterById(ctx, req.(*GetParameterByIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Munshiji_UpdateParameter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateParameterRequest)
 	if err := dec(in); err != nil {
@@ -731,6 +799,10 @@ var Munshiji_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Munshiji_CreateDelegate_Handler,
 		},
 		{
+			MethodName: "GetDelegateById",
+			Handler:    _Munshiji_GetDelegateById_Handler,
+		},
+		{
 			MethodName: "UpdateDelegateNameByID",
 			Handler:    _Munshiji_UpdateDelegateNameByID_Handler,
 		},
@@ -753,6 +825,10 @@ var Munshiji_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateParameter",
 			Handler:    _Munshiji_CreateParameter_Handler,
+		},
+		{
+			MethodName: "GetParameterById",
+			Handler:    _Munshiji_GetParameterById_Handler,
 		},
 		{
 			MethodName: "UpdateParameter",

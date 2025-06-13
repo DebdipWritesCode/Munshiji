@@ -90,6 +90,33 @@ func (q *Queries) GetParameterByID(ctx context.Context, id int32) (Parameter, er
 	return i, err
 }
 
+const getParameterByScoreSheetIDAndName = `-- name: GetParameterByScoreSheetIDAndName :one
+SELECT id, score_sheet_id, name, rule_type, is_special_parameter, special_scores_rule, special_length_rule, score_weight, length_weight FROM parameters
+WHERE score_sheet_id = $1 AND name = $2
+`
+
+type GetParameterByScoreSheetIDAndNameParams struct {
+	ScoreSheetID int32  `json:"score_sheet_id"`
+	Name         string `json:"name"`
+}
+
+func (q *Queries) GetParameterByScoreSheetIDAndName(ctx context.Context, arg GetParameterByScoreSheetIDAndNameParams) (Parameter, error) {
+	row := q.queryRow(ctx, q.getParameterByScoreSheetIDAndNameStmt, getParameterByScoreSheetIDAndName, arg.ScoreSheetID, arg.Name)
+	var i Parameter
+	err := row.Scan(
+		&i.ID,
+		&i.ScoreSheetID,
+		&i.Name,
+		&i.RuleType,
+		&i.IsSpecialParameter,
+		&i.SpecialScoresRule,
+		&i.SpecialLengthRule,
+		&i.ScoreWeight,
+		&i.LengthWeight,
+	)
+	return i, err
+}
+
 const getParametersByScoreSheetID = `-- name: GetParametersByScoreSheetID :many
 SELECT id, score_sheet_id, name, rule_type, is_special_parameter, special_scores_rule, special_length_rule, score_weight, length_weight FROM parameters
 WHERE score_sheet_id = $1

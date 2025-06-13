@@ -12,12 +12,14 @@ import "rpc_get_score_sheet_by_user_id.proto";
 import "rpc_delete_score_sheet.proto";
 import "rpc_get_score_sheet_details.proto";
 import "rpc_create_delegate.proto";
+import "rpc_get_delegate_by_id.proto";
 import "rpc_update_delegate_name_by_id.proto";
 import "rpc_delete_delegate.proto";
 import "rpc_create_score.proto";
 import "rpc_update_score.proto";
 import "rpc_delete_score.proto";
 import "rpc_create_parameter.proto";
+import "rpc_get_parameter_by_id.proto";
 import "rpc_update_parameter.proto";
 import "rpc_delete_parameter.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -167,6 +169,20 @@ service Munshiji {
       description: "This endpoint allows the creation of a new delegate associated with a score sheet.";
     };
   };
+  rpc GetDelegateById(GetDelegateByIdRequest) returns (GetDelegateByIdResponse) {
+    option (google.api.http) = {
+      get: "/v1/get_delegate_by_id/{delegate_id}"
+      additional_bindings {
+        get: "/v1/delegate/{delegate_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Delegate Management";
+      summary: "Get delegate by ID";
+      description: "This endpoint retrieves a delegate by their unique ID.";
+    };
+  };
   rpc UpdateDelegateNameByID(UpdateDelegateNameByIDRequest) returns (UpdateDelegateNameByIDResponse) {
     option (google.api.http) = {
       patch: "/v1/update_delegate_name_by_id" // ID is passed in the body
@@ -241,6 +257,20 @@ service Munshiji {
       tags: "Parameter Management";
       summary: "Create a new parameter";
       description: "This endpoint allows the creation of a new parameter for a score sheet.";
+    };
+  };
+  rpc GetParameterById(GetParameterByIdRequest) returns (GetParameterByIdResponse) {
+    option (google.api.http) = {
+      get: "/v1/get_parameter_by_id/{parameter_id}"
+      additional_bindings {
+        get: "/v1/parameter/{parameter_id}" // For backward compatibility
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Parameter Management";
+      summary: "Get parameter by ID";
+      description: "This endpoint retrieves a parameter by its unique ID.";
     };
   };
   rpc UpdateParameter(UpdateParameterRequest) returns (UpdateParameterResponse) {

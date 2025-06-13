@@ -69,11 +69,17 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.getDelegateByIDStmt, err = db.PrepareContext(ctx, getDelegateByID); err != nil {
 		return nil, fmt.Errorf("error preparing query GetDelegateByID: %w", err)
 	}
+	if q.getDelegateByScoreSheetIDAndNameStmt, err = db.PrepareContext(ctx, getDelegateByScoreSheetIDAndName); err != nil {
+		return nil, fmt.Errorf("error preparing query GetDelegateByScoreSheetIDAndName: %w", err)
+	}
 	if q.getDelegatesByScoreSheetIDStmt, err = db.PrepareContext(ctx, getDelegatesByScoreSheetID); err != nil {
 		return nil, fmt.Errorf("error preparing query GetDelegatesByScoreSheetID: %w", err)
 	}
 	if q.getParameterByIDStmt, err = db.PrepareContext(ctx, getParameterByID); err != nil {
 		return nil, fmt.Errorf("error preparing query GetParameterByID: %w", err)
+	}
+	if q.getParameterByScoreSheetIDAndNameStmt, err = db.PrepareContext(ctx, getParameterByScoreSheetIDAndName); err != nil {
+		return nil, fmt.Errorf("error preparing query GetParameterByScoreSheetIDAndName: %w", err)
 	}
 	if q.getParametersByScoreSheetIDStmt, err = db.PrepareContext(ctx, getParametersByScoreSheetID); err != nil {
 		return nil, fmt.Errorf("error preparing query GetParametersByScoreSheetID: %w", err)
@@ -212,6 +218,11 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing getDelegateByIDStmt: %w", cerr)
 		}
 	}
+	if q.getDelegateByScoreSheetIDAndNameStmt != nil {
+		if cerr := q.getDelegateByScoreSheetIDAndNameStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getDelegateByScoreSheetIDAndNameStmt: %w", cerr)
+		}
+	}
 	if q.getDelegatesByScoreSheetIDStmt != nil {
 		if cerr := q.getDelegatesByScoreSheetIDStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing getDelegatesByScoreSheetIDStmt: %w", cerr)
@@ -220,6 +231,11 @@ func (q *Queries) Close() error {
 	if q.getParameterByIDStmt != nil {
 		if cerr := q.getParameterByIDStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing getParameterByIDStmt: %w", cerr)
+		}
+	}
+	if q.getParameterByScoreSheetIDAndNameStmt != nil {
+		if cerr := q.getParameterByScoreSheetIDAndNameStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getParameterByScoreSheetIDAndNameStmt: %w", cerr)
 		}
 	}
 	if q.getParametersByScoreSheetIDStmt != nil {
@@ -354,85 +370,89 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db                              DBTX
-	tx                              *sql.Tx
-	createDelegateStmt              *sql.Stmt
-	createParameterStmt             *sql.Stmt
-	createScoreStmt                 *sql.Stmt
-	createSessionStmt               *sql.Stmt
-	createSheetStmt                 *sql.Stmt
-	createUserStmt                  *sql.Stmt
-	deleteDelegateStmt              *sql.Stmt
-	deleteParameterStmt             *sql.Stmt
-	deleteScoreStmt                 *sql.Stmt
-	deleteSessionByIDStmt           *sql.Stmt
-	deleteSessionsByUserIDStmt      *sql.Stmt
-	deleteSheetStmt                 *sql.Stmt
-	deleteSheetsByUserIDStmt        *sql.Stmt
-	deleteUserStmt                  *sql.Stmt
-	getDelegateByIDStmt             *sql.Stmt
-	getDelegatesByScoreSheetIDStmt  *sql.Stmt
-	getParameterByIDStmt            *sql.Stmt
-	getParametersByScoreSheetIDStmt *sql.Stmt
-	getScoreByIDStmt                *sql.Stmt
-	getScoresByDelegateIDStmt       *sql.Stmt
-	getScoresByParameterIDStmt      *sql.Stmt
-	getSessionByIDStmt              *sql.Stmt
-	getSessionsByRefreshTokenStmt   *sql.Stmt
-	getSessionsByUserIDStmt         *sql.Stmt
-	getSheetByIDStmt                *sql.Stmt
-	getSheetWithDetailsByIDStmt     *sql.Stmt
-	getSheetsByUserIDStmt           *sql.Stmt
-	getUserByEmailStmt              *sql.Stmt
-	getUserByIDStmt                 *sql.Stmt
-	touchScoreSheetStmt             *sql.Stmt
-	updateDelegateNameStmt          *sql.Stmt
-	updateParameterStmt             *sql.Stmt
-	updateScoreStmt                 *sql.Stmt
-	updateSessionExpirationStmt     *sql.Stmt
-	updateSheetStmt                 *sql.Stmt
-	updateUserStmt                  *sql.Stmt
+	db                                    DBTX
+	tx                                    *sql.Tx
+	createDelegateStmt                    *sql.Stmt
+	createParameterStmt                   *sql.Stmt
+	createScoreStmt                       *sql.Stmt
+	createSessionStmt                     *sql.Stmt
+	createSheetStmt                       *sql.Stmt
+	createUserStmt                        *sql.Stmt
+	deleteDelegateStmt                    *sql.Stmt
+	deleteParameterStmt                   *sql.Stmt
+	deleteScoreStmt                       *sql.Stmt
+	deleteSessionByIDStmt                 *sql.Stmt
+	deleteSessionsByUserIDStmt            *sql.Stmt
+	deleteSheetStmt                       *sql.Stmt
+	deleteSheetsByUserIDStmt              *sql.Stmt
+	deleteUserStmt                        *sql.Stmt
+	getDelegateByIDStmt                   *sql.Stmt
+	getDelegateByScoreSheetIDAndNameStmt  *sql.Stmt
+	getDelegatesByScoreSheetIDStmt        *sql.Stmt
+	getParameterByIDStmt                  *sql.Stmt
+	getParameterByScoreSheetIDAndNameStmt *sql.Stmt
+	getParametersByScoreSheetIDStmt       *sql.Stmt
+	getScoreByIDStmt                      *sql.Stmt
+	getScoresByDelegateIDStmt             *sql.Stmt
+	getScoresByParameterIDStmt            *sql.Stmt
+	getSessionByIDStmt                    *sql.Stmt
+	getSessionsByRefreshTokenStmt         *sql.Stmt
+	getSessionsByUserIDStmt               *sql.Stmt
+	getSheetByIDStmt                      *sql.Stmt
+	getSheetWithDetailsByIDStmt           *sql.Stmt
+	getSheetsByUserIDStmt                 *sql.Stmt
+	getUserByEmailStmt                    *sql.Stmt
+	getUserByIDStmt                       *sql.Stmt
+	touchScoreSheetStmt                   *sql.Stmt
+	updateDelegateNameStmt                *sql.Stmt
+	updateParameterStmt                   *sql.Stmt
+	updateScoreStmt                       *sql.Stmt
+	updateSessionExpirationStmt           *sql.Stmt
+	updateSheetStmt                       *sql.Stmt
+	updateUserStmt                        *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:                              tx,
-		tx:                              tx,
-		createDelegateStmt:              q.createDelegateStmt,
-		createParameterStmt:             q.createParameterStmt,
-		createScoreStmt:                 q.createScoreStmt,
-		createSessionStmt:               q.createSessionStmt,
-		createSheetStmt:                 q.createSheetStmt,
-		createUserStmt:                  q.createUserStmt,
-		deleteDelegateStmt:              q.deleteDelegateStmt,
-		deleteParameterStmt:             q.deleteParameterStmt,
-		deleteScoreStmt:                 q.deleteScoreStmt,
-		deleteSessionByIDStmt:           q.deleteSessionByIDStmt,
-		deleteSessionsByUserIDStmt:      q.deleteSessionsByUserIDStmt,
-		deleteSheetStmt:                 q.deleteSheetStmt,
-		deleteSheetsByUserIDStmt:        q.deleteSheetsByUserIDStmt,
-		deleteUserStmt:                  q.deleteUserStmt,
-		getDelegateByIDStmt:             q.getDelegateByIDStmt,
-		getDelegatesByScoreSheetIDStmt:  q.getDelegatesByScoreSheetIDStmt,
-		getParameterByIDStmt:            q.getParameterByIDStmt,
-		getParametersByScoreSheetIDStmt: q.getParametersByScoreSheetIDStmt,
-		getScoreByIDStmt:                q.getScoreByIDStmt,
-		getScoresByDelegateIDStmt:       q.getScoresByDelegateIDStmt,
-		getScoresByParameterIDStmt:      q.getScoresByParameterIDStmt,
-		getSessionByIDStmt:              q.getSessionByIDStmt,
-		getSessionsByRefreshTokenStmt:   q.getSessionsByRefreshTokenStmt,
-		getSessionsByUserIDStmt:         q.getSessionsByUserIDStmt,
-		getSheetByIDStmt:                q.getSheetByIDStmt,
-		getSheetWithDetailsByIDStmt:     q.getSheetWithDetailsByIDStmt,
-		getSheetsByUserIDStmt:           q.getSheetsByUserIDStmt,
-		getUserByEmailStmt:              q.getUserByEmailStmt,
-		getUserByIDStmt:                 q.getUserByIDStmt,
-		touchScoreSheetStmt:             q.touchScoreSheetStmt,
-		updateDelegateNameStmt:          q.updateDelegateNameStmt,
-		updateParameterStmt:             q.updateParameterStmt,
-		updateScoreStmt:                 q.updateScoreStmt,
-		updateSessionExpirationStmt:     q.updateSessionExpirationStmt,
-		updateSheetStmt:                 q.updateSheetStmt,
-		updateUserStmt:                  q.updateUserStmt,
+		db:                                    tx,
+		tx:                                    tx,
+		createDelegateStmt:                    q.createDelegateStmt,
+		createParameterStmt:                   q.createParameterStmt,
+		createScoreStmt:                       q.createScoreStmt,
+		createSessionStmt:                     q.createSessionStmt,
+		createSheetStmt:                       q.createSheetStmt,
+		createUserStmt:                        q.createUserStmt,
+		deleteDelegateStmt:                    q.deleteDelegateStmt,
+		deleteParameterStmt:                   q.deleteParameterStmt,
+		deleteScoreStmt:                       q.deleteScoreStmt,
+		deleteSessionByIDStmt:                 q.deleteSessionByIDStmt,
+		deleteSessionsByUserIDStmt:            q.deleteSessionsByUserIDStmt,
+		deleteSheetStmt:                       q.deleteSheetStmt,
+		deleteSheetsByUserIDStmt:              q.deleteSheetsByUserIDStmt,
+		deleteUserStmt:                        q.deleteUserStmt,
+		getDelegateByIDStmt:                   q.getDelegateByIDStmt,
+		getDelegateByScoreSheetIDAndNameStmt:  q.getDelegateByScoreSheetIDAndNameStmt,
+		getDelegatesByScoreSheetIDStmt:        q.getDelegatesByScoreSheetIDStmt,
+		getParameterByIDStmt:                  q.getParameterByIDStmt,
+		getParameterByScoreSheetIDAndNameStmt: q.getParameterByScoreSheetIDAndNameStmt,
+		getParametersByScoreSheetIDStmt:       q.getParametersByScoreSheetIDStmt,
+		getScoreByIDStmt:                      q.getScoreByIDStmt,
+		getScoresByDelegateIDStmt:             q.getScoresByDelegateIDStmt,
+		getScoresByParameterIDStmt:            q.getScoresByParameterIDStmt,
+		getSessionByIDStmt:                    q.getSessionByIDStmt,
+		getSessionsByRefreshTokenStmt:         q.getSessionsByRefreshTokenStmt,
+		getSessionsByUserIDStmt:               q.getSessionsByUserIDStmt,
+		getSheetByIDStmt:                      q.getSheetByIDStmt,
+		getSheetWithDetailsByIDStmt:           q.getSheetWithDetailsByIDStmt,
+		getSheetsByUserIDStmt:                 q.getSheetsByUserIDStmt,
+		getUserByEmailStmt:                    q.getUserByEmailStmt,
+		getUserByIDStmt:                       q.getUserByIDStmt,
+		touchScoreSheetStmt:                   q.touchScoreSheetStmt,
+		updateDelegateNameStmt:                q.updateDelegateNameStmt,
+		updateParameterStmt:                   q.updateParameterStmt,
+		updateScoreStmt:                       q.updateScoreStmt,
+		updateSessionExpirationStmt:           q.updateSessionExpirationStmt,
+		updateSheetStmt:                       q.updateSheetStmt,
+		updateUserStmt:                        q.updateUserStmt,
 	}
 }

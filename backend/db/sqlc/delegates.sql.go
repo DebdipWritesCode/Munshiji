@@ -52,6 +52,23 @@ func (q *Queries) GetDelegateByID(ctx context.Context, id int32) (Delegate, erro
 	return i, err
 }
 
+const getDelegateByScoreSheetIDAndName = `-- name: GetDelegateByScoreSheetIDAndName :one
+SELECT id, score_sheet_id, name FROM delegates
+WHERE score_sheet_id = $1 AND name = $2
+`
+
+type GetDelegateByScoreSheetIDAndNameParams struct {
+	ScoreSheetID int32  `json:"score_sheet_id"`
+	Name         string `json:"name"`
+}
+
+func (q *Queries) GetDelegateByScoreSheetIDAndName(ctx context.Context, arg GetDelegateByScoreSheetIDAndNameParams) (Delegate, error) {
+	row := q.queryRow(ctx, q.getDelegateByScoreSheetIDAndNameStmt, getDelegateByScoreSheetIDAndName, arg.ScoreSheetID, arg.Name)
+	var i Delegate
+	err := row.Scan(&i.ID, &i.ScoreSheetID, &i.Name)
+	return i, err
+}
+
 const getDelegatesByScoreSheetID = `-- name: GetDelegatesByScoreSheetID :many
 SELECT id, score_sheet_id, name FROM delegates
 WHERE score_sheet_id = $1

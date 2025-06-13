@@ -10,6 +10,10 @@ RETURNING *;
 SELECT * FROM delegates
 WHERE id = $1;
 
+-- name: GetDelegateByScoreSheetIDAndName :one
+SELECT * FROM delegates
+WHERE score_sheet_id = $1 AND name = $2;
+
 -- name: GetDelegatesByScoreSheetID :many
 SELECT * FROM delegates
 WHERE score_sheet_id = $1;

@@ -7,6 +7,7 @@ import (
 	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/val"
+	"github.com/lib/pq"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -18,6 +19,26 @@ func (server *Server) UpdateDelegateNameByID(ctx context.Context, req *pb.Update
 		return nil, invalidArgumentError(violations)
 	}
 
+	dl, err := server.store.GetDelegateByID(ctx, req.GetDelegateId())
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, status.Errorf(codes.NotFound, "delegate with ID %d not found", req.GetDelegateId())
+		}
+		return nil, status.Errorf(codes.Internal, "failed to retrieve delegate: %v", err)
+	}
+
+	existing, err := server.store.GetDelegateByScoreSheetIDAndName(ctx, db.GetDelegateByScoreSheetIDAndNameParams{
+		ScoreSheetID: dl.ScoreSheetID,
+		Name:         req.GetName(),
+	})
+
+	if err == nil && existing.ID != dl.ID {
+		return nil, status.Errorf(codes.AlreadyExists, "delegate with name %s already exists in score sheet %d", req.GetName(), dl.ScoreSheetID)
+	}
+	if err != nil && err != sql.ErrNoRows {
+		return nil, status.Errorf(codes.Internal, "failed to check for existing delegate: %v", err)
+	}
+
 	arg := db.UpdateDelegateNameParams{
 		ID:   req.GetDelegateId(),
 		Name: req.GetName(),
@@ -27,6 +48,9 @@ func (server *Server) UpdateDelegateNameByID(ctx context.Context, req *pb.Update
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "delegate with ID %d not found", req.GetDelegateId())
+		}
+		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code.Name() == "unique_violation" {
+			return nil, status.Errorf(codes.AlreadyExists, "delegate with name %s already exists", req.GetName())
 		}
 		return nil, status.Errorf(codes.Internal, "failed to update delegate: %v", err)
 	}

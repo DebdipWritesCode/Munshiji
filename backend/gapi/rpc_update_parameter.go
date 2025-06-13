@@ -7,6 +7,7 @@ import (
 	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/val"
+	"github.com/lib/pq"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,6 +17,26 @@ func (server *Server) UpdateParameter(ctx context.Context, req *pb.UpdateParamet
 	violations := validateUpdateParameterRequest(req)
 	if len(violations) > 0 {
 		return nil, invalidArgumentError(violations)
+	}
+
+	pr, err := server.store.GetParameterByID(ctx, req.GetParameterId())
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, status.Errorf(codes.NotFound, "parameter with ID %d not found", req.GetParameterId())
+		}
+		return nil, status.Errorf(codes.Internal, "failed to retrieve parameter: %v", err)
+	}
+
+	existing, err := server.store.GetDelegateByScoreSheetIDAndName(ctx, db.GetDelegateByScoreSheetIDAndNameParams{
+		ScoreSheetID: pr.ScoreSheetID,
+		Name:         req.GetName(),
+	})
+
+	if err == nil && existing.ID != pr.ID {
+		return nil, status.Errorf(codes.AlreadyExists, "parameter with name %s already exists in score sheet %d", req.GetName(), pr.ScoreSheetID)
+	}
+	if err != nil && err != sql.ErrNoRows {
+		return nil, status.Errorf(codes.Internal, "failed to check for existing parameter: %v", err)
 	}
 
 	arg := db.UpdateParameterParams{
@@ -54,6 +75,9 @@ func (server *Server) UpdateParameter(ctx context.Context, req *pb.UpdateParamet
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "parameter with ID %d not found", req.GetParameterId())
+		}
+		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code.Name() == "unique_violation" {
+			return nil, status.Errorf(codes.AlreadyExists, "parameter with name %s already exists on score sheet %d", req.GetName(), pr.ScoreSheetID)
 		}
 		return nil, status.Errorf(codes.Internal, "failed to update parameter: %v", err)
 	}

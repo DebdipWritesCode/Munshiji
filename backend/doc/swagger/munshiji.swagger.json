@@ -193,6 +193,37 @@
       }
     },
     "/v1/delegate/{delegateId}": {
+      "get": {
+        "summary": "Get delegate by ID",
+        "description": "This endpoint retrieves a delegate by their unique ID.",
+        "operationId": "Munshiji_GetDelegateById2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetDelegateByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "delegateId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Delegate Management"
+        ]
+      },
       "delete": {
         "summary": "Delete a delegate",
         "description": "This endpoint allows the deletion of a delegate by their unique ID.",
@@ -362,6 +393,72 @@
         ]
       }
     },
+    "/v1/get_delegate_by_id/{delegateId}": {
+      "get": {
+        "summary": "Get delegate by ID",
+        "description": "This endpoint retrieves a delegate by their unique ID.",
+        "operationId": "Munshiji_GetDelegateById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetDelegateByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "delegateId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Delegate Management"
+        ]
+      }
+    },
+    "/v1/get_parameter_by_id/{parameterId}": {
+      "get": {
+        "summary": "Get parameter by ID",
+        "description": "This endpoint retrieves a parameter by its unique ID.",
+        "operationId": "Munshiji_GetParameterById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetParameterByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "parameterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Parameter Management"
+        ]
+      }
+    },
     "/v1/get_score_sheet_by_user_id/{userId}": {
       "get": {
         "summary": "Get score sheets by user ID",
@@ -496,6 +593,37 @@
       }
     },
     "/v1/parameter/{parameterId}": {
+      "get": {
+        "summary": "Get parameter by ID",
+        "description": "This endpoint retrieves a parameter by its unique ID.",
+        "operationId": "Munshiji_GetParameterById2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetParameterByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "parameterId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Parameter Management"
+        ]
+      },
       "delete": {
         "summary": "Delete a parameter",
         "description": "This endpoint allows the deletion of a parameter by its unique ID.",
@@ -1024,6 +1152,22 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "pbGetDelegateByIdResponse": {
+      "type": "object",
+      "properties": {
+        "delegate": {
+          "$ref": "#/definitions/pbDelegate"
+        }
+      }
+    },
+    "pbGetParameterByIdResponse": {
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "$ref": "#/definitions/pbParameter"
         }
       }
     },

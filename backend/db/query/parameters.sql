@@ -12,6 +12,10 @@ RETURNING *;
 SELECT * FROM parameters
 WHERE id = $1;
 
+-- name: GetParameterByScoreSheetIDAndName :one
+SELECT * FROM parameters
+WHERE score_sheet_id = $1 AND name = $2;
+
 -- name: GetParametersByScoreSheetID :many
 SELECT * FROM parameters
 WHERE score_sheet_id = $1
