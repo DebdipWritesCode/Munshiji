@@ -384,8 +384,8 @@ const CreateParameterForm: React.FC<CreateParameterFormProps> = ({
               ? "Creating..."
               : "Updating..."
             : isCreate
-            ? "Create Score Sheet"
-            : "Update Score Sheet"}
+            ? "Create Parameter"
+            : "Update Parameter"}
         </Button>
       </form>
 

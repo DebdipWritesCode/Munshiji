@@ -9,6 +9,7 @@ import ToastComponent from "../ToastComponent";
 import { Button } from "../ui/button";
 import { DialogHeader } from "../ui/dialog";
 import CreateParameterForm from "./CreateParameterForm";
+import { Pen } from "lucide-react";
 
 interface CreateParameterDialogProps {
   isCreate?: boolean;
@@ -43,8 +44,8 @@ const CreateParameterDialog: React.FC<CreateParameterDialogProps> = ({
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={btn_Variant} className={btn_ClassName}>
-            {isCreate ? "Create Parameter" : "Edit"}
+          <Button variant={btn_Variant} className={btn_ClassName} type="button">
+            {isCreate ? "Create Parameter" : <Pen />}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">

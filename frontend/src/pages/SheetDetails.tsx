@@ -1,5 +1,6 @@
 import api from "@/api/axios";
 import LogoutDialog from "@/components/auth/LogoutDialog";
+import CreateDelegateButton from "@/components/delegate/CreateDelegateButton";
 import CreateParameterDialog from "@/components/parameter/CreateParameterDialog";
 import ScoreTable from "@/components/table/ScoreTable";
 import ToastComponent from "@/components/ToastComponent";
@@ -133,12 +134,17 @@ const SheetDetails = () => {
           <CreateParameterDialog
             isCreate={true}
             score_sheet_id={score_sheet_id}
+            btn_ClassName="bg-blue-700 text-white"
           />
         </div>
       )}
 
-      {!loading && !error && (
-        <ScoreTable />
+      {!loading && !error && <ScoreTable />}
+
+      {!loading && !error && scoreSheet && scoreSheet.id > 0 && (
+        <div className="w-full">
+          <CreateDelegateButton score_sheet_id={score_sheet_id} />
+        </div>
       )}
 
       <ToastComponent />
