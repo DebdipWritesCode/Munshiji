@@ -53,13 +53,19 @@ const SheetDetails = () => {
         if (response.data.parameters) {
           const parameters = sortById(response.data.parameters);
           dispatch(setParameters(parameters));
+        } else {
+          dispatch(setParameters([]));
         }
         if (response.data.delegates) {
           const delegates = sortById(response.data.delegates);
           dispatch(setDelegates(delegates));
+        } else {
+          dispatch(setDelegates([]));
         }
         if (response.data.scores) {
           dispatch(setScores(response.data.scores));
+        } else {
+          dispatch(setScores([]));
         }
       } else {
         toast.error("Unexpected response from server");
@@ -82,7 +88,7 @@ const SheetDetails = () => {
     if (score_sheet_id && !isNaN(score_sheet_id) && score_sheet_id > 0) {
       fetchScoreSheetDetails();
     }
-  }, [score_sheet_id]);
+  }, [score_sheet_id, dispatch]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fbfcff] via-[#EDEFFF] to-[#D4E0FF] p-6 flex items-center pt-8 flex-col gap-6">
