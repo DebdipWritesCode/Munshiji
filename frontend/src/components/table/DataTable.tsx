@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import React from "react";
 import CreateParameterDialog from "../parameter/CreateParameterDialog";
+import DelegateNameCell from "./DelegateNameCell";
 
 export interface CustomColumn<T> {
   id?: string;
@@ -71,7 +72,20 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
               <TableRow key={rowIndex}>
                 {columns.map((column, colIndex) => (
                   <TableCell key={column.id ?? colIndex}>
-                    {column.cell(row)}
+                    {
+                      column.header === "Delegate" ? (
+                        <DelegateNameCell 
+                          delegateName={
+                            column.cell(row) && (column.cell(row) as any).props && (column.cell(row) as any).props.children
+                              ? ((column.cell(row) as any).props.children as string)
+                              : ""
+                          }
+                          delegate_id={(row as any).delegate_id as number}
+                          />
+                      ) : (
+                        column.cell(row)
+                      )
+                    }
                   </TableCell>
                 ))}
               </TableRow>

@@ -84,8 +84,6 @@ const DeleteDialog: React.FC<DeleteDialogProps> = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <ToastComponent />
     </>
   );
 };
