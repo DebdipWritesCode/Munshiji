@@ -17,6 +17,7 @@ import {
   updateScore,
   updateScoreNote,
 } from "@/slices/sheetDetailsSlice";
+import { useState } from "react";
 
 interface ScoreDropdownProps {
   scores: TableScore[];
@@ -29,12 +30,15 @@ const ScoreDropdown: React.FC<ScoreDropdownProps> = ({
   parameter_id,
   delegate_id,
 }) => {
+  const [tempValues, setTempValues] = useState<Record<number, string>>({});
+  const [tempNotes, setTempNotes] = useState<Record<number, string>>({});
+
   const dispatch = useDispatch();
 
   const scoreValueChangeHandler = async (id: number, value: number) => {
     const uri = `/update_score`;
     const updateScoreOptions = {
-      id: id,
+      score_id: id,
       value: value,
     };
 
@@ -57,7 +61,7 @@ const ScoreDropdown: React.FC<ScoreDropdownProps> = ({
   const scoreNoteChangeHandler = async (id: number, note: string) => {
     const uri = `/update_score`;
     const updateScoreOptions = {
-      id: id,
+      score_id: id,
       note: note,
     };
 
@@ -89,9 +93,11 @@ const ScoreDropdown: React.FC<ScoreDropdownProps> = ({
     try {
       const response = await api.post(uri, newScoreOptions);
       if (response.status === 200) {
-        const newScore = response.data;
+        const newScore = {
+          ...response.data.score,
+          score_id: response.data.id, 
+        };
         dispatch(addNewScore(newScore));
-        toast.success("Score added!");
       } else {
         toast.error("Unexpected response from server");
       }
@@ -129,26 +135,48 @@ const ScoreDropdown: React.FC<ScoreDropdownProps> = ({
       <DropdownMenuTrigger>
         <ChevronDown className=" cursor-pointer" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-64 max-h-72 overflow-y-auto bg-slate-100 rounded-lg shadow-lg border border-gray-200 p-2 space-y-2">
         {scores.map((score) => (
-          <DropdownMenuItem key={score.score_id} className="">
-            <div className="">
+          <DropdownMenuItem
+            key={score.score_id}
+            onSelect={(e) => {
+              e.preventDefault();
+            }}>
+            <div className="flex">
               <Input
                 type="number"
-                value={score.value ?? ""}
+                step={0.01}
+                value={tempValues[score.score_id] ?? String(score.value)}
                 onChange={(e) => {
-                  const newValue = parseFloat(e.target.value);
-                  if (!isNaN(newValue)) {
-                    scoreValueChangeHandler(score.score_id, newValue);
+                  const val = e.target.value;
+                  setTempValues((prev) => ({ ...prev, [score.score_id]: val }));
+
+                  const num = parseFloat(val);
+                  if (!isNaN(num)) {
+                    scoreValueChangeHandler(score.score_id, num);
+                  }
+                }}
+                onBlur={(e) => {
+                  if (e.target.value === "") {
+                    setTempValues((prev) => ({
+                      ...prev,
+                      [score.score_id]: "0",
+                    }));
+                    scoreValueChangeHandler(score.score_id, 0);
                   }
                 }}
               />
               <Input
                 type="text"
-                value={score.note ?? ""}
+                maxLength={5}
+                value={tempNotes[score.score_id] ?? score.note ?? ""}
                 placeholder="Note"
                 onChange={(e) => {
-                  const newNote = e.target.value;
+                  const newNote = e.target.value.trim();
+                  setTempNotes((prev) => ({
+                    ...prev,
+                    [score.score_id]: newNote,
+                  }));
                   scoreNoteChangeHandler(score.score_id, newNote);
                 }}
               />
@@ -157,7 +185,7 @@ const ScoreDropdown: React.FC<ScoreDropdownProps> = ({
               type="button"
               variant="destructive"
               onClick={() => deleteScoreHandler(score.score_id)}>
-              <Trash />
+              <Trash color="white" />
             </Button>
           </DropdownMenuItem>
         ))}

@@ -51,6 +51,16 @@ const ScoreTable = () => {
       id: "delegate_name",
       header: "Delegate",
       cell: (row) => <p>{row.name}</p>,
+      parameterProps: {
+        id: undefined,
+        name: "",
+        rule_type: "",
+        is_special_parameter: false,
+        special_scores_rule: "",
+        special_length_rule: "",
+        score_weight: 0,
+        length_weight: 0,
+      },
     },
     ...parameters.map((param) => ({
       id: `param_${param.id}`,
@@ -72,6 +82,16 @@ const ScoreTable = () => {
             valueToDisplay={valueToDisplay}
           />
         );
+      },
+      parameterProps: {
+        id: param.id,
+        name: param.name,
+        rule_type: param.rule_type,
+        is_special_parameter: param.is_special_parameter,
+        special_scores_rule: param.special_scores_rule,
+        special_length_rule: param.special_length_rule,
+        score_weight: param.score_weight,
+        length_weight: param.length_weight,
       },
     })),
     {

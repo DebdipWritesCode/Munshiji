@@ -16,13 +16,17 @@ function getCellRenderer(key: string): (info: any) => string {
     : (info) => Number(info.getValue()).toFixed(2);
 }
 
+function roundTwoDecimals(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
 function calculateTotalForAverageRuleType(scores: TableScore[]) {
   const total = scores.reduce((acc, score) => acc + (score.value || 0), 0);
-  return total / scores.length || 0;
+  return roundTwoDecimals(total / scores.length || 0);
 }
 
 function calculateTotalForAbsoluteRuleType(scores: TableScore[]) {
-  return scores.reduce((acc, score) => acc + (score.value || 0), 0);
+  return roundTwoDecimals(scores.reduce((acc, score) => acc + (score.value || 0), 0));
 }
 
 function calculateTotalForSpecialRuleType(
@@ -31,6 +35,11 @@ function calculateTotalForSpecialRuleType(
   score_weight: number,
   length_weight: number
 ) {
+  // console.log("Scores:", scores);
+  // console.log("Special Scores Rule:", special_scores_rule);
+  // console.log("Score Weight:", score_weight);
+  // console.log("Length Weight:", length_weight);
+
   let totalValueScore = 0;
   let totalLengthScore = scores.length;
 
@@ -40,7 +49,7 @@ function calculateTotalForSpecialRuleType(
     totalValueScore = calculateTotalForAbsoluteRuleType(scores);
   }
 
-  return totalValueScore * score_weight + totalLengthScore * length_weight;
+  return roundTwoDecimals(totalValueScore * score_weight + totalLengthScore * length_weight);
 }
 
 export function setTableColumns(parameters: Parameter[]): ColumnDef<any>[] {
@@ -97,6 +106,7 @@ export function prepareTableData(
 }
 
 export function calculateRuleWiseTotal(parameterData: TableParameter) {
+  // console.log("Parameter Data:", parameterData);
   switch (parameterData.rule_type) {
     case "average":
       return calculateTotalForAverageRuleType(parameterData.scores);
@@ -116,8 +126,8 @@ export function calculateRuleWiseTotal(parameterData: TableParameter) {
 }
 
 export function calculateTotalScore(parameterData: TableParameter[]): number {
-  return parameterData.reduce((total, param) => {
+  return roundTwoDecimals(parameterData.reduce((total, param) => {
     const ruleWiseTotal = calculateRuleWiseTotal(param);
     return total + ruleWiseTotal;
-  }, 0);
+  }, 0));
 }

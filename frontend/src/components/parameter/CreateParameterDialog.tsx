@@ -18,7 +18,7 @@ interface CreateParameterDialogProps {
   name?: string;
   rule_type?: string;
   is_special_parameter?: string;
-  special_score_rule?: string;
+  special_scores_rule?: string;
   special_length_rule?: string;
   score_weight?: number;
   length_weight?: number;
@@ -33,7 +33,7 @@ const CreateParameterDialog: React.FC<CreateParameterDialogProps> = ({
   name = "",
   rule_type = "",
   is_special_parameter = "",
-  special_score_rule = "",
+  special_scores_rule = "",
   special_length_rule = "",
   score_weight = 1.0,
   length_weight = 1.0,
@@ -67,7 +67,7 @@ const CreateParameterDialog: React.FC<CreateParameterDialogProps> = ({
               name={name}
               rule_type={rule_type}
               is_special_parameter={is_special_parameter}
-              special_score_rule={special_score_rule}
+              special_scores_rule={special_scores_rule}
               special_length_rule={special_length_rule}
               score_weight={score_weight}
               length_weight={length_weight}

@@ -15,7 +15,7 @@ const Cell: React.FC<CellProps> = ({
   valueToDisplay,
 }) => {
   return (
-    <div className="">
+    <div className="flex justify-between items-center gap-4">
       <p>{valueToDisplay}</p>
       <ScoreDropdown
         scores={scores}

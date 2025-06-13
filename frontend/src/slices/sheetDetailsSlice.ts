@@ -41,7 +41,7 @@ const sheetDetails = createSlice({
       state.scores = action.payload;
     },
     addNewScore: (state, action) => {
-      state.scores.push(action.payload);
+      state.scores = [...state.scores, action.payload];
     },
     updateScore: (state, action) => {
       const { id, value } = action.payload;

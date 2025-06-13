@@ -34,7 +34,7 @@ interface CreateParameterFormProps {
   name?: string;
   rule_type?: string;
   is_special_parameter?: string;
-  special_score_rule?: string;
+  special_scores_rule?: string;
   special_length_rule?: string;
   score_weight?: number;
   length_weight?: number;
@@ -54,7 +54,7 @@ const createParameterFormSchema = z.object({
   is_special_parameter: z
     .union([z.literal("true"), z.literal("false")])
     .optional(),
-  special_score_rule: z
+  special_scores_rule: z
     .enum(["average", "absolute"], {
       errorMap: () => ({
         message: "Special Score Rule must be average or absolute",
@@ -101,7 +101,7 @@ const CreateParameterForm: React.FC<CreateParameterFormProps> = ({
   score_sheet_id,
   rule_type,
   is_special_parameter,
-  special_score_rule,
+  special_scores_rule,
   special_length_rule,
   score_weight,
   length_weight,
@@ -120,9 +120,9 @@ const CreateParameterForm: React.FC<CreateParameterFormProps> = ({
           ? rule_type
           : "average",
       is_special_parameter: is_special_parameter === "true" ? "true" : "false",
-      special_score_rule:
-        special_score_rule === "average" || special_score_rule === "absolute"
-          ? special_score_rule
+      special_scores_rule:
+        special_scores_rule === "average" || special_scores_rule === "absolute"
+          ? special_scores_rule
           : "average",
       special_length_rule:
         special_length_rule === "average" || special_length_rule === "absolute"
@@ -284,7 +284,7 @@ const CreateParameterForm: React.FC<CreateParameterFormProps> = ({
             <div className="flex gap-4 items-center justify-between">
               <FormField
                 control={form.control}
-                name="special_score_rule"
+                name="special_scores_rule"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Special Score Rule</FormLabel>
