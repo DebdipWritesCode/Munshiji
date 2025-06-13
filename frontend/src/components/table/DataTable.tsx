@@ -29,7 +29,7 @@ export interface CustomColumn<T> {
   };
 }
 
-const minWidth = "180px"; // Default minimum width for columns
+const minWidth = "180px"; 
 
 interface DataTableProps<T> {
   columns: CustomColumn<T>[];
@@ -37,9 +37,9 @@ interface DataTableProps<T> {
 }
 
 const topColors = {
-  0: "bg-purple-50 border-l-4 border-l-purple-500",
-  1: "bg-green-50 border-l-4 border-l-green-500",
-  2: "bg-pink-50 border-l-4 border-l-pink-500",
+  0: "bg-yellow-50 border-l-4 border-l-yellow-500",
+  1: "bg-purple-50 border-l-4 border-l-purple-600",
+  2: "bg-cyan-50 border-l-4 border-l-cyan-500",
 };
 
 export function DataTable<T>({ columns, data }: DataTableProps<T>) {
