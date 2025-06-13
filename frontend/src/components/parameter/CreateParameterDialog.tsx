@@ -2,14 +2,15 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import ToastComponent from "../ToastComponent";
 import { Button } from "../ui/button";
 import { DialogHeader } from "../ui/dialog";
 import CreateParameterForm from "./CreateParameterForm";
 import { Pen } from "lucide-react";
+import DeleteDialog from "../DeleteDialog";
 
 interface CreateParameterDialogProps {
   isCreate?: boolean;
@@ -49,33 +50,41 @@ const CreateParameterDialog: React.FC<CreateParameterDialogProps> = ({
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px]">
-            <DialogHeader>
-              <DialogTitle>
-                {isCreate ? "Create Parameter" : "Edit Parameter"}
-              </DialogTitle>
-              <DialogDescription>
-                {isCreate
-                  ? "Fill in the details to create a new parameter."
-                  : "Edit the details of the selected parameter."}
-              </DialogDescription>
-            </DialogHeader>
+          <DialogHeader>
+            <DialogTitle>
+              {isCreate ? "Create Parameter" : "Edit Parameter"}
+            </DialogTitle>
+            <DialogDescription>
+              {isCreate
+                ? "Fill in the details to create a new parameter."
+                : "Edit the details of the selected parameter."}
+            </DialogDescription>
+          </DialogHeader>
 
-            <CreateParameterForm
-              isCreate={isCreate}
-              id={id}
-              score_sheet_id={score_sheet_id}
-              name={name}
-              rule_type={rule_type}
-              is_special_parameter={is_special_parameter}
-              special_scores_rule={special_scores_rule}
-              special_length_rule={special_length_rule}
-              score_weight={score_weight}
-              length_weight={length_weight}
-            />
+          <CreateParameterForm
+            isCreate={isCreate}
+            id={id}
+            score_sheet_id={score_sheet_id}
+            name={name}
+            rule_type={rule_type}
+            is_special_parameter={is_special_parameter}
+            special_scores_rule={special_scores_rule}
+            special_length_rule={special_length_rule}
+            score_weight={score_weight}
+            length_weight={length_weight}
+          />
+
+          {!isCreate && (
+            <DialogFooter className="mr-5 mt-0 pt-0">
+              <DeleteDialog
+                id={id ?? 0}
+                uri="delete_parameter"
+                deleteItem="parameter"
+              />
+            </DialogFooter>
+          )}
         </DialogContent>
       </Dialog>
-
-      <ToastComponent />
     </>
   );
 };

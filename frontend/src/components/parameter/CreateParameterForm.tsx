@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "@/api/axios";
-import ToastComponent from "../ToastComponent";
 import {
   Select,
   SelectContent,
@@ -389,7 +388,6 @@ const CreateParameterForm: React.FC<CreateParameterFormProps> = ({
         </Button>
       </form>
 
-      <ToastComponent />
     </Form>
   );
 };
