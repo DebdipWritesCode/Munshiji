@@ -25,7 +25,7 @@ type CreateParameterParams struct {
 	ScoreSheetID       int32           `json:"score_sheet_id"`
 	Name               string          `json:"name"`
 	RuleType           string          `json:"rule_type"`
-	IsSpecialParameter sql.NullBool    `json:"is_special_parameter"`
+	IsSpecialParameter bool            `json:"is_special_parameter"`
 	SpecialScoresRule  sql.NullString  `json:"special_scores_rule"`
 	SpecialLengthRule  sql.NullString  `json:"special_length_rule"`
 	ScoreWeight        sql.NullFloat64 `json:"score_weight"`

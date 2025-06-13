@@ -78,7 +78,7 @@ func ConvertParameterToProto(parameter db.Parameter) *pb.Parameter {
 		ScoreSheetId:       parameter.ScoreSheetID,
 		Name:               parameter.Name,
 		RuleType:           parameter.RuleType,
-		IsSpecialParameter: parameter.IsSpecialParameter.Bool,
+		IsSpecialParameter: parameter.IsSpecialParameter,
 		SpecialScoresRule:  parameter.SpecialScoresRule.String,
 		SpecialLengthRule:  parameter.SpecialLengthRule.String,
 		ScoreWeight:        parameter.ScoreWeight.Float64,

@@ -42,7 +42,7 @@ CREATE TABLE "parameters" (
   "score_sheet_id" integer NOT NULL,
   "name" varchar NOT NULL,
   "rule_type" varchar NOT NULL CHECK (rule_type IN ('average', 'absolute', 'special')),
-  "is_special_parameter" bool DEFAULT false,
+  "is_special_parameter" bool NOT NULL DEFAULT false,
   "special_scores_rule" varchar CHECK (special_scores_rule IN ('average', 'absolute')),
   "special_length_rule" varchar CHECK (special_length_rule IN ('average', 'absolute')),
   "score_weight" float DEFAULT 1 CHECK (score_weight >= 0 AND score_weight <= 1),

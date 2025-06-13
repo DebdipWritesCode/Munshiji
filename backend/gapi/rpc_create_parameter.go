@@ -27,13 +27,10 @@ func (server *Server) CreateParameter(ctx context.Context, req *pb.CreateParamet
 	}
 
 	arg := db.CreateParameterParams{
-		ScoreSheetID: req.GetScoreSheetId(),
-		Name:         req.GetName(),
-		RuleType:     req.GetRuleType(),
-		IsSpecialParameter: sql.NullBool{
-			Bool:  req.GetIsSpecialParameter(),
-			Valid: req.IsSpecialParameter != nil,
-		},
+		ScoreSheetID:       req.GetScoreSheetId(),
+		Name:               req.GetName(),
+		RuleType:           req.GetRuleType(),
+		IsSpecialParameter: req.GetIsSpecialParameter(),
 		SpecialScoresRule: sql.NullString{
 			String: req.GetSpecialScoresRule(),
 			Valid:  req.SpecialScoresRule != nil,

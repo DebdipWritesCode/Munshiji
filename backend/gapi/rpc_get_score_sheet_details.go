@@ -6,6 +6,7 @@ import (
 
 	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
+	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/transform"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/val"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
@@ -47,16 +48,20 @@ func (server *Server) GetScoreSheetDetails(ctx context.Context, req *pb.GetScore
 		}
 	}
 
+	var paramJSON []transform.ParameterJSON
 	if details.Parameters != nil {
-		if err := json.Unmarshal(details.Parameters, &parameters); err != nil {
+		if err := json.Unmarshal(details.Parameters, &paramJSON); err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to unmarshal parameters: %v", err)
 		}
+		parameters = transform.ConvertParametersToDB(paramJSON)
 	}
 
+	var scoreJSON []transform.ScoreJSON
 	if details.Scores != nil {
-		if err := json.Unmarshal(details.Scores, &scores); err != nil {
+		if err := json.Unmarshal(details.Scores, &scoreJSON); err != nil {
 			return nil, status.Errorf(codes.Internal, "failed to unmarshal scores: %v", err)
 		}
+		scores = transform.ConvertScoresToDB(scoreJSON)
 	}
 
 	pbDelegates := make([]*pb.Delegate, 0, len(delegates))
