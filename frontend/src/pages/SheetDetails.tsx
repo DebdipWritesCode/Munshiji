@@ -1,6 +1,7 @@
 import api from "@/api/axios";
 import LogoutDialog from "@/components/auth/LogoutDialog";
 import CreateDelegateButton from "@/components/delegate/CreateDelegateButton";
+import ExportButton from "@/components/ExportButton";
 import CreateParameterDialog from "@/components/parameter/CreateParameterDialog";
 import SortScoresButton from "@/components/SortScoresButton";
 import ScoreTable from "@/components/table/ScoreTable";
@@ -93,11 +94,14 @@ const SheetDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fbfcff] via-[#EDEFFF] to-[#D4E0FF] p-6 flex items-center pt-8 flex-col gap-6">
       <div className="flex w-full justify-between items-center h-10">
-        <div className="w-[45%]"></div>
+        <div className="w-[15%]"></div>
         <h1 className="text-4xl text-blue-900 font-normal font-heading text-center">
           Munshiji
         </h1>
-        <LogoutDialog />
+        <div className="flex gap-8 items-center">
+          <ExportButton />
+          <LogoutDialog />
+        </div>
       </div>
 
       {loading && <LoadingState />}

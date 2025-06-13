@@ -24,7 +24,7 @@ const LogoutDialog = () => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="destructive" className=" h-8 ml-auto mr-10">Logout</Button>
+          <Button variant="destructive" className=" h-8 ml-auto mr-6">Logout</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
