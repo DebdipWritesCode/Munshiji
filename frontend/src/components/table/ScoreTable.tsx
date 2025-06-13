@@ -106,7 +106,7 @@ const ScoreTable = () => {
   ];
 
   return (
-    <div className="p-4 w-full">
+    <div className="p-4 w-full flex justify-center">
       <DataTable columns={columns} data={delegateData} />
     </div>
   );
