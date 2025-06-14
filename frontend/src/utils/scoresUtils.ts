@@ -1,5 +1,5 @@
 import type { ScoreState } from "@/slices/scoresSlice";
-import type { Delegate } from "@/utils/getDataInterfaces";
+import type { Delegate, Parameter } from "@/utils/getDataInterfaces";
 
 export function calculateTotalScores(
   scores: ScoreState[]
@@ -48,4 +48,27 @@ export function sortDelegatesByScore(
   return totalScores
     .map(({ delegate_id }) => delegateMap.get(delegate_id))
     .filter((d): d is Delegate => d !== undefined); // filters out unmatched delegate_ids, if any
+}
+
+export function getDelegateScoresByName(
+  scores: ScoreState[],
+  delegateName: string,
+  delegates: Delegate[],
+  parameters: Parameter[]
+) {
+  const delegate = delegates.find(d => d.name === delegateName);
+  if (!delegate) {
+    return [];
+  }
+
+  const delegateScores = scores.filter(
+    (score) => score.delegate_id === delegate.id
+  );
+
+  const parameterMap = new Map(parameters.map(p => [p.id, p.name]));
+
+  return delegateScores.map((score) => ({
+    parameterName: parameterMap.get(score.parameter_id) || "Unknown",
+    value: score.valueToDisplay,
+  }))
 }
