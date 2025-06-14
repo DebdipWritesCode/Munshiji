@@ -13,6 +13,7 @@ type Config struct {
 	AccessTokenDuration  string `mapstructure:"ACCESS_TOKEN_DURATION"`
 	RefreshTokenDuration string `mapstructure:"REFRESH_TOKEN_DURATION"`
 	TokenSymmetricKey    string `mapstructure:"TOKEN_SYMMETRIC_KEY"`
+	OpenAIAPIKey         string `mapstructure:"OPENAI_API_KEY"`
 }
 
 func LoadConfig(path string) (Config, error) {
