@@ -1,12 +1,23 @@
 package val
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
+)
 
 func ValidateString(value string, minLength int, maxLength int) error {
 	n := len(value)
 
 	if n < minLength || n > maxLength {
 		return fmt.Errorf("value must be between %d and %d characters long, got %d", minLength, maxLength, n)
+	}
+	return nil
+}
+
+func ValidateScore(score float64) error {
+	if score < -100 || score > 100 {
+		return fmt.Errorf("score must be between -100 and 100, got %f", score)
 	}
 	return nil
 }
@@ -103,5 +114,33 @@ func ValidateSpecialConditionRule(ruleType string, isSpecialParameter *bool) err
 			return fmt.Errorf("is_special_parameter must be false or unset unless rule_type is 'special'")
 		}
 	}
+	return nil
+}
+
+func ValidateDelegateInput(delegate *pb.DelegateInput) error {
+	if err := ValidateName(delegate.GetDelegateName()); err != nil {
+		return fmt.Errorf("invalid delegate name: %w", err)
+	}
+	for _, parameter := range delegate.GetParameters() {
+		if err := ValidateParameterInput(parameter); err != nil {
+			return fmt.Errorf("invalid parameter input: %w", err)
+		}
+	}
+	return nil
+}
+
+func ValidateParameterInput(parameter *pb.ParameterInput) error {
+	if err := ValidateName(parameter.GetParameterName()); err != nil {
+		return fmt.Errorf("invalid parameter name: %w", err)
+	}
+
+	if err := ValidateScore(parameter.GetReceived()); err != nil {
+		return fmt.Errorf("invalid received score: %w", err)
+	}
+
+	if err := ValidateScore(parameter.GetHighest()); err != nil {
+		return fmt.Errorf("invalid highest score: %w", err)
+	}
+
 	return nil
 }

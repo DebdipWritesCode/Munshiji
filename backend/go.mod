@@ -12,6 +12,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/rakyll/statik v0.1.7
 	github.com/rs/zerolog v1.34.0
+	github.com/sashabaranov/go-openai v1.40.1
 	github.com/spf13/viper v1.20.1
 	golang.org/x/crypto v0.33.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
