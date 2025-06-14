@@ -57,7 +57,7 @@ func (server *Server) GetFeedbackByLLM(ctx context.Context, req *pb.GetFeedbackB
 			resultCh <- Result{
 				Delegates: b.Delegates,
 				Response:  resp,
-				Err:       fmt.Errorf("batch %d: %w", i, err),
+				Err:       err,
 			}
 		}(i, batch)
 	}
