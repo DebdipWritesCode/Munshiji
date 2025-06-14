@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	CreateAISession(ctx context.Context, arg CreateAISessionParams) (AiSession, error)
 	CreateDelegate(ctx context.Context, arg CreateDelegateParams) (Delegate, error)
 	CreateParameter(ctx context.Context, arg CreateParameterParams) (Parameter, error)
 	CreateScore(ctx context.Context, arg CreateScoreParams) (Score, error)
@@ -16,6 +17,7 @@ type Querier interface {
 	CreateSheet(ctx context.Context, arg CreateSheetParams) (ScoreSheet, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteDelegate(ctx context.Context, id int32) error
+	DeleteExpiredAISessions(ctx context.Context, userID int32) error
 	DeleteParameter(ctx context.Context, id int32) error
 	DeleteScore(ctx context.Context, id int32) error
 	DeleteSessionByID(ctx context.Context, id int32) error
@@ -23,6 +25,7 @@ type Querier interface {
 	DeleteSheet(ctx context.Context, id int32) error
 	DeleteSheetsByUserID(ctx context.Context, createdBy int32) error
 	DeleteUser(ctx context.Context, id int32) error
+	GetAISessionsByUserID(ctx context.Context, userID int32) ([]AiSession, error)
 	GetDelegateByID(ctx context.Context, id int32) (Delegate, error)
 	GetDelegateByScoreSheetIDAndName(ctx context.Context, arg GetDelegateByScoreSheetIDAndNameParams) (Delegate, error)
 	GetDelegatesByScoreSheetID(ctx context.Context, scoreSheetID int32) ([]Delegate, error)

@@ -40,6 +40,7 @@ const (
 	Munshiji_GetParameterById_FullMethodName       = "/pb.Munshiji/GetParameterById"
 	Munshiji_UpdateParameter_FullMethodName        = "/pb.Munshiji/UpdateParameter"
 	Munshiji_DeleteParameter_FullMethodName        = "/pb.Munshiji/DeleteParameter"
+	Munshiji_GetFeedbackByLLM_FullMethodName       = "/pb.Munshiji/GetFeedbackByLLM"
 )
 
 // MunshijiClient is the client API for Munshiji service.
@@ -66,6 +67,7 @@ type MunshijiClient interface {
 	GetParameterById(ctx context.Context, in *GetParameterByIdRequest, opts ...grpc.CallOption) (*GetParameterByIdResponse, error)
 	UpdateParameter(ctx context.Context, in *UpdateParameterRequest, opts ...grpc.CallOption) (*UpdateParameterResponse, error)
 	DeleteParameter(ctx context.Context, in *DeleteParameterRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	GetFeedbackByLLM(ctx context.Context, in *GetFeedbackByLLMRequest, opts ...grpc.CallOption) (*GetFeedbackByLLMResponse, error)
 }
 
 type munshijiClient struct {
@@ -276,6 +278,16 @@ func (c *munshijiClient) DeleteParameter(ctx context.Context, in *DeleteParamete
 	return out, nil
 }
 
+func (c *munshijiClient) GetFeedbackByLLM(ctx context.Context, in *GetFeedbackByLLMRequest, opts ...grpc.CallOption) (*GetFeedbackByLLMResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetFeedbackByLLMResponse)
+	err := c.cc.Invoke(ctx, Munshiji_GetFeedbackByLLM_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MunshijiServer is the server API for Munshiji service.
 // All implementations must embed UnimplementedMunshijiServer
 // for forward compatibility.
@@ -300,6 +312,7 @@ type MunshijiServer interface {
 	GetParameterById(context.Context, *GetParameterByIdRequest) (*GetParameterByIdResponse, error)
 	UpdateParameter(context.Context, *UpdateParameterRequest) (*UpdateParameterResponse, error)
 	DeleteParameter(context.Context, *DeleteParameterRequest) (*empty.Empty, error)
+	GetFeedbackByLLM(context.Context, *GetFeedbackByLLMRequest) (*GetFeedbackByLLMResponse, error)
 	mustEmbedUnimplementedMunshijiServer()
 }
 
@@ -369,6 +382,9 @@ func (UnimplementedMunshijiServer) UpdateParameter(context.Context, *UpdateParam
 }
 func (UnimplementedMunshijiServer) DeleteParameter(context.Context, *DeleteParameterRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteParameter not implemented")
+}
+func (UnimplementedMunshijiServer) GetFeedbackByLLM(context.Context, *GetFeedbackByLLMRequest) (*GetFeedbackByLLMResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFeedbackByLLM not implemented")
 }
 func (UnimplementedMunshijiServer) mustEmbedUnimplementedMunshijiServer() {}
 func (UnimplementedMunshijiServer) testEmbeddedByValue()                  {}
@@ -751,6 +767,24 @@ func _Munshiji_DeleteParameter_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Munshiji_GetFeedbackByLLM_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFeedbackByLLMRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MunshijiServer).GetFeedbackByLLM(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Munshiji_GetFeedbackByLLM_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MunshijiServer).GetFeedbackByLLM(ctx, req.(*GetFeedbackByLLMRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Munshiji_ServiceDesc is the grpc.ServiceDesc for Munshiji service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -837,6 +871,10 @@ var Munshiji_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteParameter",
 			Handler:    _Munshiji_DeleteParameter_Handler,
+		},
+		{
+			MethodName: "GetFeedbackByLLM",
+			Handler:    _Munshiji_GetFeedbackByLLM_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

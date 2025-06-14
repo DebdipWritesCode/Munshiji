@@ -22,6 +22,7 @@ import "rpc_create_parameter.proto";
 import "rpc_get_parameter_by_id.proto";
 import "rpc_update_parameter.proto";
 import "rpc_delete_parameter.proto";
+import "rpc_get_feedback_by_llm.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/empty.proto"; 
 
@@ -297,6 +298,18 @@ service Munshiji {
       tags: "Parameter Management";
       summary: "Delete a parameter";
       description: "This endpoint allows the deletion of a parameter by its unique ID.";
+    };
+  };
+  rpc GetFeedbackByLLM(GetFeedbackByLLMRequest) returns (GetFeedbackByLLMResponse) {
+    option (google.api.http) = {
+      post: "/v1/get_feedback_by_llm"
+      body: "*"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Feedback Management";
+      summary: "Get feedback by LLM";
+      description: "This endpoint retrieves feedback for delegates based on parameters using a language model.";
     };
   };
 }

@@ -9,6 +9,15 @@ import (
 	"time"
 )
 
+type AiSession struct {
+	ID        int32          `json:"id"`
+	UserID    int32          `json:"user_id"`
+	CreatedAt time.Time      `json:"created_at"`
+	ExpiresAt time.Time      `json:"expires_at"`
+	Prompt    string         `json:"prompt"`
+	Status    sql.NullString `json:"status"`
+}
+
 type Delegate struct {
 	ID           int32  `json:"id"`
 	ScoreSheetID int32  `json:"score_sheet_id"`

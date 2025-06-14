@@ -24,6 +24,9 @@ func New(db DBTX) *Queries {
 func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	q := Queries{db: db}
 	var err error
+	if q.createAISessionStmt, err = db.PrepareContext(ctx, createAISession); err != nil {
+		return nil, fmt.Errorf("error preparing query CreateAISession: %w", err)
+	}
 	if q.createDelegateStmt, err = db.PrepareContext(ctx, createDelegate); err != nil {
 		return nil, fmt.Errorf("error preparing query CreateDelegate: %w", err)
 	}
@@ -45,6 +48,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.deleteDelegateStmt, err = db.PrepareContext(ctx, deleteDelegate); err != nil {
 		return nil, fmt.Errorf("error preparing query DeleteDelegate: %w", err)
 	}
+	if q.deleteExpiredAISessionsStmt, err = db.PrepareContext(ctx, deleteExpiredAISessions); err != nil {
+		return nil, fmt.Errorf("error preparing query DeleteExpiredAISessions: %w", err)
+	}
 	if q.deleteParameterStmt, err = db.PrepareContext(ctx, deleteParameter); err != nil {
 		return nil, fmt.Errorf("error preparing query DeleteParameter: %w", err)
 	}
@@ -65,6 +71,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	}
 	if q.deleteUserStmt, err = db.PrepareContext(ctx, deleteUser); err != nil {
 		return nil, fmt.Errorf("error preparing query DeleteUser: %w", err)
+	}
+	if q.getAISessionsByUserIDStmt, err = db.PrepareContext(ctx, getAISessionsByUserID); err != nil {
+		return nil, fmt.Errorf("error preparing query GetAISessionsByUserID: %w", err)
 	}
 	if q.getDelegateByIDStmt, err = db.PrepareContext(ctx, getDelegateByID); err != nil {
 		return nil, fmt.Errorf("error preparing query GetDelegateByID: %w", err)
@@ -143,6 +152,11 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 
 func (q *Queries) Close() error {
 	var err error
+	if q.createAISessionStmt != nil {
+		if cerr := q.createAISessionStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing createAISessionStmt: %w", cerr)
+		}
+	}
 	if q.createDelegateStmt != nil {
 		if cerr := q.createDelegateStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing createDelegateStmt: %w", cerr)
@@ -178,6 +192,11 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing deleteDelegateStmt: %w", cerr)
 		}
 	}
+	if q.deleteExpiredAISessionsStmt != nil {
+		if cerr := q.deleteExpiredAISessionsStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing deleteExpiredAISessionsStmt: %w", cerr)
+		}
+	}
 	if q.deleteParameterStmt != nil {
 		if cerr := q.deleteParameterStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing deleteParameterStmt: %w", cerr)
@@ -211,6 +230,11 @@ func (q *Queries) Close() error {
 	if q.deleteUserStmt != nil {
 		if cerr := q.deleteUserStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing deleteUserStmt: %w", cerr)
+		}
+	}
+	if q.getAISessionsByUserIDStmt != nil {
+		if cerr := q.getAISessionsByUserIDStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getAISessionsByUserIDStmt: %w", cerr)
 		}
 	}
 	if q.getDelegateByIDStmt != nil {
@@ -372,6 +396,7 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 type Queries struct {
 	db                                    DBTX
 	tx                                    *sql.Tx
+	createAISessionStmt                   *sql.Stmt
 	createDelegateStmt                    *sql.Stmt
 	createParameterStmt                   *sql.Stmt
 	createScoreStmt                       *sql.Stmt
@@ -379,6 +404,7 @@ type Queries struct {
 	createSheetStmt                       *sql.Stmt
 	createUserStmt                        *sql.Stmt
 	deleteDelegateStmt                    *sql.Stmt
+	deleteExpiredAISessionsStmt           *sql.Stmt
 	deleteParameterStmt                   *sql.Stmt
 	deleteScoreStmt                       *sql.Stmt
 	deleteSessionByIDStmt                 *sql.Stmt
@@ -386,6 +412,7 @@ type Queries struct {
 	deleteSheetStmt                       *sql.Stmt
 	deleteSheetsByUserIDStmt              *sql.Stmt
 	deleteUserStmt                        *sql.Stmt
+	getAISessionsByUserIDStmt             *sql.Stmt
 	getDelegateByIDStmt                   *sql.Stmt
 	getDelegateByScoreSheetIDAndNameStmt  *sql.Stmt
 	getDelegatesByScoreSheetIDStmt        *sql.Stmt
@@ -416,6 +443,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
 		db:                                    tx,
 		tx:                                    tx,
+		createAISessionStmt:                   q.createAISessionStmt,
 		createDelegateStmt:                    q.createDelegateStmt,
 		createParameterStmt:                   q.createParameterStmt,
 		createScoreStmt:                       q.createScoreStmt,
@@ -423,6 +451,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		createSheetStmt:                       q.createSheetStmt,
 		createUserStmt:                        q.createUserStmt,
 		deleteDelegateStmt:                    q.deleteDelegateStmt,
+		deleteExpiredAISessionsStmt:           q.deleteExpiredAISessionsStmt,
 		deleteParameterStmt:                   q.deleteParameterStmt,
 		deleteScoreStmt:                       q.deleteScoreStmt,
 		deleteSessionByIDStmt:                 q.deleteSessionByIDStmt,
@@ -430,6 +459,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		deleteSheetStmt:                       q.deleteSheetStmt,
 		deleteSheetsByUserIDStmt:              q.deleteSheetsByUserIDStmt,
 		deleteUserStmt:                        q.deleteUserStmt,
+		getAISessionsByUserIDStmt:             q.getAISessionsByUserIDStmt,
 		getDelegateByIDStmt:                   q.getDelegateByIDStmt,
 		getDelegateByScoreSheetIDAndNameStmt:  q.getDelegateByScoreSheetIDAndNameStmt,
 		getDelegatesByScoreSheetIDStmt:        q.getDelegatesByScoreSheetIDStmt,

@@ -426,6 +426,40 @@
         ]
       }
     },
+    "/v1/get_feedback_by_llm": {
+      "post": {
+        "summary": "Get feedback by LLM",
+        "description": "This endpoint retrieves feedback for delegates based on parameters using a language model.",
+        "operationId": "Munshiji_GetFeedbackByLLM",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbGetFeedbackByLLMResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbGetFeedbackByLLMRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Feedback Management"
+        ]
+      }
+    },
     "/v1/get_parameter_by_id/{parameterId}": {
       "get": {
         "summary": "Get parameter by ID",
@@ -1155,11 +1189,65 @@
         }
       }
     },
+    "pbDelegateFeedback": {
+      "type": "object",
+      "properties": {
+        "delegateName": {
+          "type": "string"
+        },
+        "feedbackText": {
+          "type": "string"
+        }
+      }
+    },
+    "pbDelegateInput": {
+      "type": "object",
+      "properties": {
+        "delegateName": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbParameterInput"
+          }
+        }
+      }
+    },
     "pbGetDelegateByIdResponse": {
       "type": "object",
       "properties": {
         "delegate": {
           "$ref": "#/definitions/pbDelegate"
+        }
+      }
+    },
+    "pbGetFeedbackByLLMRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "delegates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbDelegateInput"
+          }
+        }
+      }
+    },
+    "pbGetFeedbackByLLMResponse": {
+      "type": "object",
+      "properties": {
+        "feedbacks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/pbDelegateFeedback"
+          }
         }
       }
     },
@@ -1287,6 +1375,22 @@
           "format": "double"
         },
         "lengthWeight": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
+    "pbParameterInput": {
+      "type": "object",
+      "properties": {
+        "parameterName": {
+          "type": "string"
+        },
+        "received": {
+          "type": "number",
+          "format": "double"
+        },
+        "highest": {
           "type": "number",
           "format": "double"
         }

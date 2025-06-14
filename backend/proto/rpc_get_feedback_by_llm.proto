@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+
+message GetFeedbackByLLMRequest {
+  int32 user_id = 1;
+  repeated DelegateInput delegates = 2;
+}
+
+message DelegateInput {
+  string delegate_name = 1;
+  repeated ParameterInput parameters = 2;
+}
+
+message ParameterInput {
+  string parameter_name = 1;
+  double received = 2;
+  double highest = 3; 
+}
+
+message DelegateFeedback {
+  string delegate_name = 1;
+  string feedback_text = 2;
+}
+
+message GetFeedbackByLLMResponse {
+  repeated DelegateFeedback feedbacks = 1;
+}
