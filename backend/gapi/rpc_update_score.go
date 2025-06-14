@@ -18,16 +18,26 @@ func (server *Server) UpdateScore(ctx context.Context, req *pb.UpdateScoreReques
 		return nil, invalidArgumentError(violations)
 	}
 
+	value := sql.NullFloat64{}
+	if req.Value != nil {
+		value = sql.NullFloat64{
+			Float64: *req.Value,
+			Valid:   true,
+		}
+	}
+
+	note := sql.NullString{}
+	if req.Note != nil {
+		note = sql.NullString{
+			String: *req.Note,
+			Valid:  true,
+		}
+	}
+
 	arg := db.UpdateScoreParams{
-		ID: req.GetScoreId(),
-		Note: sql.NullString{
-			String: req.GetNote(),
-			Valid:  req.GetNote() != "",
-		},
-		Value: sql.NullFloat64{
-			Float64: req.GetValue(),
-			Valid:   req.GetValue() != 0,
-		},
+		ID:    req.GetScoreId(),
+		Value: value,
+		Note:  note,
 	}
 
 	score, err := server.store.UpdateScore(ctx, arg)

@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import type { RootState } from "@/store/store";
 import { delegateSheetsData, mainSheetData } from "@/utils/excelUtils";
 import { exportExcel } from "@/lib/excel/exportExcel";
+import { prepareLLMData } from "@/utils/llmUtils";
 
 const ExportButton = () => {
   const scores = useSelector((state: RootState) => state.scores.scores);
@@ -30,13 +31,16 @@ const ExportButton = () => {
       parameters
     );
 
-    await exportExcel(
-      mainSheet,
-      otherSheets,
-      `${scoreSheetName || "scores"}${
-        scoreSheetCommitteeName ? `_${scoreSheetCommitteeName}` : ""
-      }_scoresheet.xlsx`
-    );
+    // await exportExcel(
+    //   mainSheet,
+    //   otherSheets,
+    //   `${scoreSheetName || "scores"}${
+    //     scoreSheetCommitteeName ? `_${scoreSheetCommitteeName}` : ""
+    //   }_scoresheet.xlsx`
+    // );
+
+    const llmData = prepareLLMData(scoresFromDetails, parameters, delegates);
+    console.log("LLM Data:", llmData);
   };
 
   return (

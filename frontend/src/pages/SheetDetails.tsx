@@ -64,6 +64,11 @@ const SheetDetails = () => {
           dispatch(setDelegates([]));
         }
         if (response.data.scores) {
+          for (const score of response.data.scores) {
+            if (score.value == null) {
+              score.value = 0;
+            }
+          }
           dispatch(setScores(response.data.scores));
         } else {
           dispatch(setScores([]));
