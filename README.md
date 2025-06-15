@@ -231,17 +231,24 @@ VITE_BACKEND_URL=http://localhost:8080
 
 ## 🖼️ Screenshots
 
-*📷 To be added...*
+### 🧾 Delegate Score Sheet UI
+Displays a dynamic and editable score sheet with parameter-wise scoring, special rule evaluation, and total calculation. Top 3 delegates are highlighted based on total score.
 
-* Delegate Score Sheet UI
-* Feedback PDF Preview
-* Download ZIP UI
+![Delegate Score Sheet UI](frontend/public/score-sheet-ui.png)
+
+---
+
+### 📝 Feedback PDF Preview
+Automatically generated PDF per delegate, including AI-powered feedback and parameter-wise performance pie chart.
+
+![Feedback PDF Preview](frontend/public/feedback-pdf-preview.png)
+
 
 ---
 
 ## 📄 License
 
-MIT License © 2025 [Debdip Mukherjee](https://github.com/yourusername)
+MIT License © 2025 [Debdip Mukherjee](https://github.com/DebdipWritesCode)
 
 ---
 
