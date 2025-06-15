@@ -18,16 +18,28 @@ interface DelegateReportProps {
 }
 
 const COLORS = [
-  "#8884d8",
-  "#82ca9d",
-  "#ffc658",
-  "#ff8042",
-  "#8dd1e1",
-  "#d0ed57",
-  "#a4de6c",
-  "#d88884",
-  "#a28bd4",
-  "#ffc0cb",
+  "#8884d8", // lavender blue
+  "#82ca9d", // light green
+  "#ffc658", // gold
+  "#ff8042", // orange
+  "#8dd1e1", // sky blue
+  "#d0ed57", // lime
+  "#a4de6c", // light lime
+  "#d88884", // salmon
+  "#a28bd4", // periwinkle
+  "#ffc0cb", // pink
+
+  // Additional colors
+  "#4dc9f6", // bright blue
+  "#f67019", // vivid orange
+  "#f53794", // hot pink
+  "#537bc4", // steel blue
+  "#acc236", // olive green
+  "#166a8f", // deep teal
+  "#00a950", // emerald green
+  "#58595b", // charcoal
+  "#8549ba", // purple
+  "#b5e7a0", // mint green
 ];
 
 function joinChairs(
