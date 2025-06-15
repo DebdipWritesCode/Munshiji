@@ -246,5 +246,3 @@ MIT License © 2025 [Debdip Mukherjee](https://github.com/yourusername)
 ---
 
 > *Built with care and concurrency 💙*
-
-```
