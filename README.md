@@ -6,7 +6,7 @@
 
 ## 📚 Table of Contents
 
-- [Features](#features)
+- [Features](#Features)
 - [Tech Stack](#tech-stack)
 - [Architecture Overview](#architecture-overview)
 - [Database Schema](#database-schema)
