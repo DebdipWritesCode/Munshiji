@@ -30,7 +30,7 @@ func (server *Server) GetFeedbackByLLM(ctx context.Context, req *pb.GetFeedbackB
 
 	if len(aiSessions) != 0 {
 		expiryTime := aiSessions[0].ExpiresAt
-		remainingTime := expiryTime.Sub(time.Now()).Seconds()
+		remainingTime := expiryTime.Sub(time.Now().UTC()).Seconds()
 
 		return nil, status.Errorf(codes.FailedPrecondition, "You can request feedback again after %f seconds", remainingTime)
 	}
@@ -81,7 +81,7 @@ func (server *Server) GetFeedbackByLLM(ctx context.Context, req *pb.GetFeedbackB
 		return nil, status.Errorf(codes.Internal, "failed to delete expired AI sessions: %v", err)
 	}
 
-	expiration := time.Now().Add(10 * time.Second)
+	expiration := time.Now().UTC().Add(10 * time.Second)
 
 	var fullPrompt strings.Builder
 	for _, b := range promptBatches {

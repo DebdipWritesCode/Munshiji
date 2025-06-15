@@ -7,9 +7,13 @@ import { prepareLLMData } from "@/utils/llmUtils";
 import { useState } from "react";
 import api from "@/api/axios";
 import { toast } from "react-toastify";
+import DelegateReport from "./DelegateReport";
+import { getDelegateScoresByName } from "@/utils/scoresUtils";
+import { generateAndZipPDFsWithExcel } from "@/utils/generateAndZipPDFs";
 
 const ExportButton = () => {
   const [loading, setLoading] = useState(false);
+  const [feedbackData, setFeedbackData] = useState<any>(null);
 
   const scores = useSelector((state: RootState) => state.scores.scores);
   const delegates = useSelector(
@@ -38,14 +42,6 @@ const ExportButton = () => {
       parameters
     );
 
-    // await exportExcel(
-    //   mainSheet,
-    //   otherSheets,
-    //   `${scoreSheetName || "scores"}${
-    //     scoreSheetCommitteeName ? `_${scoreSheetCommitteeName}` : ""
-    //   }_scoresheet.xlsx`
-    // );
-
     const llmData = prepareLLMData(scoresFromDetails, parameters, delegates);
 
     try {
@@ -54,13 +50,27 @@ const ExportButton = () => {
 
       const payload = {
         user_id,
-        delegates: llmData
-      }
+        delegates: llmData,
+      };
 
       const response = await api.post(uri, payload);
       if (response.status === 200) {
         toast.success("Feedback generated successfully!");
-        console.log("Data: ", response.data);
+        setFeedbackData(response.data.feedbacks);
+
+        const excelBlob = await exportExcel(
+          mainSheet,
+          otherSheets,
+          `${scoreSheetName || "scores"}${
+            scoreSheetCommitteeName ? `_${scoreSheetCommitteeName}` : ""
+          }_scoresheet.xlsx`,
+          true
+        );
+
+        const delegateNames = response.data.feedbacks.map((f: any) => f.delegate_name);
+        
+        await generateAndZipPDFsWithExcel(delegateNames, excelBlob);
+
       } else {
         throw new Error("Unexpected response from server");
       }
@@ -78,13 +88,33 @@ const ExportButton = () => {
   };
 
   return (
-    <Button
-      type="button"
-      className="h-8 bg-purple-500"
-      onClick={handleClick}
-      disabled={loading}>
-      {loading ? "Exporting..." : "Export"}
-    </Button>
+    <>
+      <Button
+        type="button"
+        className="h-8 bg-purple-500"
+        onClick={handleClick}
+        disabled={loading}>
+        {loading ? "Exporting..." : "Export"}
+      </Button>
+
+      {feedbackData && (
+        <div className="absolute left-[-9999px] top-0">
+          {feedbackData.map((entry: any, index: number) => (
+            <DelegateReport
+              key={index}
+              delegateName={entry.delegate_name}
+              feedback={entry.feedback_text}
+              data={getDelegateScoresByName(
+                scores,
+                entry.delegate_name,
+                delegates,
+                parameters
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 
