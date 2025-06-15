@@ -155,7 +155,7 @@ score = 6.25 * 0.7 + 4 * 0.3 = 5.575
 
 ```bash
 # Clone the repo
-git clone https://github.com/DebdipWritesCode/MUN_Scoresheet
+git clone https://github.com/DebdipWritesCode/Munshiji
 cd munshiji
 ```
 
