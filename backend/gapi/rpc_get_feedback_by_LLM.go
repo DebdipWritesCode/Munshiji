@@ -81,7 +81,7 @@ func (server *Server) GetFeedbackByLLM(ctx context.Context, req *pb.GetFeedbackB
 		return nil, status.Errorf(codes.Internal, "failed to delete expired AI sessions: %v", err)
 	}
 
-	expiration := time.Now().UTC().Add(10 * time.Second)
+	expiration := time.Now().UTC().Add(5 * time.Minute)
 
 	var fullPrompt strings.Builder
 	for _, b := range promptBatches {
