@@ -4,6 +4,7 @@ import Signup from '../pages/Signup';
 import SeeSheets from '../pages/SeeSheets';
 import SheetDetails from '../pages/SheetDetails';
 import NotFound from '../pages/NotFound';
+import VerifyEmail from '../pages/VerifyEmail';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '../layouts/DashboardLayout';
 
@@ -13,6 +14,7 @@ const Router = () => {
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/verify" element={<VerifyEmail />} />
 
       <Route
         element={

@@ -24,7 +24,7 @@ RETURNING *;
 
 -- name: VerifyUserEmail :exec
 UPDATE users
-SET email_verified = TRUE
+SET is_email_verified = TRUE
 WHERE id = $1;
 
 -- name: DeleteUser :exec

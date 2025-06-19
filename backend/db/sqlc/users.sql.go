@@ -124,7 +124,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 
 const verifyUserEmail = `-- name: VerifyUserEmail :exec
 UPDATE users
-SET email_verified = TRUE
+SET is_email_verified = TRUE
 WHERE id = $1
 `
 
