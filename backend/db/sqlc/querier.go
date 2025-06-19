@@ -50,6 +50,7 @@ type Querier interface {
 	UpdateSessionExpiration(ctx context.Context, arg UpdateSessionExpirationParams) (Session, error)
 	UpdateSheet(ctx context.Context, arg UpdateSheetParams) (ScoreSheet, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
+	VerifyUserEmail(ctx context.Context, id int32) error
 }
 
 var _ Querier = (*Queries)(nil)

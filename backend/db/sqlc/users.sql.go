@@ -16,7 +16,7 @@ INSERT INTO users (
 ) VALUES (
   $1, $2, $3
 )
-RETURNING id, name, email, password_hash, created_at
+RETURNING id, name, email, password_hash, created_at, is_email_verified
 `
 
 type CreateUserParams struct {
@@ -34,6 +34,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Email,
 		&i.PasswordHash,
 		&i.CreatedAt,
+		&i.IsEmailVerified,
 	)
 	return i, err
 }
@@ -49,7 +50,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) error {
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, name, email, password_hash, created_at FROM users
+SELECT id, name, email, password_hash, created_at, is_email_verified FROM users
 WHERE email = $1
 `
 
@@ -62,12 +63,13 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Email,
 		&i.PasswordHash,
 		&i.CreatedAt,
+		&i.IsEmailVerified,
 	)
 	return i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, name, email, password_hash, created_at FROM users
+SELECT id, name, email, password_hash, created_at, is_email_verified FROM users
 WHERE id = $1
 `
 
@@ -80,6 +82,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id int32) (User, error) {
 		&i.Email,
 		&i.PasswordHash,
 		&i.CreatedAt,
+		&i.IsEmailVerified,
 	)
 	return i, err
 }
@@ -90,7 +93,7 @@ SET name = COALESCE($1, name),
     email = COALESCE($2, email),
     password_hash = COALESCE($3, password_hash)
 WHERE id = $4
-RETURNING id, name, email, password_hash, created_at
+RETURNING id, name, email, password_hash, created_at, is_email_verified
 `
 
 type UpdateUserParams struct {
@@ -114,6 +117,18 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.Email,
 		&i.PasswordHash,
 		&i.CreatedAt,
+		&i.IsEmailVerified,
 	)
 	return i, err
+}
+
+const verifyUserEmail = `-- name: VerifyUserEmail :exec
+UPDATE users
+SET email_verified = TRUE
+WHERE id = $1
+`
+
+func (q *Queries) VerifyUserEmail(ctx context.Context, id int32) error {
+	_, err := q.exec(ctx, q.verifyUserEmailStmt, verifyUserEmail, id)
+	return err
 }

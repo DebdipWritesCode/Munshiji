@@ -67,9 +67,10 @@ type Session struct {
 }
 
 type User struct {
-	ID           int32        `json:"id"`
-	Name         string       `json:"name"`
-	Email        string       `json:"email"`
-	PasswordHash string       `json:"password_hash"`
-	CreatedAt    sql.NullTime `json:"created_at"`
+	ID              int32        `json:"id"`
+	Name            string       `json:"name"`
+	Email           string       `json:"email"`
+	PasswordHash    string       `json:"password_hash"`
+	CreatedAt       sql.NullTime `json:"created_at"`
+	IsEmailVerified bool         `json:"is_email_verified"`
 }

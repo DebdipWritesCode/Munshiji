@@ -51,11 +51,6 @@ migrateup:
 migratedown:
 	migrate -path db/migrations -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)" -verbose down
 
-# Run Evans gRPC client
-.PHONY: evans
-evans:
-	evans --proto service_munshiji.proto --path proto --host localhost --port 9000
-
 # Run the application
 .PHONY: run
 run:
