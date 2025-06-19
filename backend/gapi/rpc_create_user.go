@@ -2,11 +2,15 @@ package gapi
 
 import (
 	"context"
+	"strconv"
+	"time"
 
 	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/util"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/val"
+	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/worker"
+	"github.com/hibiken/asynq"
 	"github.com/lib/pq"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
@@ -24,22 +28,37 @@ func (server *Server) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
 	}
 
-	arg := db.CreateUserParams{
-		Name:         req.GetName(),
-		Email:        req.GetEmail(),
-		PasswordHash: hashedPassword,
+	arg := db.CreateUserTxParams{
+		CreateUserParams: db.CreateUserParams{
+			Name:         req.GetName(),
+			Email:        req.GetEmail(),
+			PasswordHash: hashedPassword,
+		},
+		AfterCreate: func(user db.User) error {
+			taskPayload := &worker.PayloadSendVerifyMail{
+				UserID: strconv.Itoa(int(user.ID)),
+			}
+
+			opts := []asynq.Option{
+				asynq.MaxRetry(10),
+				asynq.ProcessIn(10 * time.Second),
+				asynq.Queue(worker.QueueCritical),
+			}
+
+			return server.taskDistributor.DistributeTaskSendVerifyMail(ctx, taskPayload, opts...)
+		},
 	}
 
-	user, err := server.store.CreateUser(ctx, arg)
+	txResult, err := server.store.CreateUserTx(ctx, arg)
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code.Name() == "unique_violation" {
-			return nil, status.Errorf(codes.AlreadyExists, "user with email %s already exists %s", req.GetEmail(), err.Error())
+			return nil, status.Errorf(codes.AlreadyExists, "user with email %s already exists: %s", req.GetEmail(), err.Error())
 		}
 		return nil, status.Errorf(codes.Internal, "failed to create user: %v", err)
 	}
 
 	rsp := &pb.CreateUserResponse{
-		User: converUserToProto(user),
+		User: converUserToProto(txResult.User),
 	}
 
 	return rsp, nil

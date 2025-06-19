@@ -27,7 +27,7 @@ var File_service_munshiji_proto protoreflect.FileDescriptor
 
 const file_service_munshiji_proto_rawDesc = "" +
 	"\n" +
-	"\x16service_munshiji.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto\x1a\x18rpc_get_user_by_id.proto\x1a\x1crpc_create_score_sheet.proto\x1a\x1crpc_update_score_sheet.proto\x1a$rpc_get_score_sheet_by_user_id.proto\x1a\x1crpc_delete_score_sheet.proto\x1a!rpc_get_score_sheet_details.proto\x1a\x19rpc_create_delegate.proto\x1a\x1crpc_get_delegate_by_id.proto\x1a$rpc_update_delegate_name_by_id.proto\x1a\x19rpc_delete_delegate.proto\x1a\x16rpc_create_score.proto\x1a\x16rpc_update_score.proto\x1a\x16rpc_delete_score.proto\x1a\x1arpc_create_parameter.proto\x1a\x1drpc_get_parameter_by_id.proto\x1a\x1arpc_update_parameter.proto\x1a\x1arpc_delete_parameter.proto\x1a\x1drpc_get_feedback_by_llm.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\x92(\n" +
+	"\x16service_munshiji.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto\x1a\x18rpc_get_user_by_id.proto\x1a\x1crpc_create_score_sheet.proto\x1a\x1crpc_update_score_sheet.proto\x1a$rpc_get_score_sheet_by_user_id.proto\x1a\x1crpc_delete_score_sheet.proto\x1a!rpc_get_score_sheet_details.proto\x1a\x19rpc_create_delegate.proto\x1a\x1crpc_get_delegate_by_id.proto\x1a$rpc_update_delegate_name_by_id.proto\x1a\x19rpc_delete_delegate.proto\x1a\x16rpc_create_score.proto\x1a\x16rpc_update_score.proto\x1a\x16rpc_delete_score.proto\x1a\x1arpc_create_parameter.proto\x1a\x1drpc_get_parameter_by_id.proto\x1a\x1arpc_update_parameter.proto\x1a\x1arpc_delete_parameter.proto\x1a\x1drpc_get_feedback_by_llm.proto\x1a\x16rpc_verify_email.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto2\xe2)\n" +
 	"\bMunshiji\x12\xbf\x01\n" +
 	"\n" +
 	"CreateUser\x12\x15.pb.CreateUserRequest\x1a\x16.pb.CreateUserResponse\"\x81\x01\x92Ad\n" +
@@ -71,7 +71,9 @@ const file_service_munshiji_proto_rawDesc = "" +
 	"\x0fDeleteParameter\x12\x1a.pb.DeleteParameterRequest\x1a\x16.google.protobuf.Empty\"\xbc\x01\x92An\n" +
 	"\x14Parameter Management\x12\x12Delete a parameter\x1aBThis endpoint allows the deletion of a parameter by its unique ID.\x82\xd3\xe4\x93\x02EZ\x1e*\x1c/v1/parameter/{parameter_id}*#/v1/delete_parameter/{parameter_id}\x12\xfc\x01\n" +
 	"\x10GetFeedbackByLLM\x12\x1b.pb.GetFeedbackByLLMRequest\x1a\x1c.pb.GetFeedbackByLLMResponse\"\xac\x01\x92A\x86\x01\n" +
-	"\x13Feedback Management\x12\x13Get feedback by LLM\x1aZThis endpoint retrieves feedback for delegates based on parameters using a language model.\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/v1/get_feedback_by_llmB\xe4\x01\x92A\xa9\x01\x12\xa6\x01\n" +
+	"\x13Feedback Management\x12\x13Get feedback by LLM\x1aZThis endpoint retrieves feedback for delegates based on parameters using a language model.\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/v1/get_feedback_by_llm\x12\xcd\x01\n" +
+	"\vVerifyEmail\x12\x16.pb.VerifyEmailRequest\x1a\x17.pb.VerifyEmailResponse\"\x8c\x01\x92An\n" +
+	"\x0fUser Management\x12\x11Verify user email\x1aHThis endpoint allows a user to verify their email address using a token.\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/verify_emailB\xe4\x01\x92A\xa9\x01\x12\xa6\x01\n" +
 	"\x14Munshiji Service API\x121API for managing MUN scoresheets called Munshiji.\"T\n" +
 	"\x10Debdip Mukherjee\x12#https://github.com/DebdipWritesCode\x1a\x1bdebdipmukherjee52@gmail.com2\x051.3.0Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
 
@@ -97,22 +99,24 @@ var file_service_munshiji_proto_goTypes = []any{
 	(*UpdateParameterRequest)(nil),         // 18: pb.UpdateParameterRequest
 	(*DeleteParameterRequest)(nil),         // 19: pb.DeleteParameterRequest
 	(*GetFeedbackByLLMRequest)(nil),        // 20: pb.GetFeedbackByLLMRequest
-	(*CreateUserResponse)(nil),             // 21: pb.CreateUserResponse
-	(*LoginUserResponse)(nil),              // 22: pb.LoginUserResponse
-	(*GetUserByIdResponse)(nil),            // 23: pb.GetUserByIdResponse
-	(*CreateScoreSheetResponse)(nil),       // 24: pb.CreateScoreSheetResponse
-	(*UpdateScoreSheetResponse)(nil),       // 25: pb.UpdateScoreSheetResponse
-	(*GetScoreSheetByUserIdResponse)(nil),  // 26: pb.GetScoreSheetByUserIdResponse
-	(*GetScoreSheetDetailsResponse)(nil),   // 27: pb.GetScoreSheetDetailsResponse
-	(*CreateDelegateResponse)(nil),         // 28: pb.CreateDelegateResponse
-	(*GetDelegateByIdResponse)(nil),        // 29: pb.GetDelegateByIdResponse
-	(*UpdateDelegateNameByIDResponse)(nil), // 30: pb.UpdateDelegateNameByIDResponse
-	(*CreateScoreResponse)(nil),            // 31: pb.CreateScoreResponse
-	(*UpdateScoreResponse)(nil),            // 32: pb.UpdateScoreResponse
-	(*CreateParameterResponse)(nil),        // 33: pb.CreateParameterResponse
-	(*GetParameterByIdResponse)(nil),       // 34: pb.GetParameterByIdResponse
-	(*UpdateParameterResponse)(nil),        // 35: pb.UpdateParameterResponse
-	(*GetFeedbackByLLMResponse)(nil),       // 36: pb.GetFeedbackByLLMResponse
+	(*VerifyEmailRequest)(nil),             // 21: pb.VerifyEmailRequest
+	(*CreateUserResponse)(nil),             // 22: pb.CreateUserResponse
+	(*LoginUserResponse)(nil),              // 23: pb.LoginUserResponse
+	(*GetUserByIdResponse)(nil),            // 24: pb.GetUserByIdResponse
+	(*CreateScoreSheetResponse)(nil),       // 25: pb.CreateScoreSheetResponse
+	(*UpdateScoreSheetResponse)(nil),       // 26: pb.UpdateScoreSheetResponse
+	(*GetScoreSheetByUserIdResponse)(nil),  // 27: pb.GetScoreSheetByUserIdResponse
+	(*GetScoreSheetDetailsResponse)(nil),   // 28: pb.GetScoreSheetDetailsResponse
+	(*CreateDelegateResponse)(nil),         // 29: pb.CreateDelegateResponse
+	(*GetDelegateByIdResponse)(nil),        // 30: pb.GetDelegateByIdResponse
+	(*UpdateDelegateNameByIDResponse)(nil), // 31: pb.UpdateDelegateNameByIDResponse
+	(*CreateScoreResponse)(nil),            // 32: pb.CreateScoreResponse
+	(*UpdateScoreResponse)(nil),            // 33: pb.UpdateScoreResponse
+	(*CreateParameterResponse)(nil),        // 34: pb.CreateParameterResponse
+	(*GetParameterByIdResponse)(nil),       // 35: pb.GetParameterByIdResponse
+	(*UpdateParameterResponse)(nil),        // 36: pb.UpdateParameterResponse
+	(*GetFeedbackByLLMResponse)(nil),       // 37: pb.GetFeedbackByLLMResponse
+	(*VerifyEmailResponse)(nil),            // 38: pb.VerifyEmailResponse
 }
 var file_service_munshiji_proto_depIdxs = []int32{
 	0,  // 0: pb.Munshiji.CreateUser:input_type -> pb.CreateUserRequest
@@ -136,29 +140,31 @@ var file_service_munshiji_proto_depIdxs = []int32{
 	18, // 18: pb.Munshiji.UpdateParameter:input_type -> pb.UpdateParameterRequest
 	19, // 19: pb.Munshiji.DeleteParameter:input_type -> pb.DeleteParameterRequest
 	20, // 20: pb.Munshiji.GetFeedbackByLLM:input_type -> pb.GetFeedbackByLLMRequest
-	21, // 21: pb.Munshiji.CreateUser:output_type -> pb.CreateUserResponse
-	22, // 22: pb.Munshiji.LoginUser:output_type -> pb.LoginUserResponse
-	22, // 23: pb.Munshiji.RefreshAccessToken:output_type -> pb.LoginUserResponse
-	23, // 24: pb.Munshiji.GetUserById:output_type -> pb.GetUserByIdResponse
-	24, // 25: pb.Munshiji.CreateScoreSheet:output_type -> pb.CreateScoreSheetResponse
-	25, // 26: pb.Munshiji.UpdateScoreSheet:output_type -> pb.UpdateScoreSheetResponse
-	26, // 27: pb.Munshiji.GetScoreSheetByUserId:output_type -> pb.GetScoreSheetByUserIdResponse
-	2,  // 28: pb.Munshiji.DeleteScoreSheet:output_type -> google.protobuf.Empty
-	27, // 29: pb.Munshiji.GetScoreSheetDetails:output_type -> pb.GetScoreSheetDetailsResponse
-	28, // 30: pb.Munshiji.CreateDelegate:output_type -> pb.CreateDelegateResponse
-	29, // 31: pb.Munshiji.GetDelegateById:output_type -> pb.GetDelegateByIdResponse
-	30, // 32: pb.Munshiji.UpdateDelegateNameByID:output_type -> pb.UpdateDelegateNameByIDResponse
-	2,  // 33: pb.Munshiji.DeleteDelegate:output_type -> google.protobuf.Empty
-	31, // 34: pb.Munshiji.CreateScore:output_type -> pb.CreateScoreResponse
-	32, // 35: pb.Munshiji.UpdateScore:output_type -> pb.UpdateScoreResponse
-	2,  // 36: pb.Munshiji.DeleteScore:output_type -> google.protobuf.Empty
-	33, // 37: pb.Munshiji.CreateParameter:output_type -> pb.CreateParameterResponse
-	34, // 38: pb.Munshiji.GetParameterById:output_type -> pb.GetParameterByIdResponse
-	35, // 39: pb.Munshiji.UpdateParameter:output_type -> pb.UpdateParameterResponse
-	2,  // 40: pb.Munshiji.DeleteParameter:output_type -> google.protobuf.Empty
-	36, // 41: pb.Munshiji.GetFeedbackByLLM:output_type -> pb.GetFeedbackByLLMResponse
-	21, // [21:42] is the sub-list for method output_type
-	0,  // [0:21] is the sub-list for method input_type
+	21, // 21: pb.Munshiji.VerifyEmail:input_type -> pb.VerifyEmailRequest
+	22, // 22: pb.Munshiji.CreateUser:output_type -> pb.CreateUserResponse
+	23, // 23: pb.Munshiji.LoginUser:output_type -> pb.LoginUserResponse
+	23, // 24: pb.Munshiji.RefreshAccessToken:output_type -> pb.LoginUserResponse
+	24, // 25: pb.Munshiji.GetUserById:output_type -> pb.GetUserByIdResponse
+	25, // 26: pb.Munshiji.CreateScoreSheet:output_type -> pb.CreateScoreSheetResponse
+	26, // 27: pb.Munshiji.UpdateScoreSheet:output_type -> pb.UpdateScoreSheetResponse
+	27, // 28: pb.Munshiji.GetScoreSheetByUserId:output_type -> pb.GetScoreSheetByUserIdResponse
+	2,  // 29: pb.Munshiji.DeleteScoreSheet:output_type -> google.protobuf.Empty
+	28, // 30: pb.Munshiji.GetScoreSheetDetails:output_type -> pb.GetScoreSheetDetailsResponse
+	29, // 31: pb.Munshiji.CreateDelegate:output_type -> pb.CreateDelegateResponse
+	30, // 32: pb.Munshiji.GetDelegateById:output_type -> pb.GetDelegateByIdResponse
+	31, // 33: pb.Munshiji.UpdateDelegateNameByID:output_type -> pb.UpdateDelegateNameByIDResponse
+	2,  // 34: pb.Munshiji.DeleteDelegate:output_type -> google.protobuf.Empty
+	32, // 35: pb.Munshiji.CreateScore:output_type -> pb.CreateScoreResponse
+	33, // 36: pb.Munshiji.UpdateScore:output_type -> pb.UpdateScoreResponse
+	2,  // 37: pb.Munshiji.DeleteScore:output_type -> google.protobuf.Empty
+	34, // 38: pb.Munshiji.CreateParameter:output_type -> pb.CreateParameterResponse
+	35, // 39: pb.Munshiji.GetParameterById:output_type -> pb.GetParameterByIdResponse
+	36, // 40: pb.Munshiji.UpdateParameter:output_type -> pb.UpdateParameterResponse
+	2,  // 41: pb.Munshiji.DeleteParameter:output_type -> google.protobuf.Empty
+	37, // 42: pb.Munshiji.GetFeedbackByLLM:output_type -> pb.GetFeedbackByLLMResponse
+	38, // 43: pb.Munshiji.VerifyEmail:output_type -> pb.VerifyEmailResponse
+	22, // [22:44] is the sub-list for method output_type
+	0,  // [0:22] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -189,6 +195,7 @@ func file_service_munshiji_proto_init() {
 	file_rpc_update_parameter_proto_init()
 	file_rpc_delete_parameter_proto_init()
 	file_rpc_get_feedback_by_llm_proto_init()
+	file_rpc_verify_email_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

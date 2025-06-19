@@ -1028,6 +1028,40 @@
           "User Management"
         ]
       }
+    },
+    "/v1/verify_email": {
+      "post": {
+        "summary": "Verify user email",
+        "description": "This endpoint allows a user to verify their email address using a token.",
+        "operationId": "Munshiji_VerifyEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbVerifyEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbVerifyEmailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Management"
+        ]
+      }
     }
   },
   "definitions": {
@@ -1588,6 +1622,23 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbVerifyEmailRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbVerifyEmailResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
         }
       }
     },

@@ -3,20 +3,27 @@ package main
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"net"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 
 	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
 	_ "github.com/DebdipWritesCode/MUN_Scoresheet/backend/doc/statik"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/gapi"
+	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/mail"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/token"
 	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/util"
+	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/worker"
 	"github.com/go-chi/cors"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/hibiken/asynq"
 	"github.com/rakyll/statik/fs"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 
 	"google.golang.org/grpc/reflection"
@@ -26,6 +33,12 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
+
+var interruptSignals = []os.Signal{
+	os.Interrupt,
+	syscall.SIGTERM,
+	syscall.SIGINT,
+}
 
 func main() {
 	config, err := util.LoadConfig(".")
@@ -39,6 +52,9 @@ func main() {
 		})
 	}
 
+	ctx, stop := signal.NotifyContext(context.Background(), interruptSignals...)
+	defer stop()
+
 	tokenMaker, err := token.NewJWTMaker(config.TokenSymmetricKey)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to create token maker")
@@ -51,12 +67,46 @@ func main() {
 
 	store := db.NewStore(conn)
 
-	go runGatewayServer(store, config)
-	runGrpcServer(store, config, tokenMaker)
+	redisOpt := asynq.RedisClientOpt{
+		Addr: config.RedisAddress,
+	}
+
+	taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
+
+	group, ctx := errgroup.WithContext(ctx)
+
+	runTaskProcessor(ctx, config, group, redisOpt, store)
+	runGatewayServer(ctx, store, config, group, taskDistributor)
+	runGrpcServer(ctx, store, config, group, taskDistributor, tokenMaker)
+
+	err = group.Wait()
+	if err != nil {
+		log.Fatal().Err(err).Msg("error in goroutines:")
+	}
 }
 
-func runGrpcServer(store db.Store, config util.Config, tokenMaker token.Maker) {
-	server, err := gapi.NewServer(config, store)
+func runTaskProcessor(ctx context.Context, config util.Config, group *errgroup.Group, redisOpt asynq.RedisClientOpt, store db.Store) {
+	mailer := mail.NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
+
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
+	log.Info().Msg("Starting task processor...")
+	err := taskProcessor.Start()
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to start task processor")
+	}
+
+	group.Go(func() error {
+		<-ctx.Done()
+		log.Info().Msg("Shutting down task processor...")
+
+		taskProcessor.Shutdown()
+		log.Info().Msg("Task processor shutdown complete")
+		return nil
+	})
+}
+
+func runGrpcServer(ctx context.Context, store db.Store, config util.Config, group *errgroup.Group, taskDistributor worker.TaskDistributor, tokenMaker token.Maker) {
+	server, err := gapi.NewServer(config, store, taskDistributor)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to create gRPC server")
 	}
@@ -77,17 +127,34 @@ func runGrpcServer(store db.Store, config util.Config, tokenMaker token.Maker) {
 		log.Fatal().Err(err).Msgf("failed to listen on %s", config.GRPCServerAddress)
 	}
 
-	log.Info().Msgf("gRPC server listening on %s", config.GRPCServerAddress)
-	err = grpcServer.Serve(listener)
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed to start gRPC server")
-	}
+	group.Go(func() error {
+		log.Info().Msgf("Starting GRPC server on %s...\n", listener.Addr().String())
+
+		err = grpcServer.Serve(listener)
+		if err != nil {
+			if errors.Is(err, grpc.ErrServerStopped) {
+				return nil // If the server is stopped gracefully, we return nil to indicate no error occurred.
+			}
+			log.Fatal().Err(err).Msg("cannot start gRPC server:")
+			return err
+		}
+
+		return nil
+	})
+
+	group.Go(func() error {
+		<-ctx.Done()
+		log.Info().Msg("Shutting down gRPC server...")
+		grpcServer.GracefulStop() // This gracefully stops the gRPC server, allowing it to finish processing ongoing requests before shutting down.
+		log.Info().Msg("gRPC server stopped.")
+		return nil
+	})
 }
 
-func runGatewayServer(store db.Store, config util.Config) {
-	server, err := gapi.NewServer(config, store)
+func runGatewayServer(ctx context.Context, store db.Store, config util.Config, group *errgroup.Group, taskDistributor worker.TaskDistributor) {
+	server, err := gapi.NewServer(config, store, taskDistributor)
 	if err != nil {
-		log.Fatal().Err(err).Msg("failed to create gRPC server")
+		log.Fatal().Err(err).Msg("failed to create gRPC server:")
 	}
 
 	jsonOption := runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
@@ -119,9 +186,6 @@ func runGatewayServer(store db.Store, config util.Config) {
 
 	grpcMux := runtime.NewServeMux(jsonOption, headerMatcher, cookieForwarder)
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
 	err = pb.RegisterMunshijiHandlerServer(ctx, grpcMux, server)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to register gRPC gateway server")
@@ -146,16 +210,35 @@ func runGatewayServer(store db.Store, config util.Config) {
 		AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 	}).Handler(mux)
 
-	listener, err := net.Listen("tcp", config.HTTPServerAddress)
-	if err != nil {
-		log.Fatal().Err(err).Msgf("failed to listen on %s", config.HTTPServerAddress)
+	httpServer := &http.Server{
+		Handler: gapi.HttpLogger(corsHandler),
+		Addr:    config.HTTPServerAddress,
 	}
 
-	log.Info().Msgf("HTTP Gateway server listening on %s", config.HTTPServerAddress)
-	handler := gapi.HttpLogger(corsHandler)
+	group.Go(func() error {
+		log.Info().Msgf("Starting HTTP Gateway server on %s...\n", httpServer.Addr)
 
-	err = http.Serve(listener, handler)
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed to start HTTP server")
-	}
+		err := httpServer.ListenAndServe()
+		if err != nil {
+			if errors.Is(err, http.ErrServerClosed) {
+				return nil
+			}
+			log.Error().Err(err).Msg("cannot start HTTP Gateway server:")
+			return err
+		}
+		return nil
+	})
+
+	group.Go(func() error {
+		<-ctx.Done()
+		log.Info().Msg("Shutting down HTTP Gateway server...")
+
+		err := httpServer.Shutdown(context.Background())
+		if err != nil {
+			log.Error().Err(err).Msg("cannot shutdown HTTP Gateway server:")
+			return err
+		}
+		log.Info().Msg("HTTP Gateway server stopped.")
+		return nil
+	})
 }
