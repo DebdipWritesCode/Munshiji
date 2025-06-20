@@ -169,7 +169,7 @@ const file_rpc_create_score_sheet_proto_rawDesc = "" +
 	"\v_rapporteur\"K\n" +
 	"\x18CreateScoreSheetResponse\x12/\n" +
 	"\vscore_sheet\x18\x01 \x01(\v2\x0e.pb.ScoreSheetR\n" +
-	"scoreSheetB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"scoreSheetB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_create_score_sheet_proto_rawDescOnce sync.Once

@@ -27,7 +27,7 @@ import "rpc_verify_email.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/empty.proto"; 
 
-option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+option go_package = "github.com/DebdipWritesCode/Munshiji/backend/pb";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {

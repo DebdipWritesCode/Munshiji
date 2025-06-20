@@ -147,7 +147,7 @@ const file_rpc_get_score_sheet_details_proto_rawDesc = "" +
 	"\n" +
 	"parameters\x18\x03 \x03(\v2\r.pb.ParameterR\n" +
 	"parameters\x12!\n" +
-	"\x06scores\x18\x04 \x03(\v2\t.pb.ScoreR\x06scoresB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\x06scores\x18\x04 \x03(\v2\t.pb.ScoreR\x06scoresB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_get_score_sheet_details_proto_rawDescOnce sync.Once

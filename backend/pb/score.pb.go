@@ -108,7 +108,7 @@ const file_score_proto_rawDesc = "" +
 	"delegateId\x12!\n" +
 	"\fparameter_id\x18\x03 \x01(\x05R\vparameterId\x12\x14\n" +
 	"\x05value\x18\x04 \x01(\x01R\x05value\x12\x12\n" +
-	"\x04note\x18\x05 \x01(\tR\x04noteB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\x04note\x18\x05 \x01(\tR\x04noteB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_score_proto_rawDescOnce sync.Once

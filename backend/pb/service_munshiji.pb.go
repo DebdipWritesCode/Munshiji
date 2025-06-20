@@ -73,9 +73,9 @@ const file_service_munshiji_proto_rawDesc = "" +
 	"\x10GetFeedbackByLLM\x12\x1b.pb.GetFeedbackByLLMRequest\x1a\x1c.pb.GetFeedbackByLLMResponse\"\xac\x01\x92A\x86\x01\n" +
 	"\x13Feedback Management\x12\x13Get feedback by LLM\x1aZThis endpoint retrieves feedback for delegates based on parameters using a language model.\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/v1/get_feedback_by_llm\x12\xcd\x01\n" +
 	"\vVerifyEmail\x12\x16.pb.VerifyEmailRequest\x1a\x17.pb.VerifyEmailResponse\"\x8c\x01\x92An\n" +
-	"\x0fUser Management\x12\x11Verify user email\x1aHThis endpoint allows a user to verify their email address using a token.\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/verify_emailB\xe4\x01\x92A\xa9\x01\x12\xa6\x01\n" +
+	"\x0fUser Management\x12\x11Verify user email\x1aHThis endpoint allows a user to verify their email address using a token.\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/verify_emailB\xde\x01\x92A\xa9\x01\x12\xa6\x01\n" +
 	"\x14Munshiji Service API\x121API for managing MUN scoresheets called Munshiji.\"T\n" +
-	"\x10Debdip Mukherjee\x12#https://github.com/DebdipWritesCode\x1a\x1bdebdipmukherjee52@gmail.com2\x051.3.0Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\x10Debdip Mukherjee\x12#https://github.com/DebdipWritesCode\x1a\x1bdebdipmukherjee52@gmail.com2\x051.3.0Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var file_service_munshiji_proto_goTypes = []any{
 	(*CreateUserRequest)(nil),              // 0: pb.CreateUserRequest

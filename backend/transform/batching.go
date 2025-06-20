@@ -3,7 +3,7 @@ package transform
 import (
 	"strings"
 
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
 )
 
 type BatchedPrompt struct {

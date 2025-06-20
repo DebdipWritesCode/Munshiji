@@ -3,7 +3,7 @@ package val
 import (
 	"fmt"
 
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
 )
 
 func ValidateString(value string, minLength int, maxLength int) error {

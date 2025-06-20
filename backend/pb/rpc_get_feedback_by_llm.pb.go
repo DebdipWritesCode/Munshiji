@@ -302,7 +302,7 @@ const file_rpc_get_feedback_by_llm_proto_rawDesc = "" +
 	"\rdelegate_name\x18\x01 \x01(\tR\fdelegateName\x12#\n" +
 	"\rfeedback_text\x18\x02 \x01(\tR\ffeedbackText\"N\n" +
 	"\x18GetFeedbackByLLMResponse\x122\n" +
-	"\tfeedbacks\x18\x01 \x03(\v2\x14.pb.DelegateFeedbackR\tfeedbacksB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\tfeedbacks\x18\x01 \x03(\v2\x14.pb.DelegateFeedbackR\tfeedbacksB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_get_feedback_by_llm_proto_rawDescOnce sync.Once

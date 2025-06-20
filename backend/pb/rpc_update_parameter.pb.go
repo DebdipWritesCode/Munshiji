@@ -188,7 +188,7 @@ const file_rpc_update_parameter_proto_rawDesc = "" +
 	"\r_score_weightB\x10\n" +
 	"\x0e_length_weight\"F\n" +
 	"\x17UpdateParameterResponse\x12+\n" +
-	"\tparameter\x18\x01 \x01(\v2\r.pb.ParameterR\tparameterB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\tparameter\x18\x01 \x01(\v2\r.pb.ParameterR\tparameterB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_update_parameter_proto_rawDescOnce sync.Once

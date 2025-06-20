@@ -7,7 +7,7 @@ import "delegate.proto";
 import "parameter.proto";
 import "score.proto";
 
-option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+option go_package = "github.com/DebdipWritesCode/Munshiji/backend/pb";
 
 message GetScoreSheetDetailsRequest {
   int32 score_sheet_id = 1;

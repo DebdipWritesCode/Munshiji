@@ -137,7 +137,7 @@ const file_rpc_update_score_proto_rawDesc = "" +
 	"\x05_noteB\b\n" +
 	"\x06_value\"6\n" +
 	"\x13UpdateScoreResponse\x12\x1f\n" +
-	"\x05score\x18\x01 \x01(\v2\t.pb.ScoreR\x05scoreB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\x05score\x18\x01 \x01(\v2\t.pb.ScoreR\x05scoreB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_update_score_proto_rawDescOnce sync.Once

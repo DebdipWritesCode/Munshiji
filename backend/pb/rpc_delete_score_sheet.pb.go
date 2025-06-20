@@ -126,7 +126,7 @@ const file_rpc_delete_score_sheet_proto_rawDesc = "" +
 	"\x0escore_sheet_id\x18\x01 \x01(\x05R\fscoreSheetId\"N\n" +
 	"\x18DeleteScoreSheetResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessageB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\amessage\x18\x02 \x01(\tR\amessageB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_delete_score_sheet_proto_rawDescOnce sync.Once

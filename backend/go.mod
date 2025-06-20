@@ -1,4 +1,4 @@
-module github.com/DebdipWritesCode/MUN_Scoresheet/backend
+module github.com/DebdipWritesCode/Munshiji/backend
 
 go 1.24.2
 

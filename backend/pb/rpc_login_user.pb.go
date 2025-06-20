@@ -201,7 +201,7 @@ const file_rpc_login_user_proto_rawDesc = "" +
 	"\x11LoginUserResponse\x12\x1c\n" +
 	"\x04user\x18\x01 \x01(\v2\b.pb.UserR\x04user\x12\x1b\n" +
 	"\tjwt_token\x18\x02 \x01(\tR\bjwtToken\x12(\n" +
-	"\bmetadata\x18\x03 \x01(\v2\f.pb.MetaDataR\bmetadataB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\bmetadata\x18\x03 \x01(\v2\f.pb.MetaDataR\bmetadataB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_login_user_proto_rawDescOnce sync.Once

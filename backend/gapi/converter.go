@@ -1,8 +1,8 @@
 package gapi
 
 import (
-	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
+	db "github.com/DebdipWritesCode/Munshiji/backend/db/sqlc"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

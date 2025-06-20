@@ -3,7 +3,7 @@ package mail
 import (
 	"testing"
 
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/util"
+	"github.com/DebdipWritesCode/Munshiji/backend/util"
 	"github.com/stretchr/testify/require"
 )
 

@@ -3,8 +3,8 @@ package gapi
 import (
 	"context"
 
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/val"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
+	"github.com/DebdipWritesCode/Munshiji/backend/val"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

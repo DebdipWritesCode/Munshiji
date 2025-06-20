@@ -4,7 +4,7 @@ package pb;
 
 import "score_sheet.proto";
 
-option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+option go_package = "github.com/DebdipWritesCode/Munshiji/backend/pb";
 
 message CreateScoreSheetRequest {
   string name = 1;

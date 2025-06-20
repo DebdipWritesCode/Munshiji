@@ -127,7 +127,7 @@ const file_rpc_update_delegate_name_by_id_proto_rawDesc = "" +
 	"delegateId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"J\n" +
 	"\x1eUpdateDelegateNameByIDResponse\x12(\n" +
-	"\bdelegate\x18\x01 \x01(\v2\f.pb.DelegateR\bdelegateB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\bdelegate\x18\x01 \x01(\v2\f.pb.DelegateR\bdelegateB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_update_delegate_name_by_id_proto_rawDescOnce sync.Once

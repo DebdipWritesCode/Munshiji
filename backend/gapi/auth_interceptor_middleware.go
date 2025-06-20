@@ -3,7 +3,7 @@ package gapi
 import (
 	"context"
 
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/token"
+	"github.com/DebdipWritesCode/Munshiji/backend/token"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

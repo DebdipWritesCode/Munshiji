@@ -143,7 +143,7 @@ const file_parameter_proto_rawDesc = "" +
 	"\x13special_scores_rule\x18\x06 \x01(\tR\x11specialScoresRule\x12.\n" +
 	"\x13special_length_rule\x18\a \x01(\tR\x11specialLengthRule\x12!\n" +
 	"\fscore_weight\x18\b \x01(\x01R\vscoreWeight\x12#\n" +
-	"\rlength_weight\x18\t \x01(\x01R\flengthWeightB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\rlength_weight\x18\t \x01(\x01R\flengthWeightB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_parameter_proto_rawDescOnce sync.Once

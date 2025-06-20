@@ -3,7 +3,7 @@ package transform
 import (
 	"database/sql"
 
-	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
+	db "github.com/DebdipWritesCode/Munshiji/backend/db/sqlc"
 )
 
 type ParameterJSON struct {

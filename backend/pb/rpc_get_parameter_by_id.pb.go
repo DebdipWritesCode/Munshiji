@@ -117,7 +117,7 @@ const file_rpc_get_parameter_by_id_proto_rawDesc = "" +
 	"\x17GetParameterByIdRequest\x12!\n" +
 	"\fparameter_id\x18\x01 \x01(\x05R\vparameterId\"G\n" +
 	"\x18GetParameterByIdResponse\x12+\n" +
-	"\tparameter\x18\x01 \x01(\v2\r.pb.ParameterR\tparameterB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\tparameter\x18\x01 \x01(\v2\r.pb.ParameterR\tparameterB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_get_parameter_by_id_proto_rawDescOnce sync.Once

@@ -3,8 +3,8 @@ package worker
 import (
 	"context"
 
-	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/mail"
+	db "github.com/DebdipWritesCode/Munshiji/backend/db/sqlc"
+	"github.com/DebdipWritesCode/Munshiji/backend/mail"
 	"github.com/hibiken/asynq"
 	"github.com/rs/zerolog/log"
 )

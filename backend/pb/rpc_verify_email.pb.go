@@ -117,7 +117,7 @@ const file_rpc_verify_email_proto_rawDesc = "" +
 	"\x12VerifyEmailRequest\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\x05R\x05token\"/\n" +
 	"\x13VerifyEmailResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessageB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\amessage\x18\x01 \x01(\tR\amessageB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_verify_email_proto_rawDescOnce sync.Once

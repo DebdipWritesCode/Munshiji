@@ -89,7 +89,7 @@ const file_delegate_proto_rawDesc = "" +
 	"\bDelegate\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12$\n" +
 	"\x0escore_sheet_id\x18\x02 \x01(\x05R\fscoreSheetId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04nameB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\x04name\x18\x03 \x01(\tR\x04nameB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_delegate_proto_rawDescOnce sync.Once

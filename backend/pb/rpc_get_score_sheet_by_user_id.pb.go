@@ -117,7 +117,7 @@ const file_rpc_get_score_sheet_by_user_id_proto_rawDesc = "" +
 	"\x1cGetScoreSheetByUserIdRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x05R\x06userId\"R\n" +
 	"\x1dGetScoreSheetByUserIdResponse\x121\n" +
-	"\fscore_sheets\x18\x01 \x03(\v2\x0e.pb.ScoreSheetR\vscoreSheetsB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\fscore_sheets\x18\x01 \x03(\v2\x0e.pb.ScoreSheetR\vscoreSheetsB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_get_score_sheet_by_user_id_proto_rawDescOnce sync.Once

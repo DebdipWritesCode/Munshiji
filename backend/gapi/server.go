@@ -3,11 +3,11 @@ package gapi
 import (
 	"fmt"
 
-	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/token"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/util"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/worker"
+	db "github.com/DebdipWritesCode/Munshiji/backend/db/sqlc"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
+	"github.com/DebdipWritesCode/Munshiji/backend/token"
+	"github.com/DebdipWritesCode/Munshiji/backend/util"
+	"github.com/DebdipWritesCode/Munshiji/backend/worker"
 )
 
 type Server struct {

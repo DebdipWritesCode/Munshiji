@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/constants"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
+	"github.com/DebdipWritesCode/Munshiji/backend/constants"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
 )
 
 func ConvertDelegateToPrompt(delegate *pb.DelegateInput) string {

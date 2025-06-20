@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pb;
 
-option go_package = "github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb";
+option go_package = "github.com/DebdipWritesCode/Munshiji/backend/pb";
 
 message DeleteScoreSheetRequest {
   int32 score_sheet_id = 1;

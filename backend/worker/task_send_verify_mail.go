@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/constants"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/util"
+	"github.com/DebdipWritesCode/Munshiji/backend/constants"
+	"github.com/DebdipWritesCode/Munshiji/backend/util"
 	"github.com/hibiken/asynq"
 	"github.com/rs/zerolog/log"
 )

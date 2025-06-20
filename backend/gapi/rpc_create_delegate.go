@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 
-	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/val"
+	db "github.com/DebdipWritesCode/Munshiji/backend/db/sqlc"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
+	"github.com/DebdipWritesCode/Munshiji/backend/val"
 	"github.com/lib/pq"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"

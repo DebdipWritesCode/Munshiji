@@ -117,7 +117,7 @@ const file_rpc_delete_score_proto_rawDesc = "" +
 	"\x12DeleteScoreRequest\x12\x19\n" +
 	"\bscore_id\x18\x01 \x01(\x05R\ascoreId\"/\n" +
 	"\x13DeleteScoreResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccessB7Z5github.com/DebdipWritesCode/MUN_Scoresheet/backend/pbb\x06proto3"
+	"\asuccess\x18\x01 \x01(\bR\asuccessB1Z/github.com/DebdipWritesCode/Munshiji/backend/pbb\x06proto3"
 
 var (
 	file_rpc_delete_score_proto_rawDescOnce sync.Once

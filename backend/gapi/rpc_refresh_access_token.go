@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"time"
 
-	db "github.com/DebdipWritesCode/MUN_Scoresheet/backend/db/sqlc"
-	"github.com/DebdipWritesCode/MUN_Scoresheet/backend/pb"
+	db "github.com/DebdipWritesCode/Munshiji/backend/db/sqlc"
+	"github.com/DebdipWritesCode/Munshiji/backend/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
