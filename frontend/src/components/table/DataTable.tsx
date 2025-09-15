@@ -12,6 +12,12 @@ import DelegateNameCell from "./DelegateNameCell";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
 import { getTopDelegates } from "@/utils/scoresUtils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export interface CustomColumn<T> {
   id?: string;
@@ -29,7 +35,7 @@ export interface CustomColumn<T> {
   };
 }
 
-const minWidth = "180px"; 
+const minWidth = "180px";
 
 interface DataTableProps<T> {
   columns: CustomColumn<T>[];
@@ -111,27 +117,37 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
                         : "border-none";
 
                       return (
-                        <TableCell
-                          key={column.id ?? colIndex}
-                          className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${rowClassName} ${borderClass}`}
-                          style={{ minWidth: minWidth || "150px" }} // Set minimum width
-                        >
-                          {column.header === "Delegate" ? (
-                            <DelegateNameCell
-                              delegateName={
-                                column.cell(row) &&
-                                (column.cell(row) as any).props &&
-                                (column.cell(row) as any).props.children
-                                  ? ((column.cell(row) as any).props
-                                      .children as string)
-                                  : ""
-                              }
-                              delegate_id={(row as any).delegate_id as number}
-                            />
-                          ) : (
-                            column.cell(row)
-                          )}
-                        </TableCell>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <TableCell
+                                key={column.id ?? colIndex}
+                                className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${rowClassName} ${borderClass}`}
+                                style={{ minWidth: minWidth || "150px" }}>
+                                {column.header === "Delegate" ? (
+                                  <DelegateNameCell
+                                    delegateName={
+                                      column.cell(row) &&
+                                      (column.cell(row) as any).props &&
+                                      (column.cell(row) as any).props.children
+                                        ? ((column.cell(row) as any).props
+                                            .children as string)
+                                        : ""
+                                    }
+                                    delegate_id={
+                                      (row as any).delegate_id as number
+                                    }
+                                  />
+                                ) : (
+                                  column.cell(row)
+                                )}
+                              </TableCell>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              {column.header}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       );
                     })}
                   </TableRow>
